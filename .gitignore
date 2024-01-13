@@ -6,3 +6,6 @@
 
 # 忽略iml
 **/*.iml
+
+# Snake
+snake/data/*
