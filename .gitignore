@@ -8,4 +8,4 @@
 **/*.iml
 
 # Snake
-snake/data/*
+snake/data

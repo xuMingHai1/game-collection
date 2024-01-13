@@ -58,6 +58,8 @@ public class GameStage extends Stage {
                 %s\t%d
                 """.formatted(datetime, gameView.getSnakeLength());
         try {
+            // 检查文件是否存在以及创建目录（如果不存在）是单个操作
+            Files.createDirectory(PATH.getParent());
             Files.writeString(PATH, data, StandardOpenOption.WRITE,
                     StandardOpenOption.APPEND, StandardOpenOption.CREATE);
         }
