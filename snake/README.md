@@ -3,7 +3,7 @@
 * 游戏没有死亡，触碰检测还是有的
 * ↑ ↓ ← → 控制方向，ESC菜单，空格暂停
 
-![封面](https://i2.hdslb.com/bfs/archive/f94eca8238489e979ec1a4d1d808f5895dfb0d3f.jpg)
+<iframe src="//player.bilibili.com/player.html?bvid=BV16c411x7hp&page=1"  allowfullscreen="allowfullscreen"> </iframe>
 
 这样把自己围住只能重新开始了
 
