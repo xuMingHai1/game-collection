@@ -10,6 +10,6 @@ public enum GameStateEnum {
 
     STOP,
 
-    GAME_OVER;
+    GAME_OVER
 
 }
