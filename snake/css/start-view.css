@@ -1,0 +1,24 @@
+/**
+    开始页面样式
+ */
+#start-view {
+    -fx-spacing: 100px;
+    -fx-alignment: center;
+    -fx-background-color: #fff8dc;
+}
+
+.button {
+    -fx-font-size: 30px;
+    -fx-background-color: #3498db; /* 设置按钮的背景颜色 */
+    -fx-text-fill: white; /* 设置文本颜色为白色 */
+    -fx-background-radius: 20px; /* 设置按钮的圆角半径 */
+}
+
+.button:hover {
+    -fx-background-color: #2e29b9; /* 设置鼠标悬停时的背景颜色 */
+}
+
+/* 设置鼠标按下时样式 */
+.button:pressed {
+    -fx-background-color: #5929b9;
+}
