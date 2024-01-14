@@ -30,8 +30,21 @@ public class GameContext extends Canvas {
 
     private final GraphicsContext graphicsContext;
 
-    public GameContext(int rows, int cols, double side, double border) {
-        super();
+    public GameContext(int rows, int cols, int side, int border) {
+        if ((rows < 2) || (cols < 6)) {
+            throw new IllegalArgumentException("""
+                    行列数量参数不正确
+                    rows 最小值为2
+                    cols 最小值为6
+                    """);
+        }
+        if ((side < 8) || (border < 1)) {
+            throw new IllegalArgumentException("""
+                    边长、边框参数不正确
+                    side 最小值为8
+                    border 最小值为1
+                    """);
+        }
         this.rows = rows;
         this.cols = cols;
         this.side = side;
@@ -89,7 +102,9 @@ public class GameContext extends Canvas {
         if ((row < 0 || row >= getRows()) || (col < 0 || col >= getCols())) {
             throw new IllegalArgumentException(String.format("""
                     单元格位置不正确
+                    （行列坐标，从0开始）
                     row = %d, col = %d
+                    （行列数量）
                     rows = %d, cols = %d
                     """, row, col, getRows(), getCols()));
         }

@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import xyz.xuminghai.snake.core.DirectionEnum;
@@ -40,8 +41,9 @@ public class GameStage extends Stage {
     private final GameView gameView = new GameView(controlPopup);
 
     private GameStage() {
-        super(StageStyle.UNDECORATED);
-        super.setScene(new Scene(gameView));
+        // 避免因为屏幕缩放导致宽高向上取整导致的空白，使用透明背景
+        super(StageStyle.TRANSPARENT);
+        super.setScene(new Scene(gameView, Color.TRANSPARENT));
         setAccelerators();
     }
 

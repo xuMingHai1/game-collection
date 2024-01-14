@@ -28,9 +28,9 @@ import java.util.concurrent.TimeUnit;
 public class GameView extends Group {
 
     /**
-     * 边长和边框需要设置为偶数，防止屏幕缩放导致scene宽高不正确
+     * 可以修改参数，改变大小
      */
-    private final Snake snake = new Snake(new GameContext(10, 10, 20.0, 4.0));
+    private final Snake snake = new Snake(new GameContext(10, 10, 20, 4));
 
     private final ControlPopup controlPopup;
 
@@ -69,7 +69,6 @@ public class GameView extends Group {
     };
 
     public GameView(ControlPopup controlPopup) {
-        super();
         this.controlPopup = controlPopup;
         super.getChildren().add(snake.getGameContext());
     }
