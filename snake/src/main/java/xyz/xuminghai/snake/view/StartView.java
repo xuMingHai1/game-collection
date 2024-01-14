@@ -7,8 +7,6 @@ import javafx.util.Duration;
 import xyz.xuminghai.snake.GameStage;
 import xyz.xuminghai.snake.HistoryPopup;
 
-import java.nio.file.Paths;
-
 /**
  * 2023/10/26 15:41 星期四<br/>
  * 开始页面
@@ -16,8 +14,6 @@ import java.nio.file.Paths;
  * @author xuMingHai
  */
 public class StartView extends VBox {
-
-    private static final String CSS_PATH = Paths.get("./css", "start-view.css").toUri().toString();
 
     /**
      * 开始游戏按钮
@@ -37,7 +33,7 @@ public class StartView extends VBox {
 
     public StartView() {
         super.setId("start-view");
-        super.getStylesheets().add(CSS_PATH);
+        super.getStylesheets().add("xyz/xuminghai/snake/view/start-view.css");
         super.getChildren().addAll(startGameButton, historyButton);
         bindEvent();
     }
