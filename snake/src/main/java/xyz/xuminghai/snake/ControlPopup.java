@@ -3,6 +3,7 @@ package xyz.xuminghai.snake;
 import javafx.beans.property.DoubleProperty;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
@@ -36,6 +37,8 @@ public class ControlPopup extends Popup {
         initLayout();
         initEvent();
         super.getContent().add(gridPane);
+        // 弹窗不随父窗口光标
+        super.getScene().setCursor(Cursor.DEFAULT);
     }
 
     private void initLayout() {

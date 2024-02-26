@@ -1,6 +1,7 @@
 package xyz.xuminghai.snake;
 
 import javafx.collections.ObservableMap;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -43,7 +44,10 @@ public class GameStage extends Stage {
     private GameStage() {
         // 避免因为屏幕缩放导致宽高向上取整导致的空白，使用透明背景
         super(StageStyle.TRANSPARENT);
-        super.setScene(new Scene(gameView, Color.TRANSPARENT));
+        final Scene scene = new Scene(gameView, Color.TRANSPARENT);
+        // 设置光标
+        scene.setCursor(Cursor.NONE);
+        super.setScene(scene);
         setAccelerators();
     }
 
