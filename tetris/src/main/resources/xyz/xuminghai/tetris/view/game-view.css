@@ -1,0 +1,28 @@
+#game-view {
+    -fx-background-color: #5466c0;
+}
+
+#lines-h-box, #next-v-box {
+    -fx-background-color: black;
+    -fx-border-width: 5;
+    -fx-border-color: #f51641;
+}
+
+#lines-h-box > Text,
+#next-v-box > Text {
+    -fx-font-size: 30;
+    -fx-fill: white;
+}
+
+#lines-h-box {
+    -fx-alignment: baseline-center;
+}
+
+
+#right-v-box {
+    -fx-background-color: burlywood;
+}
+
+#text-grid-pane > Text {
+    -fx-font-size: 20;
+}
