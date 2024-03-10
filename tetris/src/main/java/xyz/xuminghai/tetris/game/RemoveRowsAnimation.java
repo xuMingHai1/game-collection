@@ -18,8 +18,6 @@ public class RemoveRowsAnimation implements GameAnimation {
 
     private final GameWorld gameWorld;
 
-    private final GameTimeLine gameTimeLine;
-
     private final List<Cell[]> removeRowList;
 
     private final Cell[][] data;
@@ -30,7 +28,6 @@ public class RemoveRowsAnimation implements GameAnimation {
 
     RemoveRowsAnimation(GameWorld gameWorld, List<Cell[]> removeRowList) {
         this.gameWorld = gameWorld;
-        this.gameTimeLine = gameWorld.gameTimeLine;
         this.removeRowList = removeRowList;
         this.data = gameWorld.data;
     }
@@ -71,7 +68,7 @@ public class RemoveRowsAnimation implements GameAnimation {
                 row--;
             }
             // 设置新行数
-            final Cell newCell = new Cell(cell.getRow() + row, cell.getCol(), cell.getPaint());
+            final Cell newCell = new Cell(cell.getRow() + row, cell.getCol(), cell.getColor());
             // 保存数据
             data[newCell.getRow()][newCell.getCol()] = newCell;
             newList.add(newCell);
@@ -98,7 +95,7 @@ public class RemoveRowsAnimation implements GameAnimation {
                 gameWorld.clearCell.set(null);
                 gameWorld.renderCell.set(null);
                 // 切换游戏动画
-                gameTimeLine.setGameAnimation(null);
+                gameWorld.gameTimeLine.setGameAnimation(null);
             }
             else {
                 List<Cell> list = new ArrayList<>(removeRowList.size() * 2);

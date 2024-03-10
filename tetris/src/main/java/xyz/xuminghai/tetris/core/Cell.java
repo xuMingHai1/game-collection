@@ -1,6 +1,6 @@
 package xyz.xuminghai.tetris.core;
 
-import javafx.scene.paint.Paint;
+import javafx.scene.paint.Color;
 
 import java.util.Objects;
 import java.util.StringJoiner;
@@ -13,13 +13,13 @@ import java.util.StringJoiner;
  */
 public final class Cell {
 
-    private final Paint paint;
+    private final Color color;
     private int row, col;
 
-    public Cell(int row, int col, Paint paint) {
+    public Cell(int row, int col, Color color) {
         this.row = row;
         this.col = col;
-        this.paint = paint;
+        this.color = color;
     }
 
     public int getRow() {
@@ -38,8 +38,8 @@ public final class Cell {
         this.col = col;
     }
 
-    public Paint getPaint() {
-        return paint;
+    public Color getColor() {
+        return color;
     }
 
     @Override
@@ -49,14 +49,14 @@ public final class Cell {
 
         if (row != cell.row) return false;
         if (col != cell.col) return false;
-        return Objects.equals(paint, cell.paint);
+        return Objects.equals(color, cell.color);
     }
 
     @Override
     public int hashCode() {
         int result = row;
         result = 31 * result + col;
-        result = 31 * result + (paint != null ? paint.hashCode() : 0);
+        result = 31 * result + (color != null ? color.hashCode() : 0);
         return result;
     }
 
@@ -65,7 +65,7 @@ public final class Cell {
         return new StringJoiner(", ", Cell.class.getSimpleName() + "[", "]")
                 .add("row=" + row)
                 .add("col=" + col)
-                .add("paint=" + paint)
+                .add("color=" + color)
                 .toString();
     }
 }

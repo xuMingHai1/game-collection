@@ -26,7 +26,7 @@ public interface Tetris {
         Cell[] copyCells = new Cell[cells.length];
         for (int i = 0; i < cells.length; i++) {
             final Cell cell = cells[i];
-            copyCells[i] = new Cell(cell.getRow(), cell.getCol(), cell.getPaint());
+            copyCells[i] = new Cell(cell.getRow(), cell.getCol(), cell.getColor());
         }
         return copyCells;
     }

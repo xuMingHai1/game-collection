@@ -23,7 +23,7 @@ public final class GameContextView extends AbstractBlockView {
             }
             if (newValue != null) {
                 for (Cell cell : newValue) {
-                    super.fillCell(cell.getRow(), cell.getCol(), cell.getPaint());
+                    super.fillCell(cell.getRow(), cell.getCol(), cell.getColor());
                 }
             }
         });
@@ -37,7 +37,7 @@ public final class GameContextView extends AbstractBlockView {
         gameWorld.renderCellProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 for (Cell cell : newValue) {
-                    super.fillCell(cell.getRow(), cell.getCol(), cell.getPaint());
+                    super.fillCell(cell.getRow(), cell.getCol(), cell.getColor());
                 }
             }
         });

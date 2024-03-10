@@ -1,7 +1,6 @@
 package xyz.xuminghai.tetris.game;
 
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import xyz.xuminghai.tetris.core.Cell;
 
 import java.time.Duration;
@@ -17,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class GameOverAnimation implements GameAnimation {
 
-    private final Paint paint = Color.LIGHTGRAY;
+    private final Color gameOverColor = Color.LIGHTGRAY;
 
     private final GameWorld gameWorld;
 
@@ -33,8 +32,8 @@ public class GameOverAnimation implements GameAnimation {
         int rowIndex = gameWorld.getRows() - 1;
         this.colIndex = gameWorld.getCols() - 1;
         this.avgRow = gameWorld.getRows() / 2;
-        this.headCell = new Cell(0, -1, paint);
-        this.tailCell = new Cell(rowIndex, gameWorld.getCols(), paint);
+        this.headCell = new Cell(0, -1, gameOverColor);
+        this.tailCell = new Cell(rowIndex, gameWorld.getCols(), gameOverColor);
     }
 
     @Override
@@ -61,7 +60,7 @@ public class GameOverAnimation implements GameAnimation {
                 List<Cell> list = new ArrayList<>(gameWorld.getRows() * gameWorld.getCols());
                 for (int i = 0; i < gameWorld.getRows(); i++) {
                     for (int j = 0; j < gameWorld.getCols(); j++) {
-                        list.add(new Cell(i, j, paint));
+                        list.add(new Cell(i, j, gameOverColor));
                     }
                 }
                 // 清除方块
@@ -75,8 +74,8 @@ public class GameOverAnimation implements GameAnimation {
                 return;
             }
             // 渲染方块
-            headCell = new Cell(headRowIndex, headColIndex, paint);
-            tailCell = new Cell(tailRowIndex, tailColIndex, paint);
+            headCell = new Cell(headRowIndex, headColIndex, gameOverColor);
+            tailCell = new Cell(tailRowIndex, tailColIndex, gameOverColor);
             gameWorld.renderCell.set(List.of(headCell, tailCell));
         }
     }

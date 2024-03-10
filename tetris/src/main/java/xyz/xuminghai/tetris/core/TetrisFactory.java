@@ -1,7 +1,6 @@
 package xyz.xuminghai.tetris.core;
 
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -25,7 +24,7 @@ public final class TetrisFactory {
         return SUPPLIER_LIST.get(index).get();
     }
 
-    public static Paint randomColor() {
+    public static Color randomColor() {
         int red = (int) (Math.random() * (256 - 100)) + 100;
         int green = (int) (Math.random() * (256 - 100)) + 100;
         int blue = (int) (Math.random() * (256 - 100)) + 100;

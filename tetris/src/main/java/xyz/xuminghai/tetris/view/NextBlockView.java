@@ -35,10 +35,10 @@ public final class NextBlockView extends AbstractBlockView {
         final Cell[] cells = new Cell[nextCells.length];
         for (int i = 0; i < nextCells.length; i++) {
             final Cell cell = nextCells[i];
-            cells[i] = new Cell(cell.getRow() + 3, cell.getCol() - 3, cell.getPaint());
+            cells[i] = new Cell(cell.getRow() + 3, cell.getCol() - 3, cell.getColor());
         }
         for (Cell cell : cells) {
-            super.fillCell(cell.getRow(), cell.getCol(), cell.getPaint());
+            super.fillCell(cell.getRow(), cell.getCol(), cell.getColor());
         }
     }
 

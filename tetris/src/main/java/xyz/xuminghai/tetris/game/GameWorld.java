@@ -83,6 +83,10 @@ public class GameWorld {
                         calculateScore(size);
                         clearRowAudioClip.play();
                     }
+                    else {
+                        // 方块锁定动画
+                        gameTimeLine.setGameAnimation(new TetrisLockAnimation(GameWorld.this, lastCells));
+                    }
                 }
             }
 
