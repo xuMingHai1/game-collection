@@ -3,6 +3,9 @@ package xyz.xuminghai.tetris.game;
 import javafx.application.Platform;
 import javafx.beans.property.*;
 import javafx.scene.input.KeyCode;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.robot.Robot;
 import xyz.xuminghai.tetris.core.Cell;
 import xyz.xuminghai.tetris.core.Tetris;
@@ -29,6 +32,12 @@ public class GameWorld {
      * 渲染单元格
      */
     final ObjectProperty<List<Cell>> renderCell = new SimpleObjectProperty<>(this, "renderCell");
+    final IntegerProperty score = new SimpleIntegerProperty(this, "score");
+    private final int rows = 20, cols = 10;
+    /**
+     * 游戏数据
+     */
+    final Cell[][] data = new Cell[rows][cols];
     final GameTimeLine gameTimeLine = new GameTimeLine(new Runnable() {
 
         @Override
@@ -56,6 +65,8 @@ public class GameWorld {
                     gameTimeLine.setGameTimeRecord(false);
                     // 游戏结束动画
                     gameTimeLine.setGameAnimation(new GameOverAnimation(GameWorld.this));
+                    bgmMediaPlayer.stop();
+                    gameOverAudioClip.play();
                 }
                 else {
                     // 保存上次方块数据
@@ -67,15 +78,21 @@ public class GameWorld {
                     final List<Cell[]> removeRowList = getRemoveRow(lastCells);
                     final int size = removeRowList.size();
                     if (size != 0) {
-                        gameTimeLine.setGameAnimation(new RemoveRowAnimation(GameWorld.this, removeRowList));
+                        gameTimeLine.setGameAnimation(new RemoveRowsAnimation(GameWorld.this, removeRowList));
                         lines.set(lines.get() + size);
                         calculateScore(size);
+                        clearRowAudioClip.play();
                     }
                 }
             }
 
         }
 
+        /**
+         * 计算分数
+         *
+         * @param size 消除行数
+         */
         private void calculateScore(int size) {
             int initScore = switch (size) {
                 case 1 -> 10;
@@ -111,11 +128,17 @@ public class GameWorld {
 
     });
     private final Robot robot = new Robot();
-    private final int rows = 20, cols = 10;
-    /**
-     * 游戏数据
-     */
-    final Cell[][] data = new Cell[rows][cols];
+
+    private final MediaPlayer bgmMediaPlayer =
+            new MediaPlayer(new Media(Objects.requireNonNull(GameWorld.class.getResource("/audio/bgm.mp3")).toExternalForm()));
+    private final AudioClip clearRowAudioClip =
+            new AudioClip(Objects.requireNonNull(GameWorld.class.getResource("/audio/clear_rows.mp3")).toExternalForm()),
+            moveAudioClip =
+                    new AudioClip(Objects.requireNonNull(GameWorld.class.getResource("/audio/move.mp3")).toExternalForm()),
+            rotateAudioClip =
+                    new AudioClip(Objects.requireNonNull(GameWorld.class.getResource("/audio/rotate.mp3")).toExternalForm()),
+            gameOverAudioClip =
+                    new AudioClip(Objects.requireNonNull(GameWorld.class.getResource("/audio/game_over.mp3")).toExternalForm());
     /**
      * 下一个方块
      */
@@ -135,11 +158,14 @@ public class GameWorld {
             }
         }
     };
-    private final IntegerProperty score = new SimpleIntegerProperty(this, "score");
     /**
      * 游戏运行状态
      */
     boolean gameActive;
+
+    public GameWorld() {
+        bgmMediaPlayer.setCycleCount(AudioClip.INDEFINITE);
+    }
 
     public int getRows() {
         return rows;
@@ -152,7 +178,7 @@ public class GameWorld {
     /**
      * 消掉的行数
      */
-    private final IntegerProperty lines = new SimpleIntegerProperty(this, "lines") {
+    final IntegerProperty lines = new SimpleIntegerProperty(this, "lines") {
         @Override
         protected void invalidated() {
             level.set(super.get() / 5);
@@ -167,14 +193,6 @@ public class GameWorld {
         return currentCells;
     }
 
-    public ReadOnlyIntegerProperty linesProperty() {
-        return lines;
-    }
-
-    public ReadOnlyIntegerProperty scoreProperty() {
-        return score;
-    }
-
     private final IntegerProperty level = new SimpleIntegerProperty(this, "level") {
 
         @Override
@@ -184,6 +202,14 @@ public class GameWorld {
             }
         }
     };
+
+    public ReadOnlyIntegerProperty linesProperty() {
+        return lines;
+    }
+
+    public ReadOnlyIntegerProperty scoreProperty() {
+        return score;
+    }
 
     public ReadOnlyIntegerProperty levelProperty() {
         return level;
@@ -211,33 +237,6 @@ public class GameWorld {
             data[cell.getRow()][cell.getCol()] = null;
         }
     }
-
-    /**
-     * 游戏结束，清除所有数据
-     */
-    void gameOver() {
-        for (int i = 0; i < getRows(); i++) {
-            for (int j = 0; j < getCols(); j++) {
-                final Cell cell = data[i][j];
-                if (cell != null) {
-                    data[i][j] = null;
-                }
-            }
-        }
-        startOrStopGame();
-        // 清除消除行数
-        lines.set(0);
-        // 重置分数
-        score.set(0);
-        // 恢复游戏时间记录
-        gameTimeLine.setGameTimeRecord(true);
-        // 重置游戏时间
-        gameTimeLine.gameTimeProperty().set(Duration.ZERO);
-    }
-
-    /*
-     **********************游戏行为和规则************************
-     */
 
     /**
      * 检查单元格行是否超出索引并转换
@@ -299,25 +298,41 @@ public class GameWorld {
         return true;
     }
 
+    enum ActionEnum {
+        DOWN_MOVE,
+        LEIF_MOVE,
+        RIGHT_MOVE,
+        ROTATE_CLOCKWISE,
+        ROTATE_COUNTER_CLOCKWISE
+    }
+
     /**
      * 方块行为
      *
+     * @param action   行为
      * @param function 行为函数
      */
-    private void tetrisAction(Function<Tetris, Cell[]> function) {
+    private void tetrisAction(ActionEnum action, Function<Tetris, Cell[]> function) {
         // 游戏活跃时执行
         if (gameActive) {
             final Tetris tetris = currentTetris.get();
             if (tetris != null) {
                 final Cell[] copyCells = tetris.copy();
                 final Cell[] cells = checkCellsRowConvert(function.apply(tetris));
-                // 清除上次保存的数据
-                clearLastCells(currentCells.get());
-                if (saveCellsData(cells)) {
-                    currentCells.set(checkCellsRowConvert(tetris.copy()));
-                }
-                else {
-                    tetris.setCells(copyCells);
+                // 不相同时执行
+                if (!Arrays.equals(copyCells, cells)) {
+                    // 清除上次保存的数据
+                    clearLastCells(currentCells.get());
+                    if (saveCellsData(cells)) {
+                        switch (action) {
+                            case DOWN_MOVE, LEIF_MOVE, RIGHT_MOVE -> moveAudioClip.play();
+                            case ROTATE_CLOCKWISE, ROTATE_COUNTER_CLOCKWISE -> rotateAudioClip.play();
+                        }
+                        currentCells.set(checkCellsRowConvert(tetris.copy()));
+                    }
+                    else {
+                        tetris.setCells(copyCells);
+                    }
                 }
             }
         }
@@ -331,6 +346,7 @@ public class GameWorld {
                     robot.keyType(KeyCode.CAPS);
                 }
             });
+            bgmMediaPlayer.pause();
             gameTimeLine.stop();
         }
         else {
@@ -340,6 +356,7 @@ public class GameWorld {
                     robot.keyType(KeyCode.CAPS);
                 }
             });
+            bgmMediaPlayer.play();
             gameTimeLine.start();
         }
         gameActive = !gameActive;
@@ -349,35 +366,39 @@ public class GameWorld {
      * 向下移动
      */
     public void downMove() {
-        tetrisAction(Tetris::downMove);
+        tetrisAction(ActionEnum.DOWN_MOVE, Tetris::downMove);
     }
+
+    /*
+     **********************游戏行为和规则************************
+     */
 
     /**
      * 向左移动
      */
     public void leftMove() {
-        tetrisAction(Tetris::leftMove);
+        tetrisAction(ActionEnum.LEIF_MOVE, Tetris::leftMove);
     }
 
     /**
      * 向右移动
      */
     public void rightMove() {
-        tetrisAction(Tetris::rightMove);
+        tetrisAction(ActionEnum.RIGHT_MOVE, Tetris::rightMove);
     }
 
     /**
      * 顺时针旋转
      */
     public void rotateClockwise() {
-        tetrisAction(Tetris::rotateClockwise);
+        tetrisAction(ActionEnum.ROTATE_CLOCKWISE, Tetris::rotateClockwise);
     }
 
     /**
      * 逆时针旋转
      */
     public void rotateCounterClockwise() {
-        tetrisAction(Tetris::rotateCounterClockwise);
+        tetrisAction(ActionEnum.ROTATE_COUNTER_CLOCKWISE, Tetris::rotateCounterClockwise);
     }
 
 

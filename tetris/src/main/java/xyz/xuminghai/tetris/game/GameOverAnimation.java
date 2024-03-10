@@ -4,6 +4,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import xyz.xuminghai.tetris.core.Cell;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -70,7 +71,7 @@ public class GameOverAnimation implements GameAnimation {
                 gameWorld.clearCell.set(null);
                 // 切换动画
                 gameTimeLine.setGameAnimation(null);
-                gameWorld.gameOver();
+                gameOver();
                 return;
             }
             // 渲染方块
@@ -79,4 +80,28 @@ public class GameOverAnimation implements GameAnimation {
             gameWorld.renderCell.set(List.of(headCell, tailCell));
         }
     }
+
+    /**
+     * 游戏结束，重置所有数据
+     */
+    private void gameOver() {
+        for (int i = 0; i < gameWorld.getRows(); i++) {
+            for (int j = 0; j < gameWorld.getCols(); j++) {
+                final Cell cell = gameWorld.data[i][j];
+                if (cell != null) {
+                    gameWorld.data[i][j] = null;
+                }
+            }
+        }
+        gameWorld.startOrStopGame();
+        // 清除消除行数
+        gameWorld.lines.set(0);
+        // 重置分数
+        gameWorld.score.set(0);
+        // 恢复游戏时间记录
+        gameTimeLine.setGameTimeRecord(true);
+        // 重置游戏时间
+        gameTimeLine.gameTimeProperty().set(Duration.ZERO);
+    }
+
 }

@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author xuMingHai
  */
-public class RemoveRowAnimation implements GameAnimation {
+public class RemoveRowsAnimation implements GameAnimation {
 
     private final GameWorld gameWorld;
 
@@ -28,7 +28,7 @@ public class RemoveRowAnimation implements GameAnimation {
 
     private int headIndex = 4, tailIndex = 5;
 
-    RemoveRowAnimation(GameWorld gameWorld, List<Cell[]> removeRowList) {
+    RemoveRowsAnimation(GameWorld gameWorld, List<Cell[]> removeRowList) {
         this.gameWorld = gameWorld;
         this.gameTimeLine = gameWorld.gameTimeLine;
         this.removeRowList = removeRowList;
@@ -112,4 +112,5 @@ public class RemoveRowAnimation implements GameAnimation {
             }
         }
     }
+
 }
