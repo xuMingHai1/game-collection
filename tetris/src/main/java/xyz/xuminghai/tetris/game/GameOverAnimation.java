@@ -92,7 +92,7 @@ public class GameOverAnimation implements GameAnimation {
                 }
             }
         }
-        gameWorld.startOrStopGame();
+        gameWorld.startOrPauseGame();
         // 清除消除行数
         gameWorld.lines.set(0);
         // 重置分数

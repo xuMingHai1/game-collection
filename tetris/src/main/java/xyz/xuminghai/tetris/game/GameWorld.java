@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  *
  * @author xuMingHai
  */
-public class GameWorld {
+public final class GameWorld {
 
     /**
      * 清除单元格
@@ -65,8 +65,8 @@ public class GameWorld {
                     gameTimeLine.setGameTimeRecord(false);
                     // 游戏结束动画
                     gameTimeLine.setGameAnimation(new GameOverAnimation(GameWorld.this));
-                    bgmMediaPlayer.stop();
-                    gameOverAudioClip.play();
+                    getBgmMediaPlayer().stop();
+                    getGameOverAudioClip().play();
                 }
                 else {
                     // 保存上次方块数据
@@ -81,7 +81,7 @@ public class GameWorld {
                         gameTimeLine.setGameAnimation(new RemoveRowsAnimation(GameWorld.this, removeRowList));
                         lines.set(lines.get() + size);
                         calculateScore(size);
-                        clearRowAudioClip.play();
+                        getClearRowAudioClip().play();
                     }
                     else {
                         // 方块锁定动画
@@ -131,18 +131,57 @@ public class GameWorld {
         }
 
     });
-    private final Robot robot = new Robot();
 
-    private final MediaPlayer bgmMediaPlayer =
-            new MediaPlayer(new Media(Objects.requireNonNull(GameWorld.class.getResource("/audio/bgm.mp3")).toExternalForm()));
-    private final AudioClip clearRowAudioClip =
-            new AudioClip(Objects.requireNonNull(GameWorld.class.getResource("/audio/clear_rows.mp3")).toExternalForm()),
-            moveAudioClip =
-                    new AudioClip(Objects.requireNonNull(GameWorld.class.getResource("/audio/move.mp3")).toExternalForm()),
-            rotateAudioClip =
-                    new AudioClip(Objects.requireNonNull(GameWorld.class.getResource("/audio/rotate.mp3")).toExternalForm()),
-            gameOverAudioClip =
-                    new AudioClip(Objects.requireNonNull(GameWorld.class.getResource("/audio/game_over.mp3")).toExternalForm());
+    private Robot robot;
+
+    Robot getRobot() {
+        if (robot == null) {
+            robot = new Robot();
+        }
+        return robot;
+    }
+
+    private MediaPlayer bgmMediaPlayer;
+
+    MediaPlayer getBgmMediaPlayer() {
+        if (bgmMediaPlayer == null) {
+            bgmMediaPlayer = new MediaPlayer(new Media(Objects.requireNonNull(GameWorld.class.getResource("/audio/bgm.mp3")).toExternalForm()));
+            bgmMediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        }
+        return bgmMediaPlayer;
+    }
+
+    private AudioClip clearRowAudioClip, moveAudioClip, rotateAudioClip, gameOverAudioClip;
+
+    AudioClip getClearRowAudioClip() {
+        if (clearRowAudioClip == null) {
+            clearRowAudioClip = new AudioClip(Objects.requireNonNull(GameWorld.class.getResource("/audio/clear_rows.mp3")).toExternalForm());
+        }
+        return clearRowAudioClip;
+    }
+
+    AudioClip getMoveAudioClip() {
+        if (moveAudioClip == null) {
+            moveAudioClip = new AudioClip(Objects.requireNonNull(GameWorld.class.getResource("/audio/move.mp3")).toExternalForm());
+        }
+        return moveAudioClip;
+    }
+
+    AudioClip getRotateAudioClip() {
+        if (rotateAudioClip == null) {
+            rotateAudioClip = new AudioClip(Objects.requireNonNull(GameWorld.class.getResource("/audio/rotate.mp3")).toExternalForm());
+        }
+        return rotateAudioClip;
+    }
+
+    AudioClip getGameOverAudioClip() {
+        if (gameOverAudioClip == null) {
+            gameOverAudioClip = new AudioClip(Objects.requireNonNull(GameWorld.class.getResource("/audio/game_over.mp3")).toExternalForm());
+        }
+        return gameOverAudioClip;
+    }
+
+
     /**
      * 下一个方块
      */
@@ -166,10 +205,6 @@ public class GameWorld {
      * 游戏运行状态
      */
     boolean gameActive;
-
-    public GameWorld() {
-        bgmMediaPlayer.setCycleCount(AudioClip.INDEFINITE);
-    }
 
     public int getRows() {
         return rows;
@@ -329,8 +364,8 @@ public class GameWorld {
                     clearLastCells(currentCells.get());
                     if (saveCellsData(cells)) {
                         switch (action) {
-                            case DOWN_MOVE, LEIF_MOVE, RIGHT_MOVE -> moveAudioClip.play();
-                            case ROTATE_CLOCKWISE, ROTATE_COUNTER_CLOCKWISE -> rotateAudioClip.play();
+                            case DOWN_MOVE, LEIF_MOVE, RIGHT_MOVE -> getMoveAudioClip().play();
+                            case ROTATE_CLOCKWISE, ROTATE_COUNTER_CLOCKWISE -> getRotateAudioClip().play();
                         }
                         currentCells.set(checkCellsRowConvert(tetris.copy()));
                     }
@@ -342,25 +377,28 @@ public class GameWorld {
         }
     }
 
-    public void startOrStopGame() {
+    /**
+     * 启动或暂停游戏
+     */
+    public void startOrPauseGame() {
         final Optional<Boolean> keyLocked = Platform.isKeyLocked(KeyCode.CAPS);
         if (gameActive) {
             keyLocked.ifPresent(b -> {
                 if (b) {
-                    robot.keyType(KeyCode.CAPS);
+                    getRobot().keyType(KeyCode.CAPS);
                 }
             });
-            bgmMediaPlayer.pause();
+            getBgmMediaPlayer().pause();
             gameTimeLine.stop();
         }
         else {
             // 大写锁定处理
             keyLocked.ifPresent(b -> {
                 if (!b) {
-                    robot.keyType(KeyCode.CAPS);
+                    getRobot().keyType(KeyCode.CAPS);
                 }
             });
-            bgmMediaPlayer.play();
+            getBgmMediaPlayer().play();
             gameTimeLine.start();
         }
         gameActive = !gameActive;
@@ -404,6 +442,5 @@ public class GameWorld {
     public void rotateCounterClockwise() {
         tetrisAction(ActionEnum.ROTATE_COUNTER_CLOCKWISE, Tetris::rotateCounterClockwise);
     }
-
 
 }

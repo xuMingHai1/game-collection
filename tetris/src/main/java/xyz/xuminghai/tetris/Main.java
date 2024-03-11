@@ -38,7 +38,7 @@ public class Main extends Application {
                 });
         // 键盘监听
         final ObservableMap<KeyCombination, Runnable> accelerators = scene.getAccelerators();
-        accelerators.put(new KeyCodeCombination(KeyCode.SPACE), gameWorld::startOrStopGame);
+        accelerators.put(new KeyCodeCombination(KeyCode.SPACE), gameWorld::startOrPauseGame);
         accelerators.put(new KeyCodeCombination(KeyCode.A), gameWorld::leftMove);
         accelerators.put(new KeyCodeCombination(KeyCode.S), gameWorld::downMove);
         accelerators.put(new KeyCodeCombination(KeyCode.D), gameWorld::rightMove);
