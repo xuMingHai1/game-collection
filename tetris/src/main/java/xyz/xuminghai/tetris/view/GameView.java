@@ -1,6 +1,5 @@
 package xyz.xuminghai.tetris.view;
 
-import javafx.beans.binding.Bindings;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -12,7 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import xyz.xuminghai.tetris.game.GameWorld;
 
-import java.time.Duration;
+import java.text.NumberFormat;
 
 /**
  * 2024/1/15 20:55 星期一<br/>
@@ -58,7 +57,8 @@ public class GameView extends BorderPane {
         final Text levelText = new Text();
         levelText.textProperty().bind(gameWorld.levelProperty().asString());
         final Text scoreText = new Text();
-        scoreText.textProperty().bind(gameWorld.scoreProperty().asString());
+        scoreText.textProperty().bind(gameWorld.scoreProperty()
+                .map(number -> NumberFormat.getIntegerInstance().format(number)));
         final Text gameTimeText = new Text();
         gameTimeText.textProperty().bind(gameTimeProperty());
         gridPane.addRow(0, new Text("Level："), levelText);
@@ -71,12 +71,14 @@ public class GameView extends BorderPane {
         gridPane.addRow(4, instructionText);
         GridPane.setColumnSpan(instructionText, 2);
         GridPane.setHalignment(instructionText, HPos.CENTER);
-        gridPane.addRow(5, new Text("A"), new Text("左移"));
-        gridPane.addRow(6, new Text("S"), new Text("下移"));
-        gridPane.addRow(7, new Text("D"), new Text("右移"));
+        gridPane.addRow(5, new Text("A键"), new Text("左移"));
+        gridPane.addRow(6, new Text("S键"), new Text("下移"));
+        gridPane.addRow(7, new Text("D键"), new Text("右移"));
         gridPane.addRow(8, new Text("左方向键"), new Text("顺时针旋转"));
         gridPane.addRow(9, new Text("右方向键"), new Text("逆时针旋转"));
         gridPane.addRow(10, new Text("空格键"), new Text("开始或暂停"));
+        gridPane.addRow(11, new Text("+键"), new Text("等级加1"));
+        gridPane.addRow(12, new Text("-键"), new Text("等级减1"));
 
         final VBox rightVBox = new VBox(nextVBox, gridPane);
         BorderPane.setMargin(rightVBox, new Insets(10));
@@ -90,8 +92,7 @@ public class GameView extends BorderPane {
      * @return 游戏时间
      */
     private ObservableValue<String> gameTimeProperty() {
-        return Bindings.createStringBinding(() -> {
-            final Duration duration = gameWorld.gameTimeProperty().get();
+        return gameWorld.gameTimeProperty().map(duration -> {
             final StringBuilder stringBuilder = new StringBuilder("00:00:00".length());
             final long hours = duration.toHours();
             if (hours < 10) {
@@ -109,7 +110,7 @@ public class GameView extends BorderPane {
             }
             stringBuilder.append(secondsPart);
             return stringBuilder.toString();
-        }, gameWorld.gameTimeProperty());
+        });
     }
 
 

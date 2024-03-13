@@ -32,8 +32,42 @@ public final class GameWorld {
      * 渲染单元格
      */
     final ObjectProperty<List<Cell>> renderCell = new SimpleObjectProperty<>(this, "renderCell");
+
+    /**
+     * 消掉的行数
+     */
+    final IntegerProperty lines = new SimpleIntegerProperty(this, "lines") {
+        @Override
+        protected void invalidated() {
+            level.set(customizeLevel + super.get() / 4);
+        }
+    };
+
+    /**
+     * 自定义等级
+     */
+    int customizeLevel;
+
+    /**
+     * 等级
+     */
+    final IntegerProperty level = new SimpleIntegerProperty(this, "level") {
+
+        @Override
+        protected void invalidated() {
+            if (get() < 30) {
+                gameTimeLine.pulse = gameTimeLine.defaultPulse - super.get() * 10;
+            }
+        }
+    };
+
+    /**
+     * 分数
+     */
     final IntegerProperty score = new SimpleIntegerProperty(this, "score");
+
     private final int rows = 20, cols = 10;
+
     /**
      * 游戏数据
      */
@@ -132,7 +166,35 @@ public final class GameWorld {
 
     });
 
+    /**
+     * 下一个方块
+     */
+    private final ObjectProperty<Tetris> nextTetris = new SimpleObjectProperty<>(this, "nextTetris", TetrisFactory.randomCreateTetris());
+
+    /**
+     * 当前单元格列表
+     */
+    private final ObjectProperty<Cell[]> currentCells = new SimpleObjectProperty<>(this, "currentCells");
+
+    /**
+     * 当前方块
+     */
+    private final ObjectProperty<Tetris> currentTetris = new SimpleObjectProperty<>(this, "currentTetris") {
+        @Override
+        protected void invalidated() {
+            if (super.get() != null) {
+                nextTetris.set(TetrisFactory.randomCreateTetris());
+            }
+        }
+    };
+
+    /**
+     * 游戏运行状态
+     */
+    boolean gameActive;
     private Robot robot;
+    private MediaPlayer bgmMediaPlayer;
+    private AudioClip clearRowAudioClip, moveAudioClip, rotateAudioClip, gameOverAudioClip;
 
     Robot getRobot() {
         if (robot == null) {
@@ -141,8 +203,6 @@ public final class GameWorld {
         return robot;
     }
 
-    private MediaPlayer bgmMediaPlayer;
-
     MediaPlayer getBgmMediaPlayer() {
         if (bgmMediaPlayer == null) {
             bgmMediaPlayer = new MediaPlayer(new Media(Objects.requireNonNull(GameWorld.class.getResource("/audio/bgm.mp3")).toExternalForm()));
@@ -150,8 +210,6 @@ public final class GameWorld {
         }
         return bgmMediaPlayer;
     }
-
-    private AudioClip clearRowAudioClip, moveAudioClip, rotateAudioClip, gameOverAudioClip;
 
     AudioClip getClearRowAudioClip() {
         if (clearRowAudioClip == null) {
@@ -181,31 +239,6 @@ public final class GameWorld {
         return gameOverAudioClip;
     }
 
-
-    /**
-     * 下一个方块
-     */
-    private final ObjectProperty<Tetris> nextTetris = new SimpleObjectProperty<>(this, "nextTetris", TetrisFactory.randomCreateTetris());
-    /**
-     * 当前单元格列表
-     */
-    private final ObjectProperty<Cell[]> currentCells = new SimpleObjectProperty<>(this, "currentCells");
-    /**
-     * 当前方块
-     */
-    private final ObjectProperty<Tetris> currentTetris = new SimpleObjectProperty<>(this, "currentTetris") {
-        @Override
-        protected void invalidated() {
-            if (super.get() != null) {
-                nextTetris.set(TetrisFactory.randomCreateTetris());
-            }
-        }
-    };
-    /**
-     * 游戏运行状态
-     */
-    boolean gameActive;
-
     public int getRows() {
         return rows;
     }
@@ -214,16 +247,6 @@ public final class GameWorld {
         return cols;
     }
 
-    /**
-     * 消掉的行数
-     */
-    final IntegerProperty lines = new SimpleIntegerProperty(this, "lines") {
-        @Override
-        protected void invalidated() {
-            level.set(super.get() / 5);
-        }
-    };
-
     public ReadOnlyObjectProperty<Tetris> nextTetrisProperty() {
         return nextTetris;
     }
@@ -231,16 +254,6 @@ public final class GameWorld {
     public ReadOnlyObjectProperty<Cell[]> currentCellsProperty() {
         return currentCells;
     }
-
-    private final IntegerProperty level = new SimpleIntegerProperty(this, "level") {
-
-        @Override
-        protected void invalidated() {
-            if (get() < 30) {
-                gameTimeLine.pulse = gameTimeLine.defaultPulse - super.get() * 10;
-            }
-        }
-    };
 
     public ReadOnlyIntegerProperty linesProperty() {
         return lines;
@@ -337,14 +350,6 @@ public final class GameWorld {
         return true;
     }
 
-    enum ActionEnum {
-        DOWN_MOVE,
-        LEIF_MOVE,
-        RIGHT_MOVE,
-        ROTATE_CLOCKWISE,
-        ROTATE_COUNTER_CLOCKWISE
-    }
-
     /**
      * 方块行为
      *
@@ -411,10 +416,6 @@ public final class GameWorld {
         tetrisAction(ActionEnum.DOWN_MOVE, Tetris::downMove);
     }
 
-    /*
-     **********************游戏行为和规则************************
-     */
-
     /**
      * 向左移动
      */
@@ -442,5 +443,32 @@ public final class GameWorld {
     public void rotateCounterClockwise() {
         tetrisAction(ActionEnum.ROTATE_COUNTER_CLOCKWISE, Tetris::rotateCounterClockwise);
     }
+
+    /*
+     **********************游戏行为和规则************************
+     */
+
+    public void levelPlus() {
+        if (customizeLevel < 30) {
+            final int levelValue = level.get() - customizeLevel++;
+            level.set(customizeLevel + levelValue);
+        }
+    }
+
+    public void levelMinus() {
+        if (customizeLevel > 0) {
+            final int levelValue = level.get() - customizeLevel--;
+            level.set(customizeLevel + levelValue);
+        }
+    }
+
+    enum ActionEnum {
+        DOWN_MOVE,
+        LEIF_MOVE,
+        RIGHT_MOVE,
+        ROTATE_CLOCKWISE,
+        ROTATE_COUNTER_CLOCKWISE
+    }
+
 
 }

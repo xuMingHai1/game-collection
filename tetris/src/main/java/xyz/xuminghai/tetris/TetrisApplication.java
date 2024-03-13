@@ -17,7 +17,7 @@ import java.time.LocalTime;
  *
  * @author xuMingHai
  */
-public class Main extends Application {
+public class TetrisApplication extends Application {
 
     public static void main(String[] args) {
         Application.launch(args);
@@ -44,6 +44,8 @@ public class Main extends Application {
         accelerators.put(new KeyCodeCombination(KeyCode.D), gameWorld::rightMove);
         accelerators.put(new KeyCodeCombination(KeyCode.LEFT), gameWorld::rotateCounterClockwise);
         accelerators.put(new KeyCodeCombination(KeyCode.RIGHT), gameWorld::rotateClockwise);
+        accelerators.put(new KeyCodeCombination(KeyCode.EQUALS), gameWorld::levelPlus);
+        accelerators.put(new KeyCodeCombination(KeyCode.MINUS), gameWorld::levelMinus);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
