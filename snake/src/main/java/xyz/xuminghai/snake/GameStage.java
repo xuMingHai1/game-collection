@@ -15,7 +15,6 @@ import xyz.xuminghai.snake.view.GameView;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -30,7 +29,7 @@ import java.time.format.FormatStyle;
  */
 public class GameStage extends Stage {
 
-    public static final Path PATH = Paths.get("data/snake.data");
+    public static final Path PATH = Path.of("data/snake.data");
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter
             .ofLocalizedDateTime(FormatStyle.MEDIUM)
