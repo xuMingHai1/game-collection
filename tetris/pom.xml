@@ -6,12 +6,13 @@
 
     <groupId>xyz.xuminghai</groupId>
     <artifactId>tetris</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.0.1</version>
 
     <properties>
+        <main.class>xyz.xuminghai.tetris/xyz.xuminghai.tetris.TetrisApplication</main.class>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <javafx.version>21.0.2</javafx.version>
     </properties>
 
@@ -30,5 +31,42 @@
             <version>${javafx.version}</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.12.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version>
+                <configuration>
+                    <mainClass>${main.class}</mainClass>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.gluonhq</groupId>
+                <artifactId>gluonfx-maven-plugin</artifactId>
+                <version>1.0.22</version>
+                <configuration>
+                    <!-- 主类 -->
+                    <mainClass>${main.class}</mainClass>
+                    <resourcesList>
+                        <resourcesList>.*\\.mp3$</resourcesList>
+                        <resourcesList>.*\\.dll$</resourcesList>
+                    </resourcesList>
+                    <!-- 发布配置 -->
+                    <releaseConfiguration>
+                        <description>俄罗斯方块</description>
+                        <vendor>xyz.xuminghai</vendor>
+                        <version>${project.version}</version>
+                    </releaseConfiguration>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

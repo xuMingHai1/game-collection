@@ -26,3 +26,8 @@
 #text-grid-pane > Text {
     -fx-font-size: 20;
 }
+
+#version-hyperlink {
+    -fx-font-size: 15;
+    -fx-text-fill: blueviolet;
+}

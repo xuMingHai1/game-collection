@@ -53,7 +53,7 @@ public class RemoveRowsAnimation implements GameAnimation {
         // 自然顺序排序
         rowIndexList.sort(null);
         // 根据最大的删除行获取上面的方块，并清除数据
-        final List<Cell> list = downUpperCell(rowIndexList.getLast());
+        final List<Cell> list = downUpperCell(rowIndexList.get(rowIndexList.size() - 1));
         // 消除上方方块
         gameWorld.clearCell.set(list);
         List<Cell> newList = new ArrayList<>(list.size());

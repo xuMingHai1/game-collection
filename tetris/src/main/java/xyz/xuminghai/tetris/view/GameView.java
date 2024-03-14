@@ -3,13 +3,13 @@ package xyz.xuminghai.tetris.view;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Separator;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
+import xyz.xuminghai.tetris.TetrisApplication;
 import xyz.xuminghai.tetris.game.GameWorld;
+import xyz.xuminghai.tetris.util.Version;
 
 import java.text.NumberFormat;
 
@@ -80,7 +80,18 @@ public class GameView extends BorderPane {
         gridPane.addRow(11, new Text("+键"), new Text("等级加1"));
         gridPane.addRow(12, new Text("-键"), new Text("等级减1"));
 
-        final VBox rightVBox = new VBox(nextVBox, gridPane);
+        // 版本号
+        final Hyperlink hyperlink = new Hyperlink(Version.VERSION);
+        hyperlink.setId("version-hyperlink");
+        hyperlink.setFocusTraversable(false);
+        hyperlink.setOnAction(event -> TetrisApplication.hostServices.showDocument(Version.RELEASE_URI));
+        final AnchorPane anchorPane = new AnchorPane(hyperlink);
+        AnchorPane.setBottomAnchor(hyperlink, 0.0);
+        AnchorPane.setRightAnchor(hyperlink, 0.0);
+
+        final VBox rightVBox = new VBox(nextVBox, gridPane, anchorPane);
+        // 设置水平增长
+        VBox.setVgrow(anchorPane, Priority.SOMETIMES);
         BorderPane.setMargin(rightVBox, new Insets(10));
         rightVBox.setId("right-v-box");
         super.setRight(rightVBox);
@@ -112,6 +123,5 @@ public class GameView extends BorderPane {
             return stringBuilder.toString();
         });
     }
-
 
 }
