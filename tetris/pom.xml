@@ -6,7 +6,7 @@
 
     <groupId>xyz.xuminghai</groupId>
     <artifactId>tetris</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
 
     <properties>
         <main.class>xyz.xuminghai.tetris/xyz.xuminghai.tetris.TetrisApplication</main.class>
@@ -58,6 +58,9 @@
                         <resourcesList>.*\\.mp3$</resourcesList>
                         <resourcesList>.*\\.dll$</resourcesList>
                     </resourcesList>
+                    <nativeImageArgs>
+                        <nativeImageArg>--initialize-at-build-time=xyz.xuminghai.tetris</nativeImageArg>
+                    </nativeImageArgs>
                     <!-- 发布配置 -->
                     <releaseConfiguration>
                         <description>俄罗斯方块</description>

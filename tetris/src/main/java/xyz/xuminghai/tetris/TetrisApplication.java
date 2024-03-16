@@ -16,7 +16,6 @@ import xyz.xuminghai.tetris.util.Version;
 import xyz.xuminghai.tetris.view.GameView;
 
 import java.net.URL;
-import java.time.LocalTime;
 
 /**
  * 2024/1/15 20:30 星期一<br/>
@@ -32,6 +31,10 @@ public class TetrisApplication extends Application {
 
     public static HostServices hostServices;
 
+    private GameWorld gameWorld;
+
+    private GameView gameView;
+
     public static void main(String[] args) {
         Application.launch(args);
     }
@@ -39,22 +42,24 @@ public class TetrisApplication extends Application {
     @Override
     public void init() {
         hostServices = super.getHostServices();
+        gameWorld = new GameWorld();
+        gameView = new GameView(gameWorld);
     }
 
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Tetris");
+        // 加载图标
         loadIcon(primaryStage);
         // 禁止改变大小
         primaryStage.setResizable(false);
-        final GameWorld gameWorld = new GameWorld();
-        final Scene scene = new Scene(new GameView(gameWorld));
-        // Control + Enter 重新加载
-        scene.getAccelerators().put(new KeyCodeCombination(KeyCode.ENTER, KeyCombination.CONTROL_DOWN),
-                () -> {
-                    System.out.println("重新加载时间 = " + LocalTime.now());
-                    scene.setRoot(new GameView(gameWorld));
-                });
+        primaryStage.setScene(keyMonitor(new Scene(gameView)));
+        primaryStage.show();
+        checkUpdate(primaryStage);
+        System.out.printf("启动完成耗时 = %dms%n", System.currentTimeMillis() - BOOT_TIME);
+    }
+
+    private Scene keyMonitor(Scene scene) {
         // 键盘监听
         final ObservableMap<KeyCombination, Runnable> accelerators = scene.getAccelerators();
         accelerators.put(new KeyCodeCombination(KeyCode.SPACE), gameWorld::startOrPauseGame);
@@ -65,10 +70,7 @@ public class TetrisApplication extends Application {
         accelerators.put(new KeyCodeCombination(KeyCode.RIGHT), gameWorld::rotateClockwise);
         accelerators.put(new KeyCodeCombination(KeyCode.EQUALS), gameWorld::levelPlus);
         accelerators.put(new KeyCodeCombination(KeyCode.MINUS), gameWorld::levelMinus);
-        primaryStage.setScene(scene);
-        primaryStage.show();
-        checkUpdate(primaryStage);
-        System.out.printf("启动完成耗时 = %dms%n", System.currentTimeMillis() - BOOT_TIME);
+        return scene;
     }
 
     private void loadIcon(Stage primaryStage) {

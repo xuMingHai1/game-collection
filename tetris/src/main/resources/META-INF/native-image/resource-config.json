@@ -1,32 +1,27 @@
 {
-  "resources": {
-    "includes": [
-      {
-        "pattern": "\\Qxyz/xuminghai/tetris/view/game-view.css\\E"
-      }
-    ]
-  },
-  "bundles": [
+  "resources":{
+  "includes":[{
+      "pattern":"\\Qxyz/xuminghai/tetris/view/game-view.css\\E"
+    }]},
+  "bundles":[
     {
-      "name": "com.sun.javafx.tk.quantum.QuantumMessagesBundle",
-      "locales": [
-        "",
-        "und",
+      "name":"com.sun.javafx.tk.quantum.QuantumMessagesBundle",
+      "locales":[
+        "", 
         "zh-CN"
       ]
-    },
+    }, 
     {
-      "name": "com/sun/glass/ui/win/themes",
-      "locales": [
-        "",
-        "und",
+      "name":"com/sun/glass/ui/win/themes",
+      "locales":[
+        "", 
         "zh-CN"
       ]
-    },
+    }, 
     {
-      "name": "com/sun/javafx/scene/control/skin/resources/controls",
-      "locales": [
-        "",
+      "name":"com/sun/javafx/scene/control/skin/resources/controls",
+      "locales":[
+        "", 
         "zh-CN"
       ]
     }
