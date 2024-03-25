@@ -13,6 +13,7 @@
       "name":"com.sun.javafx.tk.quantum.QuantumMessagesBundle",
       "locales":[
         "", 
+        "und", 
         "zh-CN"
       ]
     }, 
@@ -20,7 +21,15 @@
       "name":"com/sun/glass/ui/win/themes",
       "locales":[
         "", 
+        "und", 
         "zh-CN"
+      ]
+    }, 
+    {
+      "name":"i18n/text",
+      "locales":[
+        "", 
+        "en"
       ]
     }
   ]
