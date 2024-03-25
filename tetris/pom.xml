@@ -6,7 +6,7 @@
 
     <groupId>xyz.xuminghai</groupId>
     <artifactId>tetris</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
 
     <properties>
         <main.class>xyz.xuminghai.tetris/xyz.xuminghai.tetris.TetrisApplication</main.class>
@@ -60,6 +60,7 @@
                     </resourcesList>
                     <nativeImageArgs>
                         <nativeImageArg>--initialize-at-build-time=xyz.xuminghai.tetris</nativeImageArg>
+                        <nativeImageArg>--initialize-at-build-time=jdk.random.Xoroshiro128PlusPlus</nativeImageArg>
                     </nativeImageArgs>
                     <!-- 发布配置 -->
                     <releaseConfiguration>

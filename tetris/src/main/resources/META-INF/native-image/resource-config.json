@@ -29,7 +29,8 @@
       "name":"i18n/text",
       "locales":[
         "", 
-        "en"
+        "en", 
+        "und"
       ]
     }
   ]
