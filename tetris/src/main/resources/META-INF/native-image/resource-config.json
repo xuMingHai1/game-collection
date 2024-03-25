@@ -1,8 +1,13 @@
 {
   "resources":{
-  "includes":[{
-      "pattern":"\\Qxyz/xuminghai/tetris/view/game-view.css\\E"
-    }]},
+  "includes":[
+    {
+      "pattern":"\\Qcss/game-view.css\\E"
+    }, 
+    {
+      "pattern":"\\Qimg/icon.png\\E"
+    }
+  ]},
   "bundles":[
     {
       "name":"com.sun.javafx.tk.quantum.QuantumMessagesBundle",
@@ -13,13 +18,6 @@
     }, 
     {
       "name":"com/sun/glass/ui/win/themes",
-      "locales":[
-        "", 
-        "zh-CN"
-      ]
-    }, 
-    {
-      "name":"com/sun/javafx/scene/control/skin/resources/controls",
       "locales":[
         "", 
         "zh-CN"

@@ -15,8 +15,6 @@ import xyz.xuminghai.tetris.game.GameWorld;
 import xyz.xuminghai.tetris.util.Version;
 import xyz.xuminghai.tetris.view.GameView;
 
-import java.net.URL;
-
 /**
  * 2024/1/15 20:30 星期一<br/>
  *
@@ -31,26 +29,24 @@ public class TetrisApplication extends Application {
 
     public static HostServices hostServices;
 
-    private GameWorld gameWorld;
+    private final GameWorld gameWorld = new GameWorld();
 
-    private GameView gameView;
+    private final GameView gameView = new GameView(gameWorld);
 
     public static void main(String[] args) {
-        Application.launch(args);
+        launch(args);
     }
 
     @Override
     public void init() {
         hostServices = super.getHostServices();
-        gameWorld = new GameWorld();
-        gameView = new GameView(gameWorld);
     }
 
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Tetris");
         // 加载图标
-        loadIcon(primaryStage);
+        primaryStage.getIcons().add(new Image("img/icon.png"));
         // 禁止改变大小
         primaryStage.setResizable(false);
         primaryStage.setScene(keyMonitor(new Scene(gameView)));
@@ -62,7 +58,6 @@ public class TetrisApplication extends Application {
     private Scene keyMonitor(Scene scene) {
         // 键盘监听
         final ObservableMap<KeyCombination, Runnable> accelerators = scene.getAccelerators();
-        accelerators.put(new KeyCodeCombination(KeyCode.SPACE), gameWorld::startOrPauseGame);
         accelerators.put(new KeyCodeCombination(KeyCode.A), gameWorld::leftMove);
         accelerators.put(new KeyCodeCombination(KeyCode.S), gameWorld::downMove);
         accelerators.put(new KeyCodeCombination(KeyCode.D), gameWorld::rightMove);
@@ -70,14 +65,9 @@ public class TetrisApplication extends Application {
         accelerators.put(new KeyCodeCombination(KeyCode.RIGHT), gameWorld::rotateClockwise);
         accelerators.put(new KeyCodeCombination(KeyCode.EQUALS), gameWorld::levelPlus);
         accelerators.put(new KeyCodeCombination(KeyCode.MINUS), gameWorld::levelMinus);
+        accelerators.put(new KeyCodeCombination(KeyCode.SPACE), gameWorld::startOrPauseGame);
+        accelerators.put(new KeyCodeCombination(KeyCode.TAB, KeyCombination.CONTROL_DOWN), gameWorld::switchLanguage);
         return scene;
-    }
-
-    private void loadIcon(Stage primaryStage) {
-        final URL resource = TetrisApplication.class.getResource("/img/tetris.png");
-        if (resource != null) {
-            primaryStage.getIcons().add(new Image(resource.toExternalForm()));
-        }
     }
 
     private void checkUpdate(Stage primaryStage) {

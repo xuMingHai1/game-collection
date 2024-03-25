@@ -10,6 +10,7 @@ module xyz.xuminghai.tetris {
     requires java.net.http;
 
     exports xyz.xuminghai.tetris to javafx.graphics;
-    // css文件模块化访问
-    opens xyz.xuminghai.tetris.view;
+    // 模块资源访问
+    opens img;
+    opens css;
 }

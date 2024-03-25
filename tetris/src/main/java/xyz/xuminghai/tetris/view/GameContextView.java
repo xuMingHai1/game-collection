@@ -1,7 +1,6 @@
 package xyz.xuminghai.tetris.view;
 
 import javafx.scene.Cursor;
-import javafx.scene.paint.Color;
 import xyz.xuminghai.tetris.core.Cell;
 import xyz.xuminghai.tetris.game.GameWorld;
 
@@ -18,7 +17,7 @@ public final class GameContextView extends AbstractBlockView {
         gameWorld.currentCellsProperty().addListener((observable, oldValue, newValue) -> {
             if (oldValue != null && newValue != null) {
                 for (Cell cell : oldValue) {
-                    super.fillCell(cell.getRow(), cell.getCol(), Color.BLACK);
+                    super.clearCell(cell.getRow(), cell.getCol());
                 }
             }
             if (newValue != null) {
@@ -30,7 +29,7 @@ public final class GameContextView extends AbstractBlockView {
         gameWorld.clearCellProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 for (Cell cell : newValue) {
-                    super.fillCell(cell.getRow(), cell.getCol(), Color.BLACK);
+                    super.clearCell(cell.getRow(), cell.getCol());
                 }
             }
         });
@@ -44,6 +43,5 @@ public final class GameContextView extends AbstractBlockView {
         // 设置光标
         super.setCursor(Cursor.NONE);
     }
-
 
 }

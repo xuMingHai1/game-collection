@@ -18,7 +18,7 @@ import java.util.function.Consumer;
  */
 public final class Version {
 
-    public static final String VERSION = "v0.0.2";
+    public static final String VERSION = "v0.0.3";
 
     public static final String RELEASE_URI = "https://gitee.com/xuMingHai1/game-collection/releases";
 

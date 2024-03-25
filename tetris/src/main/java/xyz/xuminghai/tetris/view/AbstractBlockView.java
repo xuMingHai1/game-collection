@@ -2,6 +2,7 @@ package xyz.xuminghai.tetris.view;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
 /**
@@ -20,13 +21,14 @@ public sealed abstract class AbstractBlockView extends Canvas
     /**
      * 正方形边长和分割线宽度
      */
-    private final double side, border;
+    private final double side, border, arc;
 
     public AbstractBlockView(int rows, int cols) {
         this.rows = rows;
         this.cols = cols;
         this.side = 30.0;
         this.border = 3.0;
+        this.arc = side * 0.15;
         this.graphicsContext = super.getGraphicsContext2D();
         // 列是x轴，行是y轴
         super.setWidth(cols * side + cols * border + border);
@@ -63,6 +65,13 @@ public sealed abstract class AbstractBlockView extends Canvas
      * @param paint 填充
      */
     public final void fillCell(int row, int col, Paint paint) {
+        validate(row, col);
+        double x = computeX(col), y = computeY(row);
+        graphicsContext.setFill(paint);
+        graphicsContext.fillRoundRect(x, y, side, side, arc, arc);
+    }
+
+    private void validate(int row, int col) {
         if ((row < 0 || row >= getRows()) || (col < 0 || col >= getCols())) {
             throw new IllegalArgumentException(String.format("""
                     单元格位置不正确
@@ -72,8 +81,18 @@ public sealed abstract class AbstractBlockView extends Canvas
                     rows = %d, cols = %d
                     """, row, col, getRows(), getCols()));
         }
-        double x = computeX(col), y = computeY(row);
-        graphicsContext.setFill(paint);
+    }
+
+    /**
+     * 清除单元格
+     *
+     * @param row 行
+     * @param col 列
+     */
+    public final void clearCell(int row, int col) {
+        validate(row, col);
+        final double x = computeX(col), y = computeY(row);
+        graphicsContext.setFill(Color.BLACK);
         graphicsContext.fillRect(x, y, side, side);
     }
 

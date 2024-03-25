@@ -56,7 +56,7 @@ public final class GameWorld {
         @Override
         protected void invalidated() {
             if (get() < 30) {
-                gameTimeLine.pulse = gameTimeLine.defaultPulse - super.get() * 10;
+                gameTimeLine.setPulse(GameTimeLine.DEFAULT_PULSE - super.get() * 10);
             }
         }
     };
@@ -66,12 +66,18 @@ public final class GameWorld {
      */
     final IntegerProperty score = new SimpleIntegerProperty(this, "score");
 
+    /**
+     * 语言
+     */
+    private final ObjectProperty<Locale> language = new SimpleObjectProperty<>(this, "language", Locale.getDefault());
+
     private final int rows = 20, cols = 10;
 
     /**
      * 游戏数据
      */
     final Cell[][] data = new Cell[rows][cols];
+
     final GameTimeLine gameTimeLine = new GameTimeLine(new Runnable() {
 
         @Override
@@ -191,7 +197,7 @@ public final class GameWorld {
     /**
      * 游戏运行状态
      */
-    boolean gameActive;
+    private boolean gameActive;
     private Robot robot;
     private MediaPlayer bgmMediaPlayer;
     private AudioClip clearRowAudioClip, moveAudioClip, rotateAudioClip, gameOverAudioClip;
@@ -265,6 +271,10 @@ public final class GameWorld {
 
     public ReadOnlyIntegerProperty levelProperty() {
         return level;
+    }
+
+    public ReadOnlyObjectProperty<Locale> languageProperty() {
+        return language;
     }
 
     public ReadOnlyObjectProperty<Duration> gameTimeProperty() {
@@ -350,6 +360,43 @@ public final class GameWorld {
         return true;
     }
 
+
+    /**
+     * 启动或暂停游戏
+     */
+    public void startOrPauseGame() {
+        final Optional<Boolean> keyLocked = Platform.isKeyLocked(KeyCode.CAPS);
+        if (gameActive) {
+            keyLocked.ifPresent(b -> {
+                if (b) {
+                    getRobot().keyType(KeyCode.CAPS);
+                }
+            });
+            getBgmMediaPlayer().pause();
+            gameTimeLine.stop();
+        }
+        else {
+            // 大写锁定处理
+            keyLocked.ifPresent(b -> {
+                if (!b) {
+                    getRobot().keyType(KeyCode.CAPS);
+                }
+            });
+            getBgmMediaPlayer().play();
+            gameTimeLine.start();
+        }
+        gameActive = !gameActive;
+    }
+
+    private enum ActionEnum {
+        DOWN_MOVE,
+        LEIF_MOVE,
+        RIGHT_MOVE,
+        ROTATE_CLOCKWISE,
+        ROTATE_COUNTER_CLOCKWISE
+    }
+
+
     /**
      * 方块行为
      *
@@ -380,33 +427,6 @@ public final class GameWorld {
                 }
             }
         }
-    }
-
-    /**
-     * 启动或暂停游戏
-     */
-    public void startOrPauseGame() {
-        final Optional<Boolean> keyLocked = Platform.isKeyLocked(KeyCode.CAPS);
-        if (gameActive) {
-            keyLocked.ifPresent(b -> {
-                if (b) {
-                    getRobot().keyType(KeyCode.CAPS);
-                }
-            });
-            getBgmMediaPlayer().pause();
-            gameTimeLine.stop();
-        }
-        else {
-            // 大写锁定处理
-            keyLocked.ifPresent(b -> {
-                if (!b) {
-                    getRobot().keyType(KeyCode.CAPS);
-                }
-            });
-            getBgmMediaPlayer().play();
-            gameTimeLine.start();
-        }
-        gameActive = !gameActive;
     }
 
     /**
@@ -448,6 +468,9 @@ public final class GameWorld {
      **********************游戏行为和规则************************
      */
 
+    /**
+     * 等级加1
+     */
     public void levelPlus() {
         if (customizeLevel < 30) {
             final int levelValue = level.get() - customizeLevel++;
@@ -455,6 +478,9 @@ public final class GameWorld {
         }
     }
 
+    /**
+     * 等级减1
+     */
     public void levelMinus() {
         if (customizeLevel > 0) {
             final int levelValue = level.get() - customizeLevel--;
@@ -462,13 +488,16 @@ public final class GameWorld {
         }
     }
 
-    enum ActionEnum {
-        DOWN_MOVE,
-        LEIF_MOVE,
-        RIGHT_MOVE,
-        ROTATE_CLOCKWISE,
-        ROTATE_COUNTER_CLOCKWISE
+    /**
+     * 切换语言
+     */
+    public void switchLanguage() {
+        if (Locale.ENGLISH.equals(language.get())) {
+            language.set(Locale.CHINA);
+        }
+        else {
+            language.set(Locale.ENGLISH);
+        }
     }
-
 
 }

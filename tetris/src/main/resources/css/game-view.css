@@ -21,11 +21,24 @@
 
 #right-v-box {
     -fx-background-color: burlywood;
+    -fx-spacing: 20;
 }
 
-#text-grid-pane > Text {
-    -fx-font-size: 20;
+#game-data-pane {
+    -fx-hgap: 20;
 }
+
+#game-data-pane,
+#description-pane {
+    -fx-vgap: 5;
+    -fx-font-size: 15;
+}
+
+
+#description-pane > .label {
+    -fx-max-width: 100;
+}
+
 
 #version-hyperlink {
     -fx-font-size: 15;

@@ -15,11 +15,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class GameTimeLine extends AnimationTimer {
 
-    final int defaultPulse = 500;
+    static final int DEFAULT_PULSE = 500;
     private final Runnable runnable;
     private final ObjectProperty<Duration> gameTime = new SimpleObjectProperty<>(this, "gameTime", Duration.ZERO);
-    int pulse = defaultPulse;
-
+    private int pulse = DEFAULT_PULSE;
     private long lastHandleTime, lastHandleGameTime;
 
     /**
@@ -32,6 +31,10 @@ public class GameTimeLine extends AnimationTimer {
 
     GameTimeLine(Runnable runnable) {
         this.runnable = runnable;
+    }
+
+    void setPulse(int pulse) {
+        this.pulse = pulse;
     }
 
     void setGameAnimation(GameAnimation gameAnimation) {
