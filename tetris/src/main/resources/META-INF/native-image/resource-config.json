@@ -28,7 +28,6 @@
     {
       "name":"com/sun/javafx/scene/control/skin/resources/controls",
       "locales":[
-        "", 
         "und", 
         "zh-CN"
       ]

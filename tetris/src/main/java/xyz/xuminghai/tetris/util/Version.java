@@ -9,6 +9,8 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 2024/3/14 2:26 星期四<br/>
@@ -18,7 +20,8 @@ import java.util.function.Consumer;
  */
 public final class Version {
 
-    public static final String VERSION = "v0.0.4";
+    public static final String VERSION = "v0.0.5";
+    private static final Pattern VERSION_PATTERN = Pattern.compile("^v(\\d+)\\.(\\d+)\\.(\\d)");
 
     public static final String RELEASE_URI = "https://gitee.com/xuMingHai1/game-collection/releases";
 
@@ -36,14 +39,26 @@ public final class Version {
                 final HttpRequest httpRequest = HttpRequest.newBuilder(VERSION_URI)
                         .timeout(Duration.ofSeconds(1L))
                         .build();
-                return httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString())
+                final String body = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString())
                         .body();
+                final Matcher matcher = VERSION_PATTERN.matcher(VERSION);
+                final Matcher bodyMatcher = VERSION_PATTERN.matcher(body);
+                if (matcher.matches() && bodyMatcher.matches()) {
+                    if (Integer.parseInt(bodyMatcher.group(1)) >= Integer.parseInt(matcher.group(1))) {
+                        if (Integer.parseInt(bodyMatcher.group(2)) >= Integer.parseInt(matcher.group(2))) {
+                            if (Integer.parseInt(bodyMatcher.group(3)) >= Integer.parseInt(matcher.group(3))) {
+                                return body;
+                            }
+                        }
+                    }
+                }
+                return null;
             }
 
             @Override
             protected void succeeded() {
                 final String value = super.getValue();
-                if (!VERSION.equals(value)) {
+                if (value != null) {
                     consumer.accept(value);
                 }
             }
