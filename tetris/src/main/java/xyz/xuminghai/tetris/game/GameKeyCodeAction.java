@@ -60,6 +60,21 @@ public class GameKeyCodeAction implements GameTimer {
                     keyCoKeyCompensateRunning(gameWorld::rightMove);
                 }
             }
+            // 其他按键处理（补偿机制）
+            default -> {
+                if (a) {
+                    closeKeyCompensateRunnable();
+                    aKeyAction();
+                }
+                else if (s) {
+                    closeKeyCompensateRunnable();
+                    sKeyAction();
+                }
+                else if (d) {
+                    closeKeyCompensateRunnable();
+                    dKeyAction();
+                }
+            }
         }
     }
 
@@ -68,11 +83,8 @@ public class GameKeyCodeAction implements GameTimer {
             case A -> a = false;
             case S -> s = false;
             case D -> d = false;
-            default -> {
-                // 排除其他按键
-                return;
-            }
         }
+        // 按键释放
         // 设置按键补偿机制（多种组合，释放一个就不会发生按键事件）
         if (a) {
             applyKeyCompensateRunnable(this::aKeyAction);
