@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
  */
 public final class Version {
 
-    public static final String VERSION = "v0.0.5";
+    public static final String VERSION = "v0.0.6";
     private static final Pattern VERSION_PATTERN = Pattern.compile("^v(\\d+)\\.(\\d+)\\.(\\d)");
 
     public static final String RELEASE_URI = "https://gitee.com/xuMingHai1/game-collection/releases";
@@ -44,12 +44,10 @@ public final class Version {
                 final Matcher matcher = VERSION_PATTERN.matcher(VERSION);
                 final Matcher bodyMatcher = VERSION_PATTERN.matcher(body);
                 if (matcher.matches() && bodyMatcher.matches()) {
-                    if (Integer.parseInt(bodyMatcher.group(1)) >= Integer.parseInt(matcher.group(1))) {
-                        if (Integer.parseInt(bodyMatcher.group(2)) >= Integer.parseInt(matcher.group(2))) {
-                            if (Integer.parseInt(bodyMatcher.group(3)) >= Integer.parseInt(matcher.group(3))) {
-                                return body;
-                            }
-                        }
+                    final int remoteVersion = Integer.parseInt(bodyMatcher.group(1) + bodyMatcher.group(2) + bodyMatcher.group(3));
+                    final int localVersion = Integer.parseInt(matcher.group(1) + matcher.group(2) + matcher.group(3));
+                    if (remoteVersion > localVersion) {
+                        return body;
                     }
                 }
                 return null;
