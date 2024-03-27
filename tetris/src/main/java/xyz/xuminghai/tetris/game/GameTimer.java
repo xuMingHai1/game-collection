@@ -5,7 +5,7 @@ package xyz.xuminghai.tetris.game;
  *
  * @author xuMingHai
  */
-interface GameAnimation {
+interface GameTimer {
 
     void handle(long now);
 }

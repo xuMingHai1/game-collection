@@ -28,6 +28,10 @@
     -fx-hgap: 20;
 }
 
+#description-pane {
+    -fx-hgap: 10;
+}
+
 #game-data-pane,
 #description-pane {
     -fx-vgap: 5;
@@ -36,7 +40,7 @@
 
 
 #description-pane > .label {
-    -fx-max-width: 100;
+    -fx-max-width: 80;
 }
 
 

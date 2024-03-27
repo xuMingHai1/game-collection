@@ -11,6 +11,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
+import xyz.xuminghai.tetris.game.GameKeyCodeAction;
 import xyz.xuminghai.tetris.game.GameWorld;
 import xyz.xuminghai.tetris.util.Version;
 import xyz.xuminghai.tetris.view.GameView;
@@ -30,6 +31,8 @@ public class TetrisApplication extends Application {
     public static HostServices hostServices;
 
     private final GameWorld gameWorld = new GameWorld();
+
+    private final GameKeyCodeAction gameKeyCodeAction = new GameKeyCodeAction(gameWorld);
 
     private final GameView gameView = new GameView(gameWorld);
 
@@ -55,20 +58,37 @@ public class TetrisApplication extends Application {
         System.out.printf("启动完成耗时 = %dms%n", System.currentTimeMillis() - BOOT_TIME);
     }
 
+
     private Scene keyMonitor(Scene scene) {
-        // 键盘监听
+        // 移动按键键入
+        scene.setOnKeyPressed(event -> {
+            if (gameWorld.getGameActive()) {
+                gameKeyCodeAction.keyCodePressed(event.getCode());
+            }
+        });
+        // 移动按键释放
+        scene.setOnKeyReleased(event -> gameKeyCodeAction.keyCodeReleased(event.getCode()));
+
         final ObservableMap<KeyCombination, Runnable> accelerators = scene.getAccelerators();
-        accelerators.put(new KeyCodeCombination(KeyCode.A), gameWorld::leftMove);
-        accelerators.put(new KeyCodeCombination(KeyCode.S), gameWorld::downMove);
-        accelerators.put(new KeyCodeCombination(KeyCode.D), gameWorld::rightMove);
-        accelerators.put(new KeyCodeCombination(KeyCode.LEFT), gameWorld::rotateCounterClockwise);
-        accelerators.put(new KeyCodeCombination(KeyCode.RIGHT), gameWorld::rotateClockwise);
+        // 逆时针旋转
+        accelerators.put(new KeyCodeCombination(KeyCode.LEFT), () -> {
+            if (gameWorld.getGameActive()) {
+                gameWorld.rotateCounterClockwise();
+            }
+        });
+        // 顺时针旋转
+        accelerators.put(new KeyCodeCombination(KeyCode.RIGHT), () -> {
+            if (gameWorld.getGameActive()) {
+                gameWorld.rotateClockwise();
+            }
+        });
         accelerators.put(new KeyCodeCombination(KeyCode.EQUALS), gameWorld::levelPlus);
         accelerators.put(new KeyCodeCombination(KeyCode.MINUS), gameWorld::levelMinus);
         accelerators.put(new KeyCodeCombination(KeyCode.SPACE), gameWorld::startOrPauseGame);
         accelerators.put(new KeyCodeCombination(KeyCode.TAB, KeyCombination.CONTROL_DOWN), gameWorld::switchLanguage);
         return scene;
     }
+
 
     private void checkUpdate(Stage primaryStage) {
         Version.checkUpdate(version -> {

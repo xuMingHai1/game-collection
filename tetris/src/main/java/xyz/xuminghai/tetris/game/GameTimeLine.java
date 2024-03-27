@@ -26,7 +26,7 @@ public class GameTimeLine extends AnimationTimer {
      */
     private boolean gameTimeRecord = true;
 
-    private GameAnimation gameAnimation;
+    private GameTimer gameAnimation, keyCompensateTimer;
 
 
     GameTimeLine(Runnable runnable) {
@@ -37,8 +37,12 @@ public class GameTimeLine extends AnimationTimer {
         this.pulse = pulse;
     }
 
-    void setGameAnimation(GameAnimation gameAnimation) {
+    void setGameAnimation(GameTimer gameAnimation) {
         this.gameAnimation = gameAnimation;
+    }
+
+    void setKeyCompensateTimer(GameTimer keyCompensateTimer) {
+        this.keyCompensateTimer = keyCompensateTimer;
     }
 
     void setGameTimeRecord(boolean gameTimeRecord) {
@@ -56,6 +60,9 @@ public class GameTimeLine extends AnimationTimer {
             lastHandleGameTime = now;
             final Duration duration = gameTime.get();
             gameTime.set(duration.plusSeconds(1L));
+        }
+        if (keyCompensateTimer != null) {
+            keyCompensateTimer.handle(now);
         }
         if (gameAnimation != null) {
             gameAnimation.handle(now);

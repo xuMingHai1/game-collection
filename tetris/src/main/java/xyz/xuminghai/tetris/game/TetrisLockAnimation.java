@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author xuMingHai
  */
-public class TetrisLockAnimation implements GameAnimation {
+public class TetrisLockAnimation implements GameTimer {
 
     private final GameWorld gameWorld;
 

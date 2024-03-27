@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author xuMingHai
  */
-public class GameOverAnimation implements GameAnimation {
+public class GameOverAnimation implements GameTimer {
 
     private final Color gameOverColor = Color.LIGHTGRAY;
 

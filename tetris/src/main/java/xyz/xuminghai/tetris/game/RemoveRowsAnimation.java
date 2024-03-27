@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author xuMingHai
  */
-public class RemoveRowsAnimation implements GameAnimation {
+public class RemoveRowsAnimation implements GameTimer {
 
     private final GameWorld gameWorld;
 

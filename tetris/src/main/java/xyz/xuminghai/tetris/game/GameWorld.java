@@ -202,6 +202,10 @@ public final class GameWorld {
     private MediaPlayer bgmMediaPlayer;
     private AudioClip clearRowAudioClip, moveAudioClip, rotateAudioClip, gameOverAudioClip;
 
+    public boolean getGameActive() {
+        return gameActive;
+    }
+
     Robot getRobot() {
         if (robot == null) {
             robot = new Robot();
@@ -404,26 +408,23 @@ public final class GameWorld {
      * @param function 行为函数
      */
     private void tetrisAction(ActionEnum action, Function<Tetris, Cell[]> function) {
-        // 游戏活跃时执行
-        if (gameActive) {
-            final Tetris tetris = currentTetris.get();
-            if (tetris != null) {
-                final Cell[] copyCells = tetris.copy();
-                final Cell[] cells = checkCellsRowConvert(function.apply(tetris));
-                // 不相同时执行
-                if (!Arrays.equals(copyCells, cells)) {
-                    // 清除上次保存的数据
-                    clearLastCells(currentCells.get());
-                    if (saveCellsData(cells)) {
-                        switch (action) {
-                            case DOWN_MOVE, LEIF_MOVE, RIGHT_MOVE -> getMoveAudioClip().play();
-                            case ROTATE_CLOCKWISE, ROTATE_COUNTER_CLOCKWISE -> getRotateAudioClip().play();
-                        }
-                        currentCells.set(checkCellsRowConvert(tetris.copy()));
+        final Tetris tetris = currentTetris.get();
+        if (tetris != null) {
+            final Cell[] copyCells = tetris.copy();
+            final Cell[] cells = checkCellsRowConvert(function.apply(tetris));
+            // 不相同时执行
+            if (!Arrays.equals(copyCells, cells)) {
+                // 清除上次保存的数据
+                clearLastCells(currentCells.get());
+                if (saveCellsData(cells)) {
+                    switch (action) {
+                        case DOWN_MOVE, LEIF_MOVE, RIGHT_MOVE -> getMoveAudioClip().play();
+                        case ROTATE_CLOCKWISE, ROTATE_COUNTER_CLOCKWISE -> getRotateAudioClip().play();
                     }
-                    else {
-                        tetris.setCells(copyCells);
-                    }
+                    currentCells.set(checkCellsRowConvert(tetris.copy()));
+                }
+                else {
+                    tetris.setCells(copyCells);
                 }
             }
         }
@@ -432,21 +433,21 @@ public final class GameWorld {
     /**
      * 向下移动
      */
-    public void downMove() {
+    void downMove() {
         tetrisAction(ActionEnum.DOWN_MOVE, Tetris::downMove);
     }
 
     /**
      * 向左移动
      */
-    public void leftMove() {
+    void leftMove() {
         tetrisAction(ActionEnum.LEIF_MOVE, Tetris::leftMove);
     }
 
     /**
      * 向右移动
      */
-    public void rightMove() {
+    void rightMove() {
         tetrisAction(ActionEnum.RIGHT_MOVE, Tetris::rightMove);
     }
 

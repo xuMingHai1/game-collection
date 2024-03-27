@@ -70,8 +70,8 @@ public class GameView extends BorderPane {
         final VBox rightVBox = new VBox(new Pane(nextVBox), gameDataPane, new Separator(),
                 descriptionPane, anchorPane);
         rightVBox.setId("right-v-box");
-        VBox.setMargin(gameDataPane, new Insets(0, 0, 0, 10));
-        VBox.setMargin(descriptionPane, new Insets(0, 0, 0, 10));
+        VBox.setMargin(gameDataPane, new Insets(0, 10, 0, 10));
+        VBox.setMargin(descriptionPane, new Insets(0, 10, 0, 10));
         // 设置水平增长
         VBox.setVgrow(anchorPane, Priority.SOMETIMES);
         BorderPane.setMargin(rightVBox, new Insets(10));
@@ -229,7 +229,7 @@ public class GameView extends BorderPane {
         descriptionPane.addRow(8, spaceKeyLabel, spaceKeyActionLabel);
 
         // Control + Tab键说明
-        descriptionPane.addRow(9, new Label("Control + Tab"), new Label("中文/English"));
+        descriptionPane.addRow(9, new Label("Ctrl + Tab"), new Label("中文/English"));
 
         // 添加提示
         descriptionPane.getChildren().forEach(node -> {
