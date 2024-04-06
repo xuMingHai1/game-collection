@@ -646,8 +646,11 @@ import java.util.regex.Pattern;
  */
 public final class Version {
 
-    public static final String VERSION = "v0.0.6";
-    private static final Pattern VERSION_PATTERN = Pattern.compile("^v(\\d+)\\.(\\d+)\\.(\\d)");
+    /**
+     * 版本规制，采用十进制，逢十进小数点前一位
+     */
+    public static final String VERSION = "v0.0.7";
+    private static final Pattern VERSION_PATTERN = Pattern.compile("^v(\\d+)\\.(\\d)\\.(\\d)");
 
     public static final String RELEASE_URI = "https://gitee.com/xuMingHai1/game-collection/releases";
 

@@ -674,6 +674,8 @@ public final class GameWorld {
      */
     int customizeLevel;
 
+    private final int maxCustomizeLevel = 30;
+
     /**
      * 等级
      */
@@ -681,8 +683,8 @@ public final class GameWorld {
 
         @Override
         protected void invalidated() {
-            if (get() < 30) {
-                gameTimeLine.setPulse(GameTimeLine.DEFAULT_PULSE - super.get() * 10);
+            if (get() < maxCustomizeLevel) {
+                gameTimeLine.setPulse(GameTimeLine.DEFAULT_PULSE - super.get() * 14);
             }
         }
     };
@@ -826,7 +828,9 @@ public final class GameWorld {
     private boolean gameActive;
     private Robot robot;
     private MediaPlayer bgmMediaPlayer;
-    private AudioClip clearRowAudioClip, moveAudioClip, rotateAudioClip, gameOverAudioClip;
+    private AudioClip clearRowAudioClip, moveAudioClip,
+            rotateAudioClip, gameOverAudioClip,
+            levelUpAudioClip, levelDownAudioClip;
 
     public boolean getGameActive() {
         return gameActive;
@@ -873,6 +877,20 @@ public final class GameWorld {
             gameOverAudioClip = new AudioClip(Objects.requireNonNull(GameWorld.class.getResource("/audio/game_over.mp3")).toExternalForm());
         }
         return gameOverAudioClip;
+    }
+
+    AudioClip getLevelUpAudioClip() {
+        if (levelUpAudioClip == null) {
+            levelUpAudioClip = new AudioClip(Objects.requireNonNull(GameWorld.class.getResource("/audio/level_up.mp3")).toExternalForm());
+        }
+        return levelUpAudioClip;
+    }
+
+    AudioClip getLevelDownAudioClip() {
+        if (levelDownAudioClip == null) {
+            levelDownAudioClip = new AudioClip(Objects.requireNonNull(GameWorld.class.getResource("/audio/level_down.mp3")).toExternalForm());
+        }
+        return levelDownAudioClip;
     }
 
     public int getRows() {
@@ -1099,7 +1117,8 @@ public final class GameWorld {
      * 等级加1
      */
     public void levelPlus() {
-        if (customizeLevel < 30) {
+        if (customizeLevel < maxCustomizeLevel) {
+            getLevelUpAudioClip().play();
             final int levelValue = level.get() - customizeLevel++;
             level.set(customizeLevel + levelValue);
         }
@@ -1110,6 +1129,7 @@ public final class GameWorld {
      */
     public void levelMinus() {
         if (customizeLevel > 0) {
+            getLevelDownAudioClip().play();
             final int levelValue = level.get() - customizeLevel--;
             level.set(customizeLevel + levelValue);
         }
