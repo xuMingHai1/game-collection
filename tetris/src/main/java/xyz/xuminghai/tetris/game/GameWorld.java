@@ -665,7 +665,12 @@ public final class GameWorld {
     final IntegerProperty lines = new SimpleIntegerProperty(this, "lines") {
         @Override
         protected void invalidated() {
-            level.set(customizeLevel + super.get() / 4);
+            // 每消除4行进行升级
+            final int newLevel = customizeLevel + super.get() / 4;
+            if (newLevel > level.get()) {
+                getLevelUpAudioClip().play();
+                level.set(newLevel);
+            }
         }
     };
 

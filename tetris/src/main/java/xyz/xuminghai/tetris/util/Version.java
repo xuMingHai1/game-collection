@@ -633,7 +633,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
-import java.util.concurrent.ForkJoinPool;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -649,47 +648,50 @@ public final class Version {
     /**
      * 版本规制，采用十进制，逢十进小数点前一位
      */
-    public static final String VERSION = "v0.0.7";
-    private static final Pattern VERSION_PATTERN = Pattern.compile("^v(\\d+)\\.(\\d)\\.(\\d)");
+    public static final String VERSION = "v0.0.8";
 
     public static final String RELEASE_URI = "https://gitee.com/xuMingHai1/game-collection/releases";
 
-    private static final URI VERSION_URI = URI.create("https://gitee.com/xuMingHai1/game-collection/raw/master/tetris/src/version.txt");
 
     private Version() {
     }
 
     public static void checkUpdate(Consumer<String> consumer) {
-        ForkJoinPool.commonPool().execute(new Task<String>() {
-            @Override
-            protected String call() throws Exception {
-                // 暂时不保存HttpClient实例
-                final HttpClient httpClient = HttpClient.newHttpClient();
-                final HttpRequest httpRequest = HttpRequest.newBuilder(VERSION_URI)
-                        .timeout(Duration.ofSeconds(1L))
-                        .build();
-                final String body = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString())
-                        .body();
-                final Matcher matcher = VERSION_PATTERN.matcher(VERSION);
-                final Matcher bodyMatcher = VERSION_PATTERN.matcher(body);
-                if (matcher.matches() && bodyMatcher.matches()) {
-                    final int remoteVersion = Integer.parseInt(bodyMatcher.group(1) + bodyMatcher.group(2) + bodyMatcher.group(3));
-                    final int localVersion = Integer.parseInt(matcher.group(1) + matcher.group(2) + matcher.group(3));
-                    if (remoteVersion > localVersion) {
-                        return body;
+        // 只运行一次
+        new Thread(
+                new Task<String>() {
+                    @Override
+                    protected String call() throws Exception {
+                        final Pattern versionPattern = Pattern.compile("^v(\\d+)\\.(\\d)\\.(\\d)");
+                        final URI versionUri = URI.create("https://gitee.com/xuMingHai1/game-collection/raw/master/tetris/src/version.txt");
+                        // 暂时不保存HttpClient实例
+                        final HttpClient httpClient = HttpClient.newHttpClient();
+                        final HttpRequest httpRequest = HttpRequest.newBuilder(versionUri)
+                                .timeout(Duration.ofSeconds(1L))
+                                .build();
+                        final String body = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString())
+                                .body();
+                        final Matcher matcher = versionPattern.matcher(VERSION);
+                        final Matcher bodyMatcher = versionPattern.matcher(body);
+                        if (matcher.matches() && bodyMatcher.matches()) {
+                            final int remoteVersion = Integer.parseInt(bodyMatcher.group(1) + bodyMatcher.group(2) + bodyMatcher.group(3));
+                            final int localVersion = Integer.parseInt(matcher.group(1) + matcher.group(2) + matcher.group(3));
+                            if (remoteVersion > localVersion) {
+                                return body;
+                            }
+                        }
+                        return null;
+                    }
+
+                    @Override
+                    protected void succeeded() {
+                        final String value = super.getValue();
+                        if (value != null) {
+                            consumer.accept(value);
+                        }
                     }
                 }
-                return null;
-            }
-
-            @Override
-            protected void succeeded() {
-                final String value = super.getValue();
-                if (value != null) {
-                    consumer.accept(value);
-                }
-            }
-        });
+        ).start();
     }
 
 
