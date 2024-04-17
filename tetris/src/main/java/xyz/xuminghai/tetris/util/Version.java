@@ -648,7 +648,7 @@ public final class Version {
     /**
      * 版本规制，采用十进制，逢十进小数点前一位
      */
-    public static final String VERSION = "v0.0.8";
+    public static final String VERSION = "v0.0.9";
 
     public static final String RELEASE_URI = "https://gitee.com/xuMingHai1/game-collection/releases";
 

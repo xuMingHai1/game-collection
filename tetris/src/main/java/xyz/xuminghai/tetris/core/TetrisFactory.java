@@ -628,6 +628,7 @@ package xyz.xuminghai.tetris.core;
 
 import javafx.scene.paint.Color;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.random.RandomGenerator;
@@ -640,19 +641,30 @@ import java.util.random.RandomGenerator;
  */
 public final class TetrisFactory {
 
-    private static final List<Supplier<Tetris>> SUPPLIER_LIST = List.of(IBlock::new, JBlock::new,
-            LBlock::new, OBlock::new, SBlock::new, TBlock::new, ZBlock::new);
-
     private static final RandomGenerator RANDOM_GENERATOR = RandomGenerator.of("Xoroshiro128PlusPlus");
 
     private static final double BOUND_UP = Math.nextUp(1.0);
 
+
     private TetrisFactory() {
     }
 
+    /*
+        袋式随机生成
+     */
+    private static final List<Supplier<Tetris>> ORIGINAL_BAG = List.of(IBlock::new, JBlock::new,
+            LBlock::new, OBlock::new, SBlock::new, TBlock::new, ZBlock::new);
+
+    private static final List<Supplier<Tetris>> BAG = new LinkedList<>();
+
     public static Tetris randomCreateTetris() {
-        int index = RANDOM_GENERATOR.nextInt(SUPPLIER_LIST.size());
-        return SUPPLIER_LIST.get(index).get();
+        if (BAG.isEmpty()) {
+            BAG.addAll(ORIGINAL_BAG);
+        }
+        final int index = RANDOM_GENERATOR.nextInt(BAG.size());
+        final Supplier<Tetris> tetrisSupplier = BAG.get(index);
+        BAG.remove(index);
+        return tetrisSupplier.get();
     }
 
     public static Color randomColor() {
@@ -660,4 +672,5 @@ public final class TetrisFactory {
                 RANDOM_GENERATOR.nextDouble(0.5, BOUND_UP),
                 RANDOM_GENERATOR.nextDouble(0.5, BOUND_UP));
     }
+
 }

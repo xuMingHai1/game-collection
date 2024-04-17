@@ -21,8 +21,18 @@
       "name":"com/sun/glass/ui/win/themes",
       "locales":[
         "", 
+        "de", 
+        "en", 
+        "es", 
+        "fr", 
+        "it", 
+        "ja", 
+        "ko", 
+        "pt-BR", 
+        "sv", 
         "und", 
-        "zh-CN"
+        "zh-CN", 
+        "zh-TW"
       ]
     }, 
     {
