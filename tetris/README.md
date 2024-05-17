@@ -10,7 +10,7 @@
 
 ## 原生可执行文件
 
-[发布地址](https://gitee.com/xuMingHai1/game-collection/releases)
+[发布地址](../../../releases)
 
 本项目是开源的，不会写入和创建任何文件，和数据。
 绿色软件，删除后不会有任何卸载残留
