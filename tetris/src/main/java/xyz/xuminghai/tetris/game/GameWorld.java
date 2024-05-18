@@ -739,7 +739,7 @@ public final class GameWorld {
                     // 游戏结束动画
                     gameTimeLine.setGameAnimation(new GameOverAnimation(GameWorld.this));
                     getBgmMediaPlayer().stop();
-                    getGameOverAudioClip().play();
+                    gameOverAudioPlay();
                 }
                 else {
                     // 保存上次方块数据
@@ -833,22 +833,22 @@ public final class GameWorld {
     private boolean gameActive;
     private Robot robot;
     private MediaPlayer bgmMediaPlayer;
-    private AudioClip clearRowAudioClip, moveAudioClip,
-            rotateAudioClip, gameOverAudioClip,
+    private AudioClip clearRowAudioClip,
+            moveAudioClip, rotateAudioClip,
             levelUpAudioClip, levelDownAudioClip;
 
     public boolean getGameActive() {
         return gameActive;
     }
 
-    Robot getRobot() {
+    private Robot getRobot() {
         if (robot == null) {
             robot = new Robot();
         }
         return robot;
     }
 
-    MediaPlayer getBgmMediaPlayer() {
+    private MediaPlayer getBgmMediaPlayer() {
         if (bgmMediaPlayer == null) {
             bgmMediaPlayer = new MediaPlayer(new Media(Objects.requireNonNull(GameWorld.class.getResource("/audio/bgm.mp3")).toExternalForm()));
             bgmMediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
@@ -856,46 +856,44 @@ public final class GameWorld {
         return bgmMediaPlayer;
     }
 
-    AudioClip getClearRowAudioClip() {
+    private AudioClip getClearRowAudioClip() {
         if (clearRowAudioClip == null) {
-            clearRowAudioClip = new AudioClip(Objects.requireNonNull(GameWorld.class.getResource("/audio/clear_rows.mp3")).toExternalForm());
+            clearRowAudioClip = new AudioClip(Objects.requireNonNull(GameWorld.class.getResource("/audio/clear_rows.wav")).toExternalForm());
         }
         return clearRowAudioClip;
     }
 
-    AudioClip getMoveAudioClip() {
+    private AudioClip getMoveAudioClip() {
         if (moveAudioClip == null) {
-            moveAudioClip = new AudioClip(Objects.requireNonNull(GameWorld.class.getResource("/audio/move.mp3")).toExternalForm());
+            moveAudioClip = new AudioClip(Objects.requireNonNull(GameWorld.class.getResource("/audio/move.wav")).toExternalForm());
         }
         return moveAudioClip;
     }
 
-    AudioClip getRotateAudioClip() {
+    private AudioClip getRotateAudioClip() {
         if (rotateAudioClip == null) {
-            rotateAudioClip = new AudioClip(Objects.requireNonNull(GameWorld.class.getResource("/audio/rotate.mp3")).toExternalForm());
+            rotateAudioClip = new AudioClip(Objects.requireNonNull(GameWorld.class.getResource("/audio/rotate.wav")).toExternalForm());
         }
         return rotateAudioClip;
     }
 
-    AudioClip getGameOverAudioClip() {
-        if (gameOverAudioClip == null) {
-            gameOverAudioClip = new AudioClip(Objects.requireNonNull(GameWorld.class.getResource("/audio/game_over.mp3")).toExternalForm());
-        }
-        return gameOverAudioClip;
-    }
-
-    AudioClip getLevelUpAudioClip() {
+    private AudioClip getLevelUpAudioClip() {
         if (levelUpAudioClip == null) {
-            levelUpAudioClip = new AudioClip(Objects.requireNonNull(GameWorld.class.getResource("/audio/level_up.mp3")).toExternalForm());
+            levelUpAudioClip = new AudioClip(Objects.requireNonNull(GameWorld.class.getResource("/audio/level_up.wav")).toExternalForm());
         }
         return levelUpAudioClip;
     }
 
-    AudioClip getLevelDownAudioClip() {
+    private AudioClip getLevelDownAudioClip() {
         if (levelDownAudioClip == null) {
-            levelDownAudioClip = new AudioClip(Objects.requireNonNull(GameWorld.class.getResource("/audio/level_down.mp3")).toExternalForm());
+            levelDownAudioClip = new AudioClip(Objects.requireNonNull(GameWorld.class.getResource("/audio/level_down.wav")).toExternalForm());
         }
         return levelDownAudioClip;
+    }
+
+    private void gameOverAudioPlay() {
+        new AudioClip(Objects.requireNonNull(GameWorld.class.getResource("/audio/game_over.wav")).toExternalForm())
+                .play();
     }
 
     public int getRows() {

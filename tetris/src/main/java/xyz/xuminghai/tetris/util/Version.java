@@ -628,7 +628,10 @@ package xyz.xuminghai.tetris.util;
 
 import javafx.concurrent.Task;
 
+import java.io.IOException;
+import java.net.InetAddress;
 import java.net.URI;
+import java.net.UnknownHostException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -648,29 +651,70 @@ public final class Version {
     /**
      * 版本规制，采用十进制，逢十进小数点前一位
      */
-    public static final String VERSION = "v0.0.9";
+    public static final String VERSION = "v0.1.0";
 
-    public static final String RELEASE_URI = "https://gitee.com/xuMingHai1/game-collection/releases";
+    /**
+     * 发布地址，默认为github
+     */
+    public static volatile String RELEASE_URI = "https://github.com/xuMingHai1/game-collection/releases";
 
 
     private Version() {
     }
 
+    private static InetAddress reachableAddress(int timeout) {
+        final InetAddress github, gitee;
+        try {
+            github = InetAddress.getByName("github.com");
+            gitee = InetAddress.getByName("gitee.com");
+        }
+        catch (UnknownHostException ignored) {
+            return null;
+        }
+
+        // 测试哪个主机可以访问
+        try {
+            if (github.isReachable(timeout)) {
+                return github;
+            }
+            if (gitee.isReachable(timeout)) {
+                return gitee;
+            }
+        }
+        catch (IOException e) {
+            return null;
+        }
+        return null;
+    }
+
     public static void checkUpdate(Consumer<String> consumer) {
         // 只运行一次
-        new Thread(
+        final Thread checkUpdateThread = new Thread(
+                null,
                 new Task<String>() {
                     @Override
                     protected String call() throws Exception {
-                        final Pattern versionPattern = Pattern.compile("^v(\\d+)\\.(\\d)\\.(\\d)");
-                        final URI versionUri = URI.create("https://gitee.com/xuMingHai1/game-collection/raw/master/tetris/src/version.txt");
+                        final Duration timeout = Duration.ofSeconds(1L);
+                        // 使用可以访问的地址
+                        final InetAddress inetAddress = reachableAddress((int) timeout.toMillis());
+                        if (inetAddress == null) {
+                            return null;
+                        }
+                        // 根据可用的主机地址创建URI
+                        final String hostName = inetAddress.getHostName();
+                        RELEASE_URI = "https://" + hostName + "/xuMingHai1/game-collection/releases";
+                        final URI versionUri = URI.create("https://" + hostName + "/xuMingHai1/game-collection/raw/master/tetris/src/version.txt");
                         // 暂时不保存HttpClient实例
-                        final HttpClient httpClient = HttpClient.newHttpClient();
+                        final HttpClient httpClient = HttpClient.newBuilder()
+                                .followRedirects(HttpClient.Redirect.NORMAL)
+                                .connectTimeout(timeout)
+                                .build();
                         final HttpRequest httpRequest = HttpRequest.newBuilder(versionUri)
-                                .timeout(Duration.ofSeconds(1L))
+                                .timeout(timeout)
                                 .build();
                         final String body = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString())
                                 .body();
+                        final Pattern versionPattern = Pattern.compile("^v(\\d+)\\.(\\d)\\.(\\d)");
                         final Matcher matcher = versionPattern.matcher(VERSION);
                         final Matcher bodyMatcher = versionPattern.matcher(body);
                         if (matcher.matches() && bodyMatcher.matches()) {
@@ -690,8 +734,12 @@ public final class Version {
                             consumer.accept(value);
                         }
                     }
-                }
-        ).start();
+                },
+                "checkUpdateThread",
+                0L,
+                false);
+        checkUpdateThread.setDaemon(true);
+        checkUpdateThread.start();
     }
 
 

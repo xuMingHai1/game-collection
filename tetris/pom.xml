@@ -632,14 +632,14 @@
 
     <groupId>xyz.xuminghai</groupId>
     <artifactId>tetris</artifactId>
-    <version>0.0.9</version>
+    <version>0.1.0</version>
 
     <properties>
         <main.class>xyz.xuminghai.tetris/xyz.xuminghai.tetris.TetrisApplication</main.class>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <javafx.version>22</javafx.version>
+        <javafx.version>22.0.1</javafx.version>
     </properties>
 
     <dependencies>
@@ -670,6 +670,11 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
+                    <ignoreSigningInformation>true</ignoreSigningInformation>
+                    <stripDebug>true</stripDebug>
+                    <compress>2</compress>
+                    <noHeaderFiles>true</noHeaderFiles>
+                    <noManPages>true</noManPages>
                     <mainClass>${main.class}</mainClass>
                 </configuration>
             </plugin>
@@ -682,6 +687,7 @@
                     <mainClass>${main.class}</mainClass>
                     <resourcesList>
                         <resourcesList>.*\\.mp3$</resourcesList>
+                        <resourcesList>.*\\.wav$</resourcesList>
                         <resourcesList>.*\\.dll$</resourcesList>
                     </resourcesList>
                     <nativeImageArgs>

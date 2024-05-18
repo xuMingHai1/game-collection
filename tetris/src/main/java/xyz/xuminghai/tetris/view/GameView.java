@@ -747,8 +747,9 @@ public class GameView extends BorderPane {
         // 游戏分数
         final Text scoreText = new Text("Score：");
         final Text scoreValueText = new Text();
+        final NumberFormat numberFormat = NumberFormat.getIntegerInstance();
         scoreValueText.textProperty().bind(gameWorld.scoreProperty()
-                .map(number -> NumberFormat.getIntegerInstance().format(number)));
+                .map(numberFormat::format));
         gameDataPane.addRow(1, scoreText, scoreValueText);
         GridPane.setValignment(scoreText, VPos.TOP);
         GridPane.setHalignment(scoreValueText, HPos.RIGHT);
