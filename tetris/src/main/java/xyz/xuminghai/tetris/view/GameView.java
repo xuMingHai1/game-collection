@@ -686,7 +686,7 @@ public class GameView extends BorderPane {
         final Hyperlink hyperlink = new Hyperlink(Version.VERSION);
         hyperlink.setId("version-hyperlink");
         hyperlink.setFocusTraversable(false);
-        hyperlink.setOnAction(event -> TetrisApplication.hostServices.showDocument(Version.RELEASE_URI));
+        hyperlink.setOnAction(_ -> TetrisApplication.hostServices.showDocument(Version.RELEASE_URI));
         final AnchorPane anchorPane = new AnchorPane(hyperlink);
         AnchorPane.setBottomAnchor(hyperlink, 0.0);
         AnchorPane.setRightAnchor(hyperlink, 0.0);
@@ -823,7 +823,7 @@ public class GameView extends BorderPane {
         descriptionPane.setId("description-pane");
         setLocalText(gameWorld.languageProperty().get());
         // 语言切换监听
-        gameWorld.languageProperty().addListener((observable, oldValue, newValue) -> setLocalText(newValue));
+        gameWorld.languageProperty().addListener((_, _, newValue) -> setLocalText(newValue));
 
         // 操作说明
         descriptionPane.addRow(0, instructionLabel);

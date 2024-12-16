@@ -640,7 +640,7 @@ public final class GameContextView extends AbstractBlockView {
 
     public GameContextView(GameWorld gameWorld) {
         super(gameWorld.getRows(), gameWorld.getCols());
-        gameWorld.currentCellsProperty().addListener((observable, oldValue, newValue) -> {
+        gameWorld.currentCellsProperty().addListener((_, oldValue, newValue) -> {
             if (oldValue != null && newValue != null) {
                 for (Cell cell : oldValue) {
                     super.clearCell(cell.getRow(), cell.getCol());
@@ -652,14 +652,14 @@ public final class GameContextView extends AbstractBlockView {
                 }
             }
         });
-        gameWorld.clearCellProperty().addListener((observable, oldValue, newValue) -> {
+        gameWorld.clearCellProperty().addListener((_, _, newValue) -> {
             if (newValue != null) {
                 for (Cell cell : newValue) {
                     super.clearCell(cell.getRow(), cell.getCol());
                 }
             }
         });
-        gameWorld.renderCellProperty().addListener((observable, oldValue, newValue) -> {
+        gameWorld.renderCellProperty().addListener((_, _, newValue) -> {
             if (newValue != null) {
                 for (Cell cell : newValue) {
                     super.fillCell(cell.getRow(), cell.getCol(), cell.getColor());

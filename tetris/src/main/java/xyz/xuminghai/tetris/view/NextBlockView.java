@@ -645,7 +645,7 @@ public final class NextBlockView extends AbstractBlockView {
         if (tetris != null) {
             fillTetris(tetris);
         }
-        nextTetris.addListener((observable, oldValue, newValue) -> {
+        nextTetris.addListener((_, _, newValue) -> {
             clearView();
             fillTetris(newValue);
         });

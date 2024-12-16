@@ -637,9 +637,9 @@
     <properties>
         <main.class>xyz.xuminghai.tetris/xyz.xuminghai.tetris.TetrisApplication</main.class>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <javafx.version>22.0.1</javafx.version>
+        <maven.compiler.source>23</maven.compiler.source>
+        <maven.compiler.target>23</maven.compiler.target>
+        <javafx.version>23.0.1</javafx.version>
     </properties>
 
     <dependencies>
@@ -663,7 +663,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.12.1</version>
+                <version>3.13.0</version>
             </plugin>
             <plugin>
                 <groupId>org.openjfx</groupId>
@@ -681,7 +681,7 @@
             <plugin>
                 <groupId>com.gluonhq</groupId>
                 <artifactId>gluonfx-maven-plugin</artifactId>
-                <version>1.0.22</version>
+                <version>1.0.24</version>
                 <configuration>
                     <!-- 主类 -->
                     <mainClass>${main.class}</mainClass>
