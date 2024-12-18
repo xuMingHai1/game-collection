@@ -686,7 +686,7 @@ public class GameView extends BorderPane {
         final Hyperlink hyperlink = new Hyperlink(Version.VERSION);
         hyperlink.setId("version-hyperlink");
         hyperlink.setFocusTraversable(false);
-        hyperlink.setOnAction(_ -> TetrisApplication.hostServices.showDocument(Version.RELEASE_URI));
+        hyperlink.setOnAction(_ -> TetrisApplication.hostServices.showDocument(Version.releaseUri()));
         final AnchorPane anchorPane = new AnchorPane(hyperlink);
         AnchorPane.setBottomAnchor(hyperlink, 0.0);
         AnchorPane.setRightAnchor(hyperlink, 0.0);

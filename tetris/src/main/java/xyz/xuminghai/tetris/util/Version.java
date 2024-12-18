@@ -631,11 +631,12 @@ import javafx.concurrent.Task;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URI;
+import java.net.URLConnection;
 import java.net.UnknownHostException;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -654,35 +655,53 @@ public final class Version {
     public static final String VERSION = "v0.1.0";
 
     /**
+     * 版本格式匹配
+     */
+    private static final Pattern VERSION_PATTERN = Pattern.compile("^v(\\d+)\\.(\\d)\\.(\\d)");
+
+    /**
      * 发布地址，默认为github
      */
-    public static volatile String RELEASE_URI = "https://github.com/xuMingHai1/game-collection/releases";
+    private static final AtomicReference<String> RELEASE = new AtomicReference<>("https://github.com/xuMingHai1/game-collection/releases");
 
+    private static final List<String> HOST_LIST = List.of(
+            "github.com",
+            "gitee.com"
+    );
+
+    private static final List<InetAddress> INET_ADDRESS_LIST;
+
+    static {
+        INET_ADDRESS_LIST = HOST_LIST.stream()
+                .map(host -> {
+                    try {
+                        return InetAddress.getByName(host);
+                    }
+                    catch (UnknownHostException _) {
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
+                .toList();
+    }
 
     private Version() {
     }
 
-    private static InetAddress reachableAddress(int timeout) {
-        final InetAddress github, gitee;
-        try {
-            github = InetAddress.getByName("github.com");
-            gitee = InetAddress.getByName("gitee.com");
-        }
-        catch (UnknownHostException ignored) {
-            return null;
-        }
+    public static String releaseUri() {
+        return RELEASE.getOpaque();
+    }
 
-        // 测试哪个主机可以访问
-        try {
-            if (github.isReachable(timeout)) {
-                return github;
+    private static InetAddress reachableAddress(int timeout) {
+        // 获取可访问主机
+        for (InetAddress inetAddress : INET_ADDRESS_LIST) {
+            try {
+                if (inetAddress.isReachable(timeout)) {
+                    return inetAddress;
+                }
             }
-            if (gitee.isReachable(timeout)) {
-                return gitee;
+            catch (IOException _) {
             }
-        }
-        catch (IOException e) {
-            return null;
         }
         return null;
     }
@@ -694,34 +713,32 @@ public final class Version {
                 new Task<String>() {
                     @Override
                     protected String call() throws Exception {
-                        final Duration timeout = Duration.ofSeconds(1L);
                         // 使用可以访问的地址
-                        final InetAddress inetAddress = reachableAddress((int) timeout.toMillis());
+                        final InetAddress inetAddress = reachableAddress((int) Duration.ofSeconds(1L).toMillis());
                         if (inetAddress == null) {
                             return null;
                         }
                         // 根据可用的主机地址创建URI
                         final String hostName = inetAddress.getHostName();
-                        RELEASE_URI = "https://" + hostName + "/xuMingHai1/game-collection/releases";
+                        RELEASE.setOpaque("https://" + hostName + "/xuMingHai1/game-collection/releases");
                         final URI versionUri = URI.create("https://" + hostName + "/xuMingHai1/game-collection/raw/master/tetris/src/version.txt");
-                        // 暂时不保存HttpClient实例
-                        final HttpClient httpClient = HttpClient.newBuilder()
-                                .followRedirects(HttpClient.Redirect.NORMAL)
-                                .connectTimeout(timeout)
-                                .build();
-                        final HttpRequest httpRequest = HttpRequest.newBuilder(versionUri)
-                                .timeout(timeout)
-                                .build();
-                        final String body = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString())
-                                .body();
-                        final Pattern versionPattern = Pattern.compile("^v(\\d+)\\.(\\d)\\.(\\d)");
-                        final Matcher matcher = versionPattern.matcher(VERSION);
-                        final Matcher bodyMatcher = versionPattern.matcher(body);
+
+                        // 从服务器获取版本号
+                        final URLConnection urlConnection = versionUri.toURL().openConnection();
+                        urlConnection.setConnectTimeout((int) Duration.ofSeconds(3L).toMillis());
+                        urlConnection.setReadTimeout((int) Duration.ofSeconds(5L).toMillis());
+                        urlConnection.connect();
+                        final String version = new String(urlConnection.getInputStream().readAllBytes());
+                        urlConnection.getInputStream().close();
+
+                        // 匹配版本号
+                        final Matcher matcher = VERSION_PATTERN.matcher(VERSION);
+                        final Matcher bodyMatcher = VERSION_PATTERN.matcher(version);
                         if (matcher.matches() && bodyMatcher.matches()) {
                             final int remoteVersion = Integer.parseInt(bodyMatcher.group(1) + bodyMatcher.group(2) + bodyMatcher.group(3));
                             final int localVersion = Integer.parseInt(matcher.group(1) + matcher.group(2) + matcher.group(3));
                             if (remoteVersion > localVersion) {
-                                return body;
+                                return version;
                             }
                         }
                         return null;

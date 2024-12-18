@@ -723,7 +723,7 @@ public class TetrisApplication extends Application {
                     ButtonType.APPLY);
             alert.setHeaderText("有新的版本更新");
             alert.initOwner(primaryStage);
-            alert.showAndWait().ifPresent(_ -> super.getHostServices().showDocument(Version.RELEASE_URI));
+            alert.showAndWait().ifPresent(_ -> super.getHostServices().showDocument(Version.releaseUri()));
         });
     }
 }
