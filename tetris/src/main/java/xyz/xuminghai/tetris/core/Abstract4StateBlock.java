@@ -672,7 +672,7 @@ sealed abstract class Abstract4StateBlock extends AbstractBlock
                 break;
             }
             default:
-                throw new IllegalStateException("J块未知状态，state = " + state);
+                throw new IllegalStateException("未知状态，state = " + state);
         }
 
         return super.cells;
@@ -702,7 +702,7 @@ sealed abstract class Abstract4StateBlock extends AbstractBlock
                 break;
             }
             default:
-                throw new IllegalStateException("J块未知状态，state = " + state);
+                throw new IllegalStateException("未知状态，state = " + state);
         }
 
         return super.cells;
