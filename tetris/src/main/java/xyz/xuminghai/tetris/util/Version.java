@@ -640,6 +640,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 /**
  * 2024/3/14 2:26 星期四<br/>
@@ -652,37 +653,51 @@ public final class Version {
     /**
      * 版本规制，采用十进制，逢十进小数点前一位
      */
-    public static final String VERSION = "v0.1.0";
-
-    /**
-     * 版本格式匹配
-     */
-    private static final Pattern VERSION_PATTERN = Pattern.compile("^v(\\d+)\\.(\\d)\\.(\\d)");
+    public static final String VERSION = "v0.0.8";
 
     /**
      * 发布地址，默认为github
      */
     private static final AtomicReference<String> RELEASE = new AtomicReference<>("https://github.com/xuMingHai1/game-collection/releases");
 
-    private static final List<String> HOST_LIST = List.of(
-            "github.com",
-            "gitee.com"
-    );
+    private static class VersionDataHolder {
 
-    private static final List<InetAddress> INET_ADDRESS_LIST;
+        /**
+         * 版本格式匹配
+         */
+        private static final Pattern VERSION_PATTERN = Pattern.compile("^v(\\d+)\\.(\\d)\\.(\\d)");
 
-    static {
-        INET_ADDRESS_LIST = HOST_LIST.stream()
-                .map(host -> {
-                    try {
-                        return InetAddress.getByName(host);
+        private static final List<InetAddress> INET_ADDRESS_LIST;
+
+        static {
+            INET_ADDRESS_LIST = Stream.of(
+                            "github.com",
+                            "gitee.com"
+                    ).map(host -> {
+                        try {
+                            return InetAddress.getByName(host);
+                        }
+                        catch (UnknownHostException _) {
+                            return null;
+                        }
+                    })
+                    .filter(Objects::nonNull)
+                    .toList();
+        }
+
+        private static InetAddress reachableAddress(int timeout) {
+            // 获取可访问主机
+            for (InetAddress inetAddress : INET_ADDRESS_LIST) {
+                try {
+                    if (inetAddress.isReachable(timeout)) {
+                        return inetAddress;
                     }
-                    catch (UnknownHostException _) {
-                        return null;
-                    }
-                })
-                .filter(Objects::nonNull)
-                .toList();
+                }
+                catch (IOException _) {
+                }
+            }
+            return null;
+        }
     }
 
     private Version() {
@@ -692,19 +707,6 @@ public final class Version {
         return RELEASE.getOpaque();
     }
 
-    private static InetAddress reachableAddress(int timeout) {
-        // 获取可访问主机
-        for (InetAddress inetAddress : INET_ADDRESS_LIST) {
-            try {
-                if (inetAddress.isReachable(timeout)) {
-                    return inetAddress;
-                }
-            }
-            catch (IOException _) {
-            }
-        }
-        return null;
-    }
 
     public static void checkUpdate(Consumer<String> consumer) {
         // 只运行一次
@@ -714,7 +716,7 @@ public final class Version {
                     @Override
                     protected String call() throws Exception {
                         // 使用可以访问的地址
-                        final InetAddress inetAddress = reachableAddress((int) Duration.ofSeconds(1L).toMillis());
+                        final InetAddress inetAddress = VersionDataHolder.reachableAddress((int) Duration.ofSeconds(1L).toMillis());
                         if (inetAddress == null) {
                             return null;
                         }
@@ -732,8 +734,8 @@ public final class Version {
                         urlConnection.getInputStream().close();
 
                         // 匹配版本号
-                        final Matcher matcher = VERSION_PATTERN.matcher(VERSION);
-                        final Matcher bodyMatcher = VERSION_PATTERN.matcher(version);
+                        final Matcher matcher = VersionDataHolder.VERSION_PATTERN.matcher(VERSION);
+                        final Matcher bodyMatcher = VersionDataHolder.VERSION_PATTERN.matcher(version);
                         if (matcher.matches() && bodyMatcher.matches()) {
                             final int remoteVersion = Integer.parseInt(bodyMatcher.group(1) + bodyMatcher.group(2) + bodyMatcher.group(3));
                             final int localVersion = Integer.parseInt(matcher.group(1) + matcher.group(2) + matcher.group(3));
