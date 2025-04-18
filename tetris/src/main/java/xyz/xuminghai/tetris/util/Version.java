@@ -629,18 +629,14 @@ package xyz.xuminghai.tetris.util;
 import javafx.concurrent.Task;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.URI;
 import java.net.URLConnection;
-import java.net.UnknownHostException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Duration;
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 /**
  * 2024/3/14 2:26 星期四<br/>
@@ -653,60 +649,36 @@ public final class Version {
     /**
      * 版本规制，采用十进制，逢十进小数点前一位
      */
-    public static final String VERSION = "v0.0.8";
+    public static final String VERSION;
 
-    /**
-     * 发布地址，默认为github
-     */
-    private static final AtomicReference<String> RELEASE = new AtomicReference<>("https://github.com/xuMingHai1/game-collection/releases");
-
-    private static class VersionDataHolder {
-
-        /**
-         * 版本格式匹配
-         */
-        private static final Pattern VERSION_PATTERN = Pattern.compile("^v(\\d+)\\.(\\d)\\.(\\d)");
-
-        private static final List<InetAddress> INET_ADDRESS_LIST;
-
-        static {
-            INET_ADDRESS_LIST = Stream.of(
-                            "github.com",
-                            "gitee.com"
-                    ).map(host -> {
-                        try {
-                            return InetAddress.getByName(host);
-                        }
-                        catch (UnknownHostException _) {
-                            return null;
-                        }
-                    })
-                    .filter(Objects::nonNull)
-                    .toList();
+    static {
+        try {
+            VERSION = Files.readString(Path.of(System.getProperty("user.dir"), "tetris", "VERSION"));
         }
-
-        private static InetAddress reachableAddress(int timeout) {
-            // 获取可访问主机
-            for (InetAddress inetAddress : INET_ADDRESS_LIST) {
-                try {
-                    if (inetAddress.isReachable(timeout)) {
-                        return inetAddress;
-                    }
-                }
-                catch (IOException _) {
-                }
-            }
-            return null;
+        catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
+
+    /**
+     * 发布地址
+     */
+    public static final String RELEASE_URL = "https://github.com/xuMingHai1/game-collection/releases";
+
+    /**
+     * 版本格式匹配
+     */
+    private static final Pattern VERSION_PATTERN = Pattern.compile("^v(\\d+)\\.(\\d)\\.(\\d)");
+
+    /**
+     * 版本地址
+     */
+    private static final String VERSION_URL = "https://raw.githubusercontent.com/xuMingHai1/game-collection/master/tetris/VERSION";
+
+
 
     private Version() {
     }
-
-    public static String releaseUri() {
-        return RELEASE.getOpaque();
-    }
-
 
     public static void checkUpdate(Consumer<String> consumer) {
         // 只运行一次
@@ -715,18 +687,8 @@ public final class Version {
                 new Task<String>() {
                     @Override
                     protected String call() throws Exception {
-                        // 使用可以访问的地址
-                        final InetAddress inetAddress = VersionDataHolder.reachableAddress((int) Duration.ofSeconds(1L).toMillis());
-                        if (inetAddress == null) {
-                            return null;
-                        }
-                        // 根据可用的主机地址创建URI
-                        final String hostName = inetAddress.getHostName();
-                        RELEASE.setOpaque("https://" + hostName + "/xuMingHai1/game-collection/releases");
-                        final URI versionUri = URI.create("https://" + hostName + "/xuMingHai1/game-collection/raw/master/tetris/src/version.txt");
-
                         // 从服务器获取版本号
-                        final URLConnection urlConnection = versionUri.toURL().openConnection();
+                        final URLConnection urlConnection = URI.create(VERSION_URL).toURL().openConnection();
                         urlConnection.setConnectTimeout((int) Duration.ofSeconds(3L).toMillis());
                         urlConnection.setReadTimeout((int) Duration.ofSeconds(5L).toMillis());
                         urlConnection.connect();
@@ -734,8 +696,8 @@ public final class Version {
                         urlConnection.getInputStream().close();
 
                         // 匹配版本号
-                        final Matcher matcher = VersionDataHolder.VERSION_PATTERN.matcher(VERSION);
-                        final Matcher bodyMatcher = VersionDataHolder.VERSION_PATTERN.matcher(version);
+                        final Matcher matcher = VERSION_PATTERN.matcher(VERSION);
+                        final Matcher bodyMatcher = VERSION_PATTERN.matcher(version);
                         if (matcher.matches() && bodyMatcher.matches()) {
                             final int remoteVersion = Integer.parseInt(bodyMatcher.group(1) + bodyMatcher.group(2) + bodyMatcher.group(3));
                             final int localVersion = Integer.parseInt(matcher.group(1) + matcher.group(2) + matcher.group(3));
