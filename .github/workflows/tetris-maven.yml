@@ -1,16 +1,12 @@
 name: tetris CI
 
-on:
-  push:
-    branches:
-      - master
-    tags:
-      - 'tetris-v*'
-    paths:
-      - 'tetris/VERSION'
-      
+on: workflow_dispatch
+
 
 jobs:
   windows_job:
     runs-on: windows-latest
-    
+
+
+
+
