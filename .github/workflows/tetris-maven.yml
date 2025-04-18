@@ -1,4 +1,4 @@
-name: tetris CI with Maven
+name: tetris CI
 
 on:
   push:
