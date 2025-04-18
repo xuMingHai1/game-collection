@@ -1,0 +1,16 @@
+name: tetris CI with Maven
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - 'tetris-v*'
+    paths:
+      - 'tetris/VERSION'
+      
+
+jobs:
+  windows_job:
+    runs-on: windows-latest
+    
