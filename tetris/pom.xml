@@ -622,7 +622,7 @@
   ~
   ~                      END OF TERMS AND CONDITIONS
   ~
-  ~ Copyright (C) 2024  xuMingHai 173535609@qq.com
+  ~ Copyright (C) 2024-2025 xuMingHai 173535609@qq.com
   -->
 
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -639,7 +639,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>23</maven.compiler.source>
         <maven.compiler.target>23</maven.compiler.target>
-        <javafx.version>23.0.1</javafx.version>
+        <javafx.version>23.0.2</javafx.version>
     </properties>
 
     <dependencies>
@@ -658,12 +658,36 @@
         </dependency>
     </dependencies>
 
+    <profiles>
+        <profile>
+            <id>windows</id>
+            <properties>
+                <native.platform>windows</native.platform>
+                <native.suffix>dll</native.suffix>
+            </properties>
+        </profile>
+        <profile>
+            <id>mac</id>
+            <properties>
+                <native.platform>mac</native.platform>
+                <native.suffix>dylib</native.suffix>
+            </properties>
+        </profile>
+        <profile>
+            <id>linux</id>
+            <properties>
+                <native.platform>linux</native.platform>
+                <native.suffix>so</native.suffix>
+            </properties>
+        </profile>
+    </profiles>
+
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version>
+                <version>3.14.0</version>
             </plugin>
             <plugin>
                 <groupId>org.openjfx</groupId>
@@ -681,19 +705,18 @@
             <plugin>
                 <groupId>com.gluonhq</groupId>
                 <artifactId>gluonfx-maven-plugin</artifactId>
-                <version>1.0.24</version>
+                <version>1.0.26</version>
                 <configuration>
                     <!-- 主类 -->
                     <mainClass>${main.class}</mainClass>
                     <resourcesList>
                         <resourcesList>.*\\.mp3$</resourcesList>
                         <resourcesList>.*\\.wav$</resourcesList>
-                        <resourcesList>.*\\.dll$</resourcesList>
+                        <!--suppress UnresolvedMavenProperty -->
+                        <resourcesList>native/${native.platform}/.*\\.${native.suffix}$</resourcesList>
                     </resourcesList>
                     <nativeImageArgs>
-                        <nativeImageArg>--initialize-at-build-time=xyz.xuminghai.tetris</nativeImageArg>
-                        <nativeImageArg>--initialize-at-build-time=jdk.random.Xoroshiro128PlusPlus</nativeImageArg>
-                        <nativeImageArg>--initialize-at-build-time=javafx.scene.input.KeyCode</nativeImageArg>
+                        <nativeImageArg>--verbose</nativeImageArg>
                     </nativeImageArgs>
                     <!-- 发布配置 -->
                     <releaseConfiguration>
