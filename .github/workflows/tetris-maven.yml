@@ -7,7 +7,7 @@ jobs:
   windows_job:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@latest
+      - uses: actions/checkout@v4
 
       # Setup the Windows build environment
       - name: Add msbuild to PATH
