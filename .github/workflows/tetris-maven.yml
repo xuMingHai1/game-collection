@@ -24,17 +24,17 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Make staging directory
-        run: mkdir staging
+      - name: Make native-image directory
+        run: New-Item -Path "native-image" -ItemType Directory
 
       - name: Gluon Build
         run: mvn -Pwindows gluonfx:build
 
-      - name: Copy native image to staging
-        run: cp -r ./target/gluonfx/x86_64-windows/tetris.exe staging
+      - name: Copy native image to native-image directory
+        run: Copy-Item -Path "target/gluonfx/x86_64-windows/tetris.exe" -Destination "native-image/"
 
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: Package
-          path: staging
+          name: tetris-artifact
+          path: native-image/tetris.exe
