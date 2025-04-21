@@ -37,4 +37,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tetris-artifact
-          path: native-image/tetris.exe
+          path: target/
