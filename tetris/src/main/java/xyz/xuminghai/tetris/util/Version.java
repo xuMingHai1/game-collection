@@ -630,10 +630,13 @@ import javafx.concurrent.Task;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -653,9 +656,11 @@ public final class Version {
 
     static {
         try {
-            VERSION = Files.readString(Path.of(System.getProperty("user.dir"), "VERSION"));
+            final URL versionUrl = Version.class.getClassLoader().getResource("VERSION");
+            Objects.requireNonNull(versionUrl, "VERSION is null");
+            VERSION = Files.readString(Paths.get(versionUrl.toURI()));
         }
-        catch (IOException e) {
+        catch (IOException | URISyntaxException e) {
             throw new RuntimeException(e);
         }
     }
@@ -673,7 +678,7 @@ public final class Version {
     /**
      * 版本地址
      */
-    private static final String VERSION_URL = "https://raw.githubusercontent.com/xuMingHai1/game-collection/master/tetris/VERSION";
+    private static final String VERSION_URL = "https://raw.githubusercontent.com/xuMingHai1/game-collection/master/tetris/src/main/resourcesVERSION";
 
 
 
