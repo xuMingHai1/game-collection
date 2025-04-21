@@ -653,7 +653,7 @@ public final class Version {
 
     static {
         try {
-            VERSION = Files.readString(Path.of(System.getProperty("user.dir"), "tetris", "VERSION"));
+            VERSION = Files.readString(Path.of(System.getProperty("user.dir"), "VERSION"));
         }
         catch (IOException e) {
             throw new RuntimeException(e);
