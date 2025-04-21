@@ -25,7 +25,7 @@ jobs:
         run: mkdir staging
 
       - name: Gluon Build
-        run: mvn -Pwindows gluonfx:build
+        run: mvn gluonfx:build -Pwindows
 
       - name: Copy native image to staging
         run: cp -r target/gluonfx/x86_64-windows/tetris.exe staging
