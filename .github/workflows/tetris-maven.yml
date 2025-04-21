@@ -6,7 +6,32 @@ on: workflow_dispatch
 jobs:
   windows_job:
     runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@latest
 
+      # Setup the Windows build environment
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v2
 
+      - name: Visual Studio shell
+        uses: egor-tensin/vs-shell@v2
 
+      - name: Setup GraalVM built by Gluon
+        uses: gluonhq/setup-graalvm@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Make staging directory
+        run: mkdir staging
+
+      - name: Gluon Build
+        run: mvn -Pwindows gluonfx:build
+
+      - name: Copy native image to staging
+        run: cp -r target/gluonfx/x86_64-windows/tetris.exe staging
+
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: Package
+          path: staging
