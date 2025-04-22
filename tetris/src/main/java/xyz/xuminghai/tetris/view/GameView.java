@@ -779,7 +779,7 @@ public class GameView extends BorderPane {
 
     private void setLocalText(Locale locale) {
         // 设置本地化语言
-        final ResourceBundle resourceBundle = ResourceBundle.getBundle("i18n/text", locale);
+        final ResourceBundle resourceBundle = ResourceBundle.getBundle("i18n.text", locale);
 
         // 操作语言
         instructionLabel.setText(resourceBundle.getString("instruction"));

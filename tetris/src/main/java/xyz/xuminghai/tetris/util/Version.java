@@ -656,7 +656,7 @@ public final class Version {
 
     static {
         try {
-            final URL versionUrl = Version.class.getClassLoader().getResource("VERSION");
+            final URL versionUrl = ClassLoader.getSystemResource("VERSION");
             Objects.requireNonNull(versionUrl, "VERSION is null");
             VERSION = Files.readString(Paths.get(versionUrl.toURI()));
         }
