@@ -27,8 +27,11 @@ jobs:
       - name: Make native-image directory
         run: New-Item -Path "native-image" -ItemType Directory
 
-      - name: Gluon Build
-        run: mvn -Pwindows gluonfx:build
+      - name: Gluon compile
+        run: mvn -Pwindows gluonfx:compile gluonfx:link
+
+      - name: Gluon link
+        run:  mvn gluonfx:link
 
       - name: Copy native image to native-image directory
         run: Copy-Item -Path "target/gluonfx/x86_64-windows/tetris.exe" -Destination "native-image/"
