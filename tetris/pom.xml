@@ -717,6 +717,7 @@
                         <resourcesList>native/${native.platform}/.*\\.${native.suffix}$</resourcesList>
                     </resourcesList>
                     <nativeImageArgs>
+                        <nativeImageArg>--verbose</nativeImageArg>
                         <nativeImageArg>--initialize-at-build-time=xyz.xuminghai.tetris</nativeImageArg>
                         <nativeImageArg>--initialize-at-build-time=jdk.random.Xoroshiro128PlusPlus</nativeImageArg>
                         <nativeImageArg>--initialize-at-build-time=javafx.scene.input.KeyCode</nativeImageArg>
