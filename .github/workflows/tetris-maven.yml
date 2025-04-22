@@ -28,7 +28,7 @@ jobs:
         run: New-Item -Path "native-image" -ItemType Directory
 
       - name: Gluon compile
-        run: mvn -Pwindows gluonfx:compile gluonfx:link
+        run: mvn -Pwindows gluonfx:compile
 
       - name: Gluon link
         run:  mvn gluonfx:link
