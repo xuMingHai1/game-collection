@@ -712,6 +712,7 @@
                     <resourcesList>
                         <resourcesList>.*\\.mp3$</resourcesList>
                         <resourcesList>.*\\.wav$</resourcesList>
+                        <resourcesList>.*\\.properties$</resourcesList>
                         <!--suppress UnresolvedMavenProperty -->
                         <resourcesList>native/${native.platform}/.*\\.${native.suffix}$</resourcesList>
                     </resourcesList>
