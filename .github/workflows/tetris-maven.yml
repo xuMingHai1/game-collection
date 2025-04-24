@@ -27,11 +27,8 @@ jobs:
       - name: Make native-image directory
         run: New-Item -Path "native-image" -ItemType Directory
 
-      - name: Gluon compile
-        run: mvn -Pwindows gluonfx:compile
-
-      - name: Gluon link
-        run:  mvn gluonfx:link
+      - name: Gluon build
+        run: mvn -Pwindows gluonfx:build
 
       - name: Copy native image to native-image directory
         run: Copy-Item -Path "target/gluonfx/x86_64-windows/tetris.exe" -Destination "native-image/"
@@ -59,11 +56,8 @@ jobs:
       - name: Make native-image directory
         run: mkdir native-image
 
-      - name: Gluon compile
-        run: mvn -Pmac gluonfx:compile
-
-      - name: Gluon link
-        run: mvn gluonfx:link
+      - name: Gluon build
+        run: mvn -Pmac gluonfx:build
 
       - name: Copy native image to native-image directory
         run: cp -r target/gluonfx/aarch64-darwin/tetris* native-image
@@ -95,11 +89,8 @@ jobs:
       - name: Make native-image directory
         run: mkdir native-image
 
-      - name: Gluon compile
-        run: mvn -Plinux gluonfx:compile
-
-      - name: Gluon link
-        run: mvn gluonfx:link
+      - name: Gluon build
+        run: mvn -Plinux gluonfx:build
 
       - name: Copy native image to native-image directory
         run: cp -r target/gluonfx/x86_64-linux/tetris native-image

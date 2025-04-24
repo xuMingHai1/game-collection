@@ -712,9 +712,7 @@
                     </resourcesList>
                     <nativeImageArgs>
                         <nativeImageArg>--verbose</nativeImageArg>
-                        <nativeImageArg>--initialize-at-build-time=xyz.xuminghai.tetris</nativeImageArg>
-                        <nativeImageArg>--initialize-at-build-time=jdk.random.Xoroshiro128PlusPlus</nativeImageArg>
-                        <nativeImageArg>--initialize-at-build-time=javafx.scene.input.KeyCode</nativeImageArg>
+                        <nativeImageArg>--initialize-at-build-time=xyz.xuminghai.tetris.util.Version</nativeImageArg>
                     </nativeImageArgs>
                     <!-- 发布配置 -->
                     <releaseConfiguration>
