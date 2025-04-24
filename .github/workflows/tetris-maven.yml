@@ -41,3 +41,61 @@ jobs:
         with:
           name: tetris-artifact
           path: tetris/native-image/
+
+
+  mac_job:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup GraalVM built by Gluon
+        uses: gluonhq/setup-graalvm@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Make native-image directory
+        run: mkdir native-image
+
+      - name: Gluon compile
+        run: mvn -Pmac gluonfx:compile
+
+      - name: Gluon link
+        run: mvn gluonfx:link
+
+      - name: Copy native image to native-image directory
+        run: cp -r target/gluonfx/aarch64-darwin/tetris* native-image
+
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: tetris-artifact
+          path: tetris/native-image/
+
+
+  linux_job:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup GraalVM built by Gluon
+        uses: gluonhq/setup-graalvm@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Make native-image directory
+        run: mkdir native-image
+
+      - name: Gluon compile
+        run: mvn -Pmac gluonfx:compile
+
+      - name: Gluon link
+        run: mvn gluonfx:link
+
+      - name: Copy native image to native-image directory
+        run: cp -r target/gluonfx/x86_64-linux/tetris native-image
+
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: tetris-artifact
+          path: tetris/native-image/

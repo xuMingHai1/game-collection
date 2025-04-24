@@ -707,9 +707,6 @@
                     <!-- 主类 -->
                     <mainClass>${main.class}</mainClass>
                     <resourcesList>
-                        <resource>.*\\.mp3$</resource>
-                        <resource>.*\\.wav$</resource>
-                        <resource>.*\\.properties$</resource>
                         <!--suppress UnresolvedMavenProperty -->
                         <resource>.*\\.${native.suffix}$</resource>
                     </resourcesList>
@@ -719,13 +716,6 @@
                         <nativeImageArg>--initialize-at-build-time=jdk.random.Xoroshiro128PlusPlus</nativeImageArg>
                         <nativeImageArg>--initialize-at-build-time=javafx.scene.input.KeyCode</nativeImageArg>
                     </nativeImageArgs>
-                    <jniList>
-                        <jni>com.sun.media.jfxmedia.locator.ConnectionHolder</jni>
-                        <jni>com.sun.media.jfxmedia.locator.Locator</jni>
-                        <jni>com.sun.media.jfxmedia.logging.Logger</jni>
-                        <jni>com.sun.media.jfxmediaimpl.NativeMediaPlayer</jni>
-                        <jni>com.sun.media.jfxmediaimpl.platform.gstreamer.GSTMediaPlayer</jni>
-                    </jniList>
                     <!-- 发布配置 -->
                     <releaseConfiguration>
                         <description>俄罗斯方块</description>
