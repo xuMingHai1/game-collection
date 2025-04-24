@@ -39,7 +39,7 @@ jobs:
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: tetris-artifact
+          name: tetris-windows-artifact
           path: tetris/native-image/
 
 
@@ -68,7 +68,7 @@ jobs:
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: tetris-artifact
+          name: tetris-mac-artifact
           path: tetris/native-image/
 
 
@@ -101,5 +101,5 @@ jobs:
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: tetris-artifact
+          name: tetris-linux-artifact
           path: tetris/native-image/
