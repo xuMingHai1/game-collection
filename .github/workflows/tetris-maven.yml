@@ -86,7 +86,7 @@ jobs:
         run: mkdir native-image
 
       - name: Gluon compile
-        run: mvn -Pmac gluonfx:compile
+        run: mvn -Plinux gluonfx:compile
 
       - name: Gluon link
         run: mvn gluonfx:link
