@@ -675,7 +675,6 @@
             <id>linux</id>
             <properties>
                 <native.suffix>so</native.suffix>
-                <native.libc>glibc</native.libc>
             </properties>
         </profile>
     </profiles>
@@ -701,8 +700,6 @@
                     <nativeImageArgs>
                         <nativeImageArg>--verbose</nativeImageArg>
                         <nativeImageArg>--initialize-at-build-time=xyz.xuminghai.tetris.util.Version</nativeImageArg>
-                        <!--suppress UnresolvedMavenProperty -->
-                        <nativeImageArg>--libc=${native.libc}</nativeImageArg>
                     </nativeImageArgs>
                     <!-- 发布配置 -->
                     <releaseConfiguration>
