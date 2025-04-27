@@ -86,7 +86,7 @@ jobs:
 
       # Install extra required packaged on top of ubuntu-latest
       - name: Install libraries
-        run: sudo apt install libasound2-dev libavcodec-dev libavformat-dev libavutil-dev libgl-dev libgtk-3-dev libpango1.0-dev libxtst-dev build-essential libz-dev zlib1g-dev
+        run: sudo apt install libasound2-dev libavcodec-dev libavformat-dev libavutil-dev libgl-dev libgtk-3-dev libpango1.0-dev libxtst-dev
 
       - name: Make native-image directory
         run: mkdir native-image
