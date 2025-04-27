@@ -2,63 +2,47 @@
   "resources": {
     "includes": [
       {
-        "pattern": "\\QMETA-INF\/services\/java.lang.System$LoggerFinder\\E"
+        "pattern": "xyz.xuminghai.tetris:\\QVERSION\\E"
       },
       {
-        "pattern": "\\QMETA-INF\/services\/jdk.vm.ci.services.JVMCIServiceLocator\\E"
+        "pattern": "xyz.xuminghai.tetris:\\Qaudio\/bgm.mp3\\E"
       },
       {
-        "pattern": "\\Qcss\/game-view.css\\E"
+        "pattern": "xyz.xuminghai.tetris:\\Qaudio\/clear_rows.wav\\E"
       },
       {
-        "pattern": "\\Qimg\/icon.png\\E"
+        "pattern": "xyz.xuminghai.tetris:\\Qaudio\/game_over.wav\\E"
       },
       {
-        "pattern": "audio/.*\\.(mp3|wav)"
+        "pattern": "xyz.xuminghai.tetris:\\Qaudio\/level_down.wav\\E"
       },
       {
-        "pattern": "java.base:\\Qsun\/launcher\/resources\/launcher_zh.properties\\E"
+        "pattern": "xyz.xuminghai.tetris:\\Qaudio\/level_up.wav\\E"
       },
       {
-        "pattern": "java.base:\\Qsun\/launcher\/resources\/launcher_zh_Hans.properties\\E"
+        "pattern": "xyz.xuminghai.tetris:\\Qaudio\/move.wav\\E"
       },
       {
-        "pattern": "java.base:\\Qsun\/launcher\/resources\/launcher_zh_Hans_CN.properties\\E"
+        "pattern": "xyz.xuminghai.tetris:\\Qaudio\/rotate.wav\\E"
+      },
+      {
+        "pattern": "xyz.xuminghai.tetris:\\Qcss\/game-view.bss\\E"
+      },
+      {
+        "pattern": "xyz.xuminghai.tetris:\\Qcss\/game-view.css\\E"
+      },
+      {
+        "pattern": "xyz.xuminghai.tetris:\\Qi18n\/text.properties\\E"
+      },
+      {
+        "pattern": "xyz.xuminghai.tetris:\\Qi18n\/text_en.properties\\E"
+      },
+      {
+        "pattern": "xyz.xuminghai.tetris:\\Qimg\/icon.png\\E"
       }
     ]
   },
   "bundles": [
-    {
-      "name": "com.sun.javafx.tk.quantum.QuantumMessagesBundle",
-      "locales": [
-        "und",
-        "zh-CN"
-      ]
-    },
-    {
-      "name": "com\/sun\/glass\/ui\/win\/themes",
-      "locales": [
-        "de",
-        "en",
-        "es",
-        "fr",
-        "it",
-        "ja",
-        "ko",
-        "pt-BR",
-        "sv",
-        "und",
-        "zh-CN",
-        "zh-TW"
-      ]
-    },
-    {
-      "name": "com\/sun\/javafx\/scene\/control\/skin\/resources\/controls",
-      "locales": [
-        "und",
-        "zh-CN"
-      ]
-    },
     {
       "name": "i18n\/text",
       "locales": [

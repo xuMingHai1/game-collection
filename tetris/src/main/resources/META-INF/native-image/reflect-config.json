@@ -141,12 +141,11 @@
 },
 {
   "type":"java.lang.Class",
-  "methods":[{"name":"forName","parameterTypes":["java.lang.Module","java.lang.String"] }],
-  "queriedMethods":[{"name":"getModule","parameterTypes":[] }]
+  "methods":[{"name":"forName","parameterTypes":["java.lang.Module","java.lang.String"] },{"name":"getModule","parameterTypes":[] }]
 },
 {
   "type":"java.lang.Module",
-  "queriedMethods":[{"name":"getDescriptor","parameterTypes":[] },{"name":"getLayer","parameterTypes":[] },{"name":"getName","parameterTypes":[] }]
+  "methods":[{"name":"getDescriptor","parameterTypes":[] },{"name":"getLayer","parameterTypes":[] },{"name":"getName","parameterTypes":[] }]
 },
 {
   "type":"java.lang.ModuleLayer",
@@ -154,6 +153,10 @@
 },
 {
   "type":"java.lang.String"
+},
+{
+  "type":"java.lang.Thread",
+  "fields":[{"name":"threadLocalRandomProbe"}]
 },
 {
   "type":"java.net.URLConnection",
@@ -192,6 +195,24 @@
   "type":"java.util.Date"
 },
 {
+  "type":"java.util.concurrent.atomic.AtomicBoolean",
+  "fields":[{"name":"value"}]
+},
+{
+  "type":"java.util.concurrent.atomic.AtomicReference",
+  "fields":[{"name":"value"}]
+},
+{
+  "type":"java.util.concurrent.atomic.Striped64",
+  "fields":[{"name":"base"},{"name":"cellsBusy"}]
+},
+{
+  "type":"javafx.animation.AnimationTimer"
+},
+{
+  "type":"javafx.animation.Interpolator"
+},
+{
   "type":"javafx.scene.Camera"
 },
 {
@@ -211,6 +232,9 @@
 },
 {
   "type":"javafx.scene.control.Control"
+},
+{
+  "type":"javafx.scene.control.Labeled"
 },
 {
   "type":"javafx.scene.effect.Effect"
@@ -331,6 +355,10 @@
 },
 {
   "type":"sun.security.rsa.RSASignature$SHA224withRSA",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "type":"sun.security.rsa.RSASignature$SHA256withRSA",
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
