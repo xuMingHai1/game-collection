@@ -7,15 +7,6 @@
       {
         "pattern": "xyz.xuminghai.tetris:\\Qaudio\/.*\\.(mp3|wav)\\E"
       },
-      {
-        "pattern": "xyz.xuminghai.tetris:\\Qcss\/game-view.bss\\E"
-      },
-      {
-        "pattern": "xyz.xuminghai.tetris:\\Qcss\/game-view.css\\E"
-      },
-      {
-        "pattern": "xyz.xuminghai.tetris:\\Qimg\/icon.png\\E"
-      },
       { "pattern": "i18n/text(_[a-zA-Z_]+)?\\.properties" }
     ]
   },
