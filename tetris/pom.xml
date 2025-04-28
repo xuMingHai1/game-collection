@@ -693,6 +693,7 @@
                 <configuration>
                     <!-- 主类 -->
                     <mainClass>${main.class}</mainClass>
+                    <verbose>true</verbose>
                     <resourcesList>
                         <!--suppress UnresolvedMavenProperty -->
                         <resource>.*\\.${native.suffix}$</resource>
