@@ -35,10 +35,5 @@
         "pattern": "xyz.xuminghai.tetris:\\Qimg\/icon.png\\E"
       }
     ]
-  },
-  "bundles": [
-    {
-      "name": "xyz.xuminghai.tetris:i18n\/text"
-    }
-  ]
+  }
 }
