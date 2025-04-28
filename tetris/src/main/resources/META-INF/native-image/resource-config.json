@@ -33,7 +33,8 @@
       },
       {
         "pattern": "xyz.xuminghai.tetris:\\Qimg\/icon.png\\E"
-      }
+      },
+      { "pattern": "i18n/text(_[a-zA-Z_]+)?\\.properties" }
     ]
   },
   "bundles": [
