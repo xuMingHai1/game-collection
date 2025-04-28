@@ -92,7 +92,7 @@ jobs:
         run: mkdir native-image
 
       - name: Gluon build
-        run: mvn -Plinux -DlinkerArgs="-Lglibc" gluonfx:build
+        run: mvn -Plinux -DnativeImageArgs="--libc=glibc" gluonfx:build
 
       - name: Copy native image to native-image directory
         run: cp -r target/gluonfx/x86_64-linux/tetris native-image
