@@ -38,11 +38,7 @@
   },
   "bundles": [
     {
-      "name": "i18n\/text",
-      "locales": [
-        "en",
-        "und"
-      ]
+      "name": "i18n\/text"
     }
   ]
 }
