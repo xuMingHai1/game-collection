@@ -38,7 +38,7 @@
   },
   "bundles": [
     {
-      "name": "i18n\/text"
+      "name": "xyz.xuminghai.tetris:i18n\/text"
     }
   ]
 }
