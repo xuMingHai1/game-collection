@@ -32,12 +32,6 @@
         "pattern": "xyz.xuminghai.tetris:\\Qcss\/game-view.css\\E"
       },
       {
-        "pattern": "xyz.xuminghai.tetris:\\Qi18n\/text.properties\\E"
-      },
-      {
-        "pattern": "xyz.xuminghai.tetris:\\Qi18n\/text_en.properties\\E"
-      },
-      {
         "pattern": "xyz.xuminghai.tetris:\\Qimg\/icon.png\\E"
       }
     ]
