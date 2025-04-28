@@ -5,25 +5,7 @@
         "pattern": "xyz.xuminghai.tetris:\\QVERSION\\E"
       },
       {
-        "pattern": "xyz.xuminghai.tetris:\\Qaudio\/bgm.mp3\\E"
-      },
-      {
-        "pattern": "xyz.xuminghai.tetris:\\Qaudio\/clear_rows.wav\\E"
-      },
-      {
-        "pattern": "xyz.xuminghai.tetris:\\Qaudio\/game_over.wav\\E"
-      },
-      {
-        "pattern": "xyz.xuminghai.tetris:\\Qaudio\/level_down.wav\\E"
-      },
-      {
-        "pattern": "xyz.xuminghai.tetris:\\Qaudio\/level_up.wav\\E"
-      },
-      {
-        "pattern": "xyz.xuminghai.tetris:\\Qaudio\/move.wav\\E"
-      },
-      {
-        "pattern": "xyz.xuminghai.tetris:\\Qaudio\/rotate.wav\\E"
+        "pattern": "xyz.xuminghai.tetris:\\Qaudio\/.*\\.(mp3|wav)\\E"
       },
       {
         "pattern": "xyz.xuminghai.tetris:\\Qcss\/game-view.bss\\E"
