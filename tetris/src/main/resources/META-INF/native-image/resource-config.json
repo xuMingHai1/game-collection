@@ -2,12 +2,14 @@
   "resources": {
     "includes": [
       {
-        "pattern": "xyz.xuminghai.tetris:\\QVERSION\\E"
+        "pattern": "xyz.xuminghai.tetris:VERSION"
       },
       {
-        "pattern": "xyz.xuminghai.tetris:\\Qaudio\/.*\\.(mp3|wav)\\E"
+        "pattern": "xyz.xuminghai.tetris:audio\/.*\\.(mp3|wav)"
       },
-      { "pattern": "i18n/text(_[a-zA-Z_]+)?\\.properties" }
+      {
+        "pattern": "xyz.xuminghai.tetris:i18n/text(_[a-zA-Z_]+)?\\.properties"
+      }
     ]
   },
   "bundles": [
