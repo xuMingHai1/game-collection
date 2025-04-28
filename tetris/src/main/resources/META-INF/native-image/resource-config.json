@@ -38,7 +38,7 @@
   },
   "bundles": [
     {
-      "name": "xyz.xuminghai.tetris:i18n.text",
+      "name": "i18n\/text",
       "locales": [
         "en",
         "und"
