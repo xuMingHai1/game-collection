@@ -92,7 +92,7 @@ jobs:
         run: mkdir native-image
 
       - name: Gluon build
-        run: mvn -Plinux -Dgluonfx.linkerArgs="/opt/hostedtoolcache/GraalVM/gluon-23+25.1-dev-2409082136.0/x86_64/lib/svm/clibraries/linux-amd64/glibc/libjvm.a" gluonfx:build
+        run: mvn -Plinux gluonfx:build
 
       - name: Copy native image to native-image directory
         run: cp -r target/gluonfx/x86_64-linux/tetris native-image
