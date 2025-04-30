@@ -640,6 +640,7 @@
         <maven.compiler.source>23</maven.compiler.source>
         <maven.compiler.target>23</maven.compiler.target>
         <javafx.version>23.0.2</javafx.version>
+        <gluonfx.version>1.0.26</gluonfx.version>
     </properties>
 
     <dependencies>
@@ -674,6 +675,7 @@
         <profile>
             <id>linux</id>
             <properties>
+                <gluonfx.version>1.0.25</gluonfx.version>
                 <native.suffix>so</native.suffix>
             </properties>
         </profile>
@@ -689,7 +691,7 @@
             <plugin>
                 <groupId>com.gluonhq</groupId>
                 <artifactId>gluonfx-maven-plugin</artifactId>
-                <version>1.0.25</version>
+                <version>${gluonfx.version}</version>
                 <configuration>
                     <!-- 主类 -->
                     <mainClass>${main.class}</mainClass>
