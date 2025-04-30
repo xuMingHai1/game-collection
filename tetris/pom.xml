@@ -689,7 +689,7 @@
             <plugin>
                 <groupId>com.gluonhq</groupId>
                 <artifactId>gluonfx-maven-plugin</artifactId>
-                <version>1.0.26</version>
+                <version>1.0.25</version>
                 <configuration>
                     <!-- 主类 -->
                     <mainClass>${main.class}</mainClass>
