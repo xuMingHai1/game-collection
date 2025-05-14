@@ -644,7 +644,7 @@ public class GameTimeLine extends AnimationTimer {
     static final int DEFAULT_PULSE = 500;
     private final Runnable runnable;
     private final ObjectProperty<Duration> gameTime = new SimpleObjectProperty<>(this, "gameTime", Duration.ZERO);
-    private int pulse = DEFAULT_PULSE;
+    private double pulse = DEFAULT_PULSE;
     private long lastHandleTime, lastHandleGameTime;
 
     /**
@@ -659,7 +659,7 @@ public class GameTimeLine extends AnimationTimer {
         this.runnable = runnable;
     }
 
-    void setPulse(int pulse) {
+    void setPulse(double pulse) {
         this.pulse = pulse;
     }
 

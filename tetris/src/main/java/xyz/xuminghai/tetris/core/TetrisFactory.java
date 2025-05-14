@@ -657,6 +657,10 @@ public final class TetrisFactory {
 
     private static final List<Supplier<Tetris>> BAG = new LinkedList<>();
 
+    /**
+     * 基于袋式随机生成方块
+     * @return 方块
+     */
     public static Tetris randomCreateTetris() {
         if (BAG.isEmpty()) {
             BAG.addAll(ORIGINAL_BAG);
@@ -667,6 +671,10 @@ public final class TetrisFactory {
         return tetrisSupplier.get();
     }
 
+    /**
+     * 随机生成偏亮的颜色
+     * @return Color
+     */
     public static Color randomColor() {
         return Color.color(RANDOM_GENERATOR.nextDouble(0.5, BOUND_UP),
                 RANDOM_GENERATOR.nextDouble(0.5, BOUND_UP),

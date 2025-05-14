@@ -663,20 +663,11 @@ public final class GameWorld {
         @Override
         protected void invalidated() {
             // 每消除4行进行升级
-            final int newLevel = customizeLevel + super.get() / 4;
-            if (newLevel > level.get()) {
-                AudioManager.getLevelUpAudioClip().play();
-                level.set(newLevel);
-            }
+            final int levelNum = super.get() / 4;
+            // 计算等级，排除自定义等级
+            level.set(level.get() - levelNum - 1 + levelNum);
         }
     };
-
-    /**
-     * 自定义等级
-     */
-    int customizeLevel;
-
-    private final int maxCustomizeLevel = 30;
 
     /**
      * 等级
@@ -684,10 +675,31 @@ public final class GameWorld {
     final IntegerProperty level = new SimpleIntegerProperty(this, "level") {
 
         @Override
-        protected void invalidated() {
-            if (get() < maxCustomizeLevel) {
-                gameTimeLine.setPulse(GameTimeLine.DEFAULT_PULSE - super.get() * 14);
+        public void set(int newValue) {
+            // 等级限制
+            if (newValue < 0 || newValue > 30) {
+                return;
             }
+            super.set(newValue);
+        }
+
+        @Override
+        protected void invalidated() {
+            gameTimeLine.setPulse(GameTimeLine.DEFAULT_PULSE - super.get() * 16.67);
+        }
+
+        {
+            // 音效处理
+            super.addListener((_, oldValue, newValue) -> {
+                final int oldLevel = oldValue.intValue();
+                final int newLevel = newValue.intValue();
+                if (newLevel > oldLevel) {
+                    AudioManager.getLevelUpAudioClip().play();
+                }
+                else if (newLevel < oldLevel) {
+                    AudioManager.getLevelDownAudioClip().play();
+                }
+            });
         }
     };
 
@@ -1065,22 +1077,14 @@ public final class GameWorld {
      * 等级加1
      */
     public void levelPlus() {
-        if (customizeLevel < maxCustomizeLevel) {
-            AudioManager.getLevelUpAudioClip().play();
-            final int levelValue = level.get() - customizeLevel++;
-            level.set(customizeLevel + levelValue);
-        }
+        level.set(level.get() + 1);
     }
 
     /**
      * 等级减1
      */
     public void levelMinus() {
-        if (customizeLevel > 0) {
-            AudioManager.getLevelDownAudioClip().play();
-            final int levelValue = level.get() - customizeLevel--;
-            level.set(customizeLevel + levelValue);
-        }
+        level.set(level.get() - 1);
     }
 
     /**
