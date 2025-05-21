@@ -637,6 +637,7 @@ import java.util.random.RandomGenerator;
  * 2024/2/23 13:36 星期五<br/>
  * 俄罗斯方块工厂类
  *
+ * <p>该类不是线程安全的</p>
  * @author xuMingHai
  */
 public final class TetrisFactory {
@@ -666,8 +667,7 @@ public final class TetrisFactory {
             BAG.addAll(ORIGINAL_BAG);
         }
         final int index = RANDOM_GENERATOR.nextInt(BAG.size());
-        final Supplier<Tetris> tetrisSupplier = BAG.get(index);
-        BAG.remove(index);
+        final Supplier<Tetris> tetrisSupplier = BAG.remove(index);
         return tetrisSupplier.get();
     }
 
