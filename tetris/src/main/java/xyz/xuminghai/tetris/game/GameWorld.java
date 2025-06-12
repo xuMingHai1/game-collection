@@ -660,12 +660,21 @@ public final class GameWorld {
      * 消掉的行数
      */
     final IntegerProperty lines = new SimpleIntegerProperty(this, "lines") {
+
+        /**
+         *  当前行等级
+         */
+        private int currentLineLevel;
+
         @Override
         protected void invalidated() {
             // 每消除4行进行升级
             final int levelNum = super.get() / 4;
-            // 计算等级，排除自定义等级
-            level.set(level.get() - levelNum - 1 + levelNum);
+            if (levelNum > currentLineLevel) {
+                // 计算等级，排除自定义等级
+                levelPlus();
+                currentLineLevel = levelNum;
+            }
         }
     };
 
@@ -691,13 +700,15 @@ public final class GameWorld {
         {
             // 音效处理
             super.addListener((_, oldValue, newValue) -> {
-                final int oldLevel = oldValue.intValue();
-                final int newLevel = newValue.intValue();
-                if (newLevel > oldLevel) {
-                    AudioManager.getLevelUpAudioClip().play();
-                }
-                else if (newLevel < oldLevel) {
-                    AudioManager.getLevelDownAudioClip().play();
+                if (gameActive) {
+                    final int oldLevel = oldValue.intValue();
+                    final int newLevel = newValue.intValue();
+                    if (newLevel > oldLevel) {
+                        AudioManager.getLevelUpAudioClip().play();
+                    }
+                    else if (newLevel < oldLevel) {
+                        AudioManager.getLevelDownAudioClip().play();
+                    }
                 }
             });
         }
