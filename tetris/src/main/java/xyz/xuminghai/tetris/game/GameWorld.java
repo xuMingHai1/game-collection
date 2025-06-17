@@ -754,8 +754,6 @@ public final class GameWorld {
                 if (lastCells == null || lastCells.length < 4) {
                     currentTetris.set(null);
                     currentCells.set(null);
-                    // 游戏时间记录关闭
-                    gameTimeLine.setGameTimeRecord(false);
                     // 游戏结束动画
                     gameTimeLine.setGameAnimation(new GameOverAnimation(GameWorld.this));
                     AudioManager.getBgmMediaPlayer().stop();
@@ -896,8 +894,8 @@ public final class GameWorld {
         return language;
     }
 
-    public ReadOnlyObjectProperty<Duration> gameTimeProperty() {
-        return gameTimeLine.gameTimeProperty();
+    public ReadOnlyObjectProperty<Duration> gameDurationProperty() {
+        return gameTimeLine.gameDurationProperty();
     }
 
     public ReadOnlyObjectProperty<List<Cell>> clearCellProperty() {

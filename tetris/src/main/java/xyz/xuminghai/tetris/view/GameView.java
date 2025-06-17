@@ -626,7 +626,6 @@
 
 package xyz.xuminghai.tetris.view;
 
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
@@ -705,32 +704,6 @@ public class GameView extends BorderPane {
         super.setRight(rightVBox);
     }
 
-    /**
-     * 游戏时间格式
-     *
-     * @return 游戏时间
-     */
-    private ObservableValue<String> gameTimeProperty() {
-        return gameWorld.gameTimeProperty().map(duration -> {
-            final StringBuilder stringBuilder = new StringBuilder("00:00:00".length());
-            final long hours = duration.toHours();
-            if (hours < 10) {
-                stringBuilder.append(0);
-            }
-            stringBuilder.append(hours).append(':');
-            final int minutesPart = duration.toMinutesPart();
-            if (minutesPart < 10) {
-                stringBuilder.append(0);
-            }
-            stringBuilder.append(minutesPart).append(':');
-            final int secondsPart = duration.toSecondsPart();
-            if (secondsPart < 10) {
-                stringBuilder.append(0);
-            }
-            stringBuilder.append(secondsPart);
-            return stringBuilder.toString();
-        });
-    }
 
     private Region gameDataPane() {
         final GridPane gameDataPane = new GridPane();
@@ -747,20 +720,23 @@ public class GameView extends BorderPane {
         // 游戏分数
         final Text scoreText = new Text("Score：");
         final Text scoreValueText = new Text();
-        final NumberFormat numberFormat = NumberFormat.getIntegerInstance();
         scoreValueText.textProperty().bind(gameWorld.scoreProperty()
-                .map(numberFormat::format));
+                .map(NumberFormat.getIntegerInstance()::format));
         gameDataPane.addRow(1, scoreText, scoreValueText);
         GridPane.setValignment(scoreText, VPos.TOP);
         GridPane.setHalignment(scoreValueText, HPos.RIGHT);
 
-        // 游戏时间
-        final Text gameTimeText = new Text("GameTime：");
-        final Text gameTimeValueText = new Text();
-        gameTimeValueText.textProperty().bind(gameTimeProperty());
-        gameDataPane.addRow(2, gameTimeText, gameTimeValueText);
-        GridPane.setValignment(gameTimeText, VPos.TOP);
-        GridPane.setHalignment(gameTimeValueText, HPos.RIGHT);
+        // 游戏时长
+        final Text gameDurationText = new Text("GameDuration：");
+        final Text gameDurationValueText = new Text();
+        gameDurationValueText.textProperty().bind(gameWorld.gameDurationProperty()
+                .map(duration -> "%02d:%02d:%02d.%03d"
+                        .formatted(duration.toHours(), duration.toMinutesPart(), duration.toSecondsPart(), duration.toMillisPart())
+                )
+        );
+        gameDataPane.addRow(2, gameDurationText, gameDurationValueText);
+        GridPane.setValignment(gameDurationText, VPos.TOP);
+        GridPane.setHalignment(gameDurationValueText, HPos.RIGHT);
 
         return gameDataPane;
     }
@@ -825,38 +801,39 @@ public class GameView extends BorderPane {
         // 语言切换监听
         gameWorld.languageProperty().addListener((_, _, newValue) -> setLocalText(newValue));
 
+        int rowIndex = 0;
         // 操作说明
-        descriptionPane.addRow(0, instructionLabel);
+        descriptionPane.addRow(rowIndex++, instructionLabel);
         GridPane.setColumnSpan(instructionLabel, 2);
         GridPane.setHalignment(instructionLabel, HPos.CENTER);
         GridPane.setMargin(instructionLabel, new Insets(0, 0, 10, 0));
 
         // A键说明
-        descriptionPane.addRow(1, aKeyLabel, aKeyActionLabel);
+        descriptionPane.addRow(rowIndex++, aKeyLabel, aKeyActionLabel);
 
         // S键说明
-        descriptionPane.addRow(2, sKeyLabel, sKeyActionLabel);
+        descriptionPane.addRow(rowIndex++, sKeyLabel, sKeyActionLabel);
 
         // D键说明
-        descriptionPane.addRow(3, dKeyLabel, dKeyActionLabel);
+        descriptionPane.addRow(rowIndex++, dKeyLabel, dKeyActionLabel);
 
         // 左箭头键说明
-        descriptionPane.addRow(4, leftArrowKeyLabel, leftArrowKeyActionLabel);
+        descriptionPane.addRow(rowIndex++, leftArrowKeyLabel, leftArrowKeyActionLabel);
 
         // 右箭头键说明
-        descriptionPane.addRow(5, rightArrowKeyLabel, rightArrowKeyActionLabel);
+        descriptionPane.addRow(rowIndex++, rightArrowKeyLabel, rightArrowKeyActionLabel);
 
         // +键说明
-        descriptionPane.addRow(6, plusKeyLabel, plusKeyActionLabel);
+        descriptionPane.addRow(rowIndex++, plusKeyLabel, plusKeyActionLabel);
 
         // -键说明
-        descriptionPane.addRow(7, minusKeyLabel, minusKeyActionLabel);
+        descriptionPane.addRow(rowIndex++, minusKeyLabel, minusKeyActionLabel);
 
         // 空格键说明
-        descriptionPane.addRow(8, spaceKeyLabel, spaceKeyActionLabel);
+        descriptionPane.addRow(rowIndex++, spaceKeyLabel, spaceKeyActionLabel);
 
         // Control + Tab键说明
-        descriptionPane.addRow(9, new Label("Ctrl + Tab"), new Label("中文/English"));
+        descriptionPane.addRow(rowIndex, new Label("Ctrl + Tab"), new Label("中文/English"));
 
         // 添加提示
         descriptionPane.getChildren().forEach(node -> {

@@ -725,10 +725,8 @@ public class GameOverAnimation implements GameTimer {
         gameWorld.level.set(0);
         // 重置分数
         gameWorld.score.set(0);
-        // 恢复游戏时间记录
-        gameTimeLine.setGameTimeRecord(true);
         // 重置游戏时间
-        gameTimeLine.gameTimeProperty().set(Duration.ZERO);
+        gameTimeLine.gameDurationProperty().set(Duration.ZERO);
     }
 
 }

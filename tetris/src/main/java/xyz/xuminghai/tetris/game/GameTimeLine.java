@@ -646,14 +646,9 @@ public class GameTimeLine extends AnimationTimer {
      * 游戏主线
      */
     private final Runnable gameMainLine;
-    private final ObjectProperty<Duration> gameTime = new SimpleObjectProperty<>(this, "gameTime", Duration.ZERO);
+    private final ObjectProperty<Duration> gameDuration = new SimpleObjectProperty<>(this, "gameDuration", Duration.ZERO);
     private double pulse = DEFAULT_PULSE;
     private long lastMainLineHandleTime, lastGameTimeHandleTime;
-
-    /**
-     * 游戏时间记录
-     */
-    private boolean gameTimeRecord = true;
 
     private GameTimer gameAnimation, keyCompensateTimer;
 
@@ -674,25 +669,21 @@ public class GameTimeLine extends AnimationTimer {
         this.keyCompensateTimer = keyCompensateTimer;
     }
 
-    void setGameTimeRecord(boolean gameTimeRecord) {
-        this.gameTimeRecord = gameTimeRecord;
-    }
-
-    ObjectProperty<Duration> gameTimeProperty() {
-        return gameTime;
+    ObjectProperty<Duration> gameDurationProperty() {
+        return gameDuration;
     }
 
     @Override
     public void handle(long now) {
-        // 游戏时间记录
-        if (gameTimeRecord && TimeUnit.NANOSECONDS.toSeconds(now - lastGameTimeHandleTime) >= 1L) {
-            lastGameTimeHandleTime = now;
-            final Duration duration = gameTime.get();
-            gameTime.set(duration.plusSeconds(1L));
-        }
+        // 游戏时长记录
+        gameDuration.set(gameDuration.get().plusNanos(now - lastGameTimeHandleTime));
+        lastGameTimeHandleTime = now;
+
+        // 辅助组合键处理
         if (keyCompensateTimer != null) {
             keyCompensateTimer.handle(now);
         }
+
         if (gameAnimation != null) {
             gameAnimation.handle(now);
         }
@@ -706,4 +697,9 @@ public class GameTimeLine extends AnimationTimer {
     }
 
 
+    @Override
+    public void start() {
+        lastGameTimeHandleTime = System.nanoTime();
+        super.start();
+    }
 }
