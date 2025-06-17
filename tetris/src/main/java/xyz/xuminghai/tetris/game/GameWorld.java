@@ -805,7 +805,7 @@ public final class GameWorld {
         private List<Cell[]> getRemoveRow(Cell[] cells) {
             // 获取可消除的行
             final Set<Integer> collect = Arrays.stream(cells).map(Cell::getRow).collect(Collectors.toSet());
-            List<Cell[]> list = new LinkedList<>();
+            final List<Cell[]> list = new LinkedList<>();
             for (Integer index : collect) {
                 final Cell[] dataRow = data[index];
                 // 判断是否是可消除的行
@@ -931,7 +931,7 @@ public final class GameWorld {
         for (Cell cell : cells) {
             if (cell.getRow() < 0) {
                 // 未显示的方块，如果列不符合
-                if (cell.getCol() < 0 || cell.getCol() >= getCols()) {
+                if (cell.getCol() < 0 || cell.getCol() >= cols) {
                     return new Cell[0];
                 }
                 convertable = true;

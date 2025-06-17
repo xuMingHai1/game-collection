@@ -642,10 +642,13 @@ import java.util.concurrent.TimeUnit;
 public class GameTimeLine extends AnimationTimer {
 
     static final int DEFAULT_PULSE = 500;
-    private final Runnable runnable;
+    /**
+     * 游戏主线
+     */
+    private final Runnable gameMainLine;
     private final ObjectProperty<Duration> gameTime = new SimpleObjectProperty<>(this, "gameTime", Duration.ZERO);
     private double pulse = DEFAULT_PULSE;
-    private long lastHandleTime, lastHandleGameTime;
+    private long lastMainLineHandleTime, lastGameTimeHandleTime;
 
     /**
      * 游戏时间记录
@@ -655,8 +658,8 @@ public class GameTimeLine extends AnimationTimer {
     private GameTimer gameAnimation, keyCompensateTimer;
 
 
-    GameTimeLine(Runnable runnable) {
-        this.runnable = runnable;
+    GameTimeLine(Runnable gameMainLine) {
+        this.gameMainLine = gameMainLine;
     }
 
     void setPulse(double pulse) {
@@ -682,8 +685,8 @@ public class GameTimeLine extends AnimationTimer {
     @Override
     public void handle(long now) {
         // 游戏时间记录
-        if (gameTimeRecord && TimeUnit.NANOSECONDS.toSeconds(now - lastHandleGameTime) >= 1L) {
-            lastHandleGameTime = now;
+        if (gameTimeRecord && TimeUnit.NANOSECONDS.toSeconds(now - lastGameTimeHandleTime) >= 1L) {
+            lastGameTimeHandleTime = now;
             final Duration duration = gameTime.get();
             gameTime.set(duration.plusSeconds(1L));
         }
@@ -694,10 +697,10 @@ public class GameTimeLine extends AnimationTimer {
             gameAnimation.handle(now);
         }
         else {
-            final long handleMillis = TimeUnit.NANOSECONDS.toMillis(now - lastHandleTime);
+            final long handleMillis = TimeUnit.NANOSECONDS.toMillis(now - lastMainLineHandleTime);
             if (handleMillis >= pulse) {
-                lastHandleTime = now;
-                runnable.run();
+                lastMainLineHandleTime = now;
+                gameMainLine.run();
             }
         }
     }
