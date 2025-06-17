@@ -730,8 +730,8 @@ public class GameView extends BorderPane {
         final Text gameDurationText = new Text("GameDuration：");
         final Text gameDurationValueText = new Text();
         gameDurationValueText.textProperty().bind(gameWorld.gameDurationProperty()
-                .map(duration -> "%02d:%02d:%02d.%03d"
-                        .formatted(duration.toHours(), duration.toMinutesPart(), duration.toSecondsPart(), duration.toMillisPart())
+                .map(duration -> "%02d:%02d:%02d"
+                        .formatted(duration.toHours(), duration.toMinutesPart(), duration.toSecondsPart())
                 )
         );
         gameDataPane.addRow(2, gameDurationText, gameDurationValueText);

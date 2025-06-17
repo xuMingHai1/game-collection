@@ -648,6 +648,7 @@
 #right-v-box {
     -fx-background-color: burlywood;
     -fx-spacing: 20;
+    -fx-max-width: 100;
 }
 
 #game-data-pane {
@@ -663,12 +664,6 @@
     -fx-vgap: 5;
     -fx-font-size: 15;
 }
-
-
-#description-pane > .label {
-    -fx-max-width: 80;
-}
-
 
 #version-hyperlink {
     -fx-font-size: 15;
