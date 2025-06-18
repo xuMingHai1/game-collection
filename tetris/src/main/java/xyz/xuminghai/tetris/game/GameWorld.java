@@ -668,8 +668,8 @@ public final class GameWorld {
 
         @Override
         protected void invalidated() {
-            // 每消除4行进行升级
-            final int levelNum = super.get() / 4;
+            // 每消除10行进行升级
+            final int levelNum = super.get() / 10;
             if (levelNum > currentLineLevel) {
                 // 计算等级，排除自定义等级
                 levelPlus();
@@ -717,7 +717,7 @@ public final class GameWorld {
     /**
      * 分数
      */
-    final IntegerProperty score = new SimpleIntegerProperty(this, "score");
+    final LongProperty score = new SimpleLongProperty(this, "score");
 
     /**
      * 语言
@@ -790,13 +790,13 @@ public final class GameWorld {
          */
         private void calculateScore(int size) {
             int initScore = switch (size) {
-                case 1 -> 10;
-                case 2 -> 30;
-                case 3 -> 60;
-                case 4 -> 100;
+                case 1 -> 40;
+                case 2 -> 100;
+                case 3 -> 300;
+                case 4 -> 1200;
                 default -> throw new IllegalStateException("Unexpected value: " + size);
             };
-            score.set(score.get() + Math.max(1, level.get()) * initScore);
+            score.set(score.get() + Math.max(1L, level.get()) * initScore);
         }
 
 
@@ -882,7 +882,7 @@ public final class GameWorld {
         return lines;
     }
 
-    public ReadOnlyIntegerProperty scoreProperty() {
+    public ReadOnlyLongProperty scoreProperty() {
         return score;
     }
 

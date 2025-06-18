@@ -657,6 +657,7 @@ final class AudioManager {
         return BgmMediaPlayerHolder.BGM_MEDIA_PLAYER;
     }
 
+
     private static final class ClearRowAudioClipHolder {
         private static final AudioClip CLEAR_ROW_AUDIO_CLIP = new AudioClip(Objects.requireNonNull(AudioManager.class.getResource("/audio/clear_rows.wav")).toExternalForm());
     }
