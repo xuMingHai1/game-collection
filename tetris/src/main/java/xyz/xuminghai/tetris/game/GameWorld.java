@@ -722,7 +722,7 @@ public final class GameWorld {
     /**
      * 语言
      */
-    private final ObjectProperty<Locale> language = new SimpleObjectProperty<>(this, "language", Locale.getDefault());
+    private final ObjectProperty<Locale> language = new SimpleObjectProperty<>(this, "language", Locale.CHINA);
 
     private final int rows = 20, cols = 10;
 
