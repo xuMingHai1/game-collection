@@ -710,6 +710,8 @@
                         <vendor>xyz.xuminghai</vendor>
                         <version>${project.version}</version>
                     </releaseConfiguration>
+                    <!-- 软件渲染 -->
+                    <enableSWRendering>true</enableSWRendering>
                 </configuration>
             </plugin>
         </plugins>
