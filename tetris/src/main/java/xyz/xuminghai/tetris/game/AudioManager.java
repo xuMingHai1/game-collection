@@ -641,7 +641,7 @@ import java.util.Objects;
 final class AudioManager {
 
     private static final class BgmMediaPlayerHolder {
-        private static final MediaPlayer BGM_MEDIA_PLAYER = new MediaPlayer(new Media(Objects.requireNonNull(AudioManager.class.getResource("/audio/bgm.mp3")).toExternalForm()));
+        private static final MediaPlayer BGM_MEDIA_PLAYER = new MediaPlayer(new Media(Objects.requireNonNull(AudioManager.class.getResource("/audio/bgm.wav")).toExternalForm()));
 
         static {
             BGM_MEDIA_PLAYER.setCycleCount(MediaPlayer.INDEFINITE);
