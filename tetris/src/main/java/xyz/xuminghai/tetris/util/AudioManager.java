@@ -624,7 +624,7 @@
  * Copyright (C) 2024-2025 xuMingHai 173535609@qq.com
  */
 
-package xyz.xuminghai.tetris.game;
+package xyz.xuminghai.tetris.util;
 
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
@@ -638,7 +638,7 @@ import java.util.Objects;
  *
  * @author xuMingHai
  */
-final class AudioManager {
+public final class AudioManager {
 
     private static final class BgmMediaPlayerHolder {
         private static final MediaPlayer BGM_MEDIA_PLAYER = new MediaPlayer(new Media(Objects.requireNonNull(AudioManager.class.getResource("/audio/bgm.wav")).toExternalForm()));

@@ -14,7 +14,7 @@
  *   The licenses for most software and other practical works are designed
  * to take away your freedom to share and change the works.  By contrast,
  * the GNU General Public License is intended to guarantee your freedom to
- * share and change all versions of a program-to make sure it remains free
+ * share and change all versions of a program--to make sure it remains free
  * software for all its users.  We, the Free Software Foundation, use the
  * GNU General Public License for most of our software; it applies also to
  * any other work released this way by its authors.  You can apply it to
@@ -621,114 +621,63 @@
  *
  *                      END OF TERMS AND CONDITIONS
  *
- * Copyright (C) 2024-2025 xuMingHai 173535609@qq.com
+ * Copyright (C) 2024  xuMingHai 173535609@qq.com
  */
 
 package xyz.xuminghai.tetris.game;
 
-import javafx.scene.paint.Color;
 import xyz.xuminghai.tetris.core.Cell;
 
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.util.Arrays;
+import java.util.StringJoiner;
 
 /**
- * 2024/3/2 17:28 星期六<br/>
- * 游戏结束动画
+ * 2025/6/22 14:58 星期日<br/>
+ * 游戏网格数据
  *
  * @author xuMingHai
  */
-public class GameOverAnimation implements GameTimer {
+class GameGrid {
 
-    private final Color gameOverColor = Color.LIGHTGRAY;
+    /**
+     * 行数
+     */
+    private final int rows;
 
-    private final GameWorld gameWorld;
-    private final GameGrid gameGrid;
+    /**
+     * 列数
+     */
+    private final int cols;
 
-    private final GameTimeLine gameTimeLine;
-    private final int colIndex;
-    private final int avgRow;
-    private long lastHandleTime;
-    private Cell headCell, tailCell;
+    /**
+     * 游戏数据
+     */
+    private final Cell[][] data;
 
-    public GameOverAnimation(GameWorld gameWorld) {
-        this.gameWorld = gameWorld;
-        this.gameGrid = gameWorld.gameGrid;
-        this.gameTimeLine = gameWorld.gameTimeLine;
-        int rowIndex = gameGrid.getRows() - 1;
-        this.colIndex = gameGrid.getCols() - 1;
-        this.avgRow = gameGrid.getRows() / 2;
-        this.headCell = new Cell(0, -1, gameOverColor);
-        this.tailCell = new Cell(rowIndex, gameGrid.getCols(), gameOverColor);
+    public GameGrid(int rows, int cols) {
+        this.rows = rows;
+        this.cols = cols;
+        this.data = new Cell[rows][cols];
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public int getCols() {
+        return cols;
+    }
+
+    public Cell[][] getData() {
+        return data;
     }
 
     @Override
-    public void handle(long now) {
-        if (TimeUnit.NANOSECONDS.toMillis(now - lastHandleTime) >= 20L) {
-            lastHandleTime = now;
-            int headRowIndex = headCell.getRow(),
-                    headColIndex = headCell.getCol(),
-                    tailRowIndex = tailCell.getRow(),
-                    tailColIndex = tailCell.getCol();
-            // 到达最大列
-            if (headColIndex == colIndex) {
-                headRowIndex++;
-                headColIndex = 0;
-                tailRowIndex--;
-                tailColIndex = colIndex;
-            }
-            else {
-                headColIndex++;
-                tailColIndex--;
-            }
-            // 到达平均行
-            if (headRowIndex == avgRow) {
-                List<Cell> list = new ArrayList<>(gameGrid.getRows() * gameGrid.getCols());
-                for (int i = 0; i < gameGrid.getRows(); i++) {
-                    for (int j = 0; j < gameGrid.getCols(); j++) {
-                        list.add(new Cell(i, j, gameOverColor));
-                    }
-                }
-                // 清除方块
-                gameWorld.clearCell.set(list);
-                // 消除引用
-                gameWorld.renderCell.set(null);
-                gameWorld.clearCell.set(null);
-                // 切换动画
-                gameTimeLine.setGameAnimation(null);
-                gameOver();
-                return;
-            }
-            // 渲染方块
-            headCell = new Cell(headRowIndex, headColIndex, gameOverColor);
-            tailCell = new Cell(tailRowIndex, tailColIndex, gameOverColor);
-            gameWorld.renderCell.set(List.of(headCell, tailCell));
-        }
+    public String toString() {
+        return new StringJoiner(", ", GameGrid.class.getSimpleName() + "[", "]")
+                .add("rows=" + rows)
+                .add("cols=" + cols)
+                .add("data=" + Arrays.toString(data))
+                .toString();
     }
-
-    /**
-     * 游戏结束，重置所有数据
-     */
-    private void gameOver() {
-        for (int i = 0; i < gameGrid.getRows(); i++) {
-            for (int j = 0; j < gameGrid.getCols(); j++) {
-                final Cell cell = gameGrid.getData()[i][j];
-                if (cell != null) {
-                    gameGrid.getData()[i][j] = null;
-                }
-            }
-        }
-        gameWorld.startOrPauseGame();
-        // 清除消除行数
-        gameWorld.lines.set(0);
-        // 重置等级
-        gameWorld.level.set(0);
-        // 重置分数
-        gameWorld.score.set(0L);
-        // 重置游戏时间
-        gameTimeLine.gameDurationProperty().set(Duration.ZERO);
-    }
-
 }

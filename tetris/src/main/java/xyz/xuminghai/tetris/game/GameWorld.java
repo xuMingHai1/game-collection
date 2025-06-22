@@ -633,6 +633,7 @@ import javafx.scene.robot.Robot;
 import xyz.xuminghai.tetris.core.Cell;
 import xyz.xuminghai.tetris.core.Tetris;
 import xyz.xuminghai.tetris.core.TetrisFactory;
+import xyz.xuminghai.tetris.util.AudioManager;
 
 import java.time.Duration;
 import java.util.*;
@@ -724,12 +725,10 @@ public final class GameWorld {
      */
     private final ObjectProperty<Locale> language = new SimpleObjectProperty<>(this, "language", Locale.CHINA);
 
-    private final int rows = 20, cols = 10;
-
     /**
-     * 游戏数据
+     * 游戏网格数据
      */
-    final Cell[][] data = new Cell[rows][cols];
+    final GameGrid gameGrid = new GameGrid(20, 10);
 
     final GameTimeLine gameTimeLine = new GameTimeLine(new Runnable() {
 
@@ -805,7 +804,7 @@ public final class GameWorld {
             final Set<Integer> collect = Arrays.stream(cells).map(Cell::getRow).collect(Collectors.toSet());
             final List<Cell[]> list = new LinkedList<>();
             for (Integer index : collect) {
-                final Cell[] dataRow = data[index];
+                final Cell[] dataRow = gameGrid.getData()[index];
                 // 判断是否是可消除的行
                 boolean clearable = true;
                 for (Cell c : dataRow) {
@@ -863,11 +862,11 @@ public final class GameWorld {
     }
 
     public int getRows() {
-        return rows;
+        return gameGrid.getRows();
     }
 
     public int getCols() {
-        return cols;
+        return gameGrid.getCols();
     }
 
     public ReadOnlyObjectProperty<Tetris> nextTetrisProperty() {
@@ -913,7 +912,7 @@ public final class GameWorld {
      */
     private void clearLastCells(Cell[] cells) {
         for (Cell cell : cells) {
-            data[cell.getRow()][cell.getCol()] = null;
+            gameGrid.getData()[cell.getRow()][cell.getCol()] = null;
         }
     }
 
@@ -929,7 +928,7 @@ public final class GameWorld {
         for (Cell cell : cells) {
             if (cell.getRow() < 0) {
                 // 未显示的方块，如果列不符合
-                if (cell.getCol() < 0 || cell.getCol() >= cols) {
+                if (cell.getCol() < 0 || cell.getCol() >= gameGrid.getCols()) {
                     return new Cell[0];
                 }
                 convertable = true;
@@ -959,11 +958,13 @@ public final class GameWorld {
         if (cells.length == 0) {
             return false;
         }
+        final Cell[][] data = gameGrid.getData();
+
         for (Cell cell : cells) {
             final int row = cell.getRow();
             final int col = cell.getCol();
             // 是否超出范围或被占用
-            if (row >= rows || col < 0 || col >= cols || data[row][col] != null) {
+            if (row >= gameGrid.getRows() || col < 0 || col >= gameGrid.getCols() || data[row][col] != null) {
                 return false;
             }
         }

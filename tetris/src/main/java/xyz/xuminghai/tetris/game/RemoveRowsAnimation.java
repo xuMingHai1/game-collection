@@ -655,7 +655,7 @@ public class RemoveRowsAnimation implements GameTimer {
     RemoveRowsAnimation(GameWorld gameWorld, List<Cell[]> removeRowList) {
         this.gameWorld = gameWorld;
         this.removeRowList = removeRowList;
-        this.data = gameWorld.data;
+        this.data = gameWorld.gameGrid.getData();
     }
 
 

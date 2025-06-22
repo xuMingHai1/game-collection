@@ -708,5 +708,4 @@ sealed abstract class Abstract4StateBlock extends AbstractBlock
         return super.cells;
     }
 
-
 }
