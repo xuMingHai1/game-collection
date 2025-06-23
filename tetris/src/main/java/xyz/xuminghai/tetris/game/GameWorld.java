@@ -636,9 +636,11 @@ import xyz.xuminghai.tetris.core.TetrisFactory;
 import xyz.xuminghai.tetris.util.AudioManager;
 
 import java.time.Duration;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * 2024/2/1 21:30 星期四<br/>
@@ -739,13 +741,13 @@ public final class GameWorld {
                 currentTetris.set(nextTetris.get());
             }
             final Tetris tetris = currentTetris.get();
-            final Cell[] cells = checkCellsRowConvert(tetris.downMove());
+            final Cell[] cells = gameGrid.checkCells(tetris.downMove());
             final Cell[] lastCells = currentCells.get();
             // 清除上次保存的数据
             Optional.ofNullable(lastCells)
-                    .ifPresent(GameWorld.this::clearLastCells);
-            if (saveCellsData(cells)) {
-                currentCells.set(checkCellsRowConvert(tetris.copy()));
+                    .ifPresent(gameGrid::clearCells);
+            if (gameGrid.saveCellsData(cells)) {
+                currentCells.set(gameGrid.checkCells(tetris.copy()));
             }
             // 添加失败
             else {
@@ -760,12 +762,12 @@ public final class GameWorld {
                 }
                 else {
                     // 保存上次方块数据
-                    saveCellsData(lastCells);
+                    gameGrid.saveCellsData(lastCells);
                     // 下落失败，清除当前方块，生成新的方块
                     currentTetris.set(null);
                     currentCells.set(null);
                     // 判断是否可以消行
-                    final List<Cell[]> removeRowList = getRemoveRow(lastCells);
+                    final List<Cell[]> removeRowList = gameGrid.getEliminatableRows(lastCells);
                     final int size = removeRowList.size();
                     if (size != 0) {
                         gameTimeLine.setGameAnimation(new RemoveRowsAnimation(GameWorld.this, removeRowList));
@@ -797,29 +799,6 @@ public final class GameWorld {
             };
             score.set(score.get() + Math.max(1L, level.get()) * initScore);
         }
-
-
-        private List<Cell[]> getRemoveRow(Cell[] cells) {
-            // 获取可消除的行
-            final Set<Integer> collect = Arrays.stream(cells).map(Cell::getRow).collect(Collectors.toSet());
-            final List<Cell[]> list = new LinkedList<>();
-            for (Integer index : collect) {
-                final Cell[] dataRow = gameGrid.getData()[index];
-                // 判断是否是可消除的行
-                boolean clearable = true;
-                for (Cell c : dataRow) {
-                    if (c == null) {
-                        clearable = false;
-                        break;
-                    }
-                }
-                if (clearable) {
-                    list.add(dataRow);
-                }
-            }
-            return list;
-        }
-
     });
 
     /**
@@ -905,79 +884,6 @@ public final class GameWorld {
         return renderCell;
     }
 
-    /**
-     * 清除上一次单元格列表数据
-     *
-     * @param cells 单元格数组
-     */
-    private void clearLastCells(Cell[] cells) {
-        for (Cell cell : cells) {
-            gameGrid.getData()[cell.getRow()][cell.getCol()] = null;
-        }
-    }
-
-    /**
-     * 检查单元格行是否超出索引并转换
-     *
-     * @param cells 单元格数组
-     * @return 原始单元格或转换后的
-     */
-    private Cell[] checkCellsRowConvert(Cell[] cells) {
-        // 是否需要转换
-        boolean convertable = false;
-        for (Cell cell : cells) {
-            if (cell.getRow() < 0) {
-                // 未显示的方块，如果列不符合
-                if (cell.getCol() < 0 || cell.getCol() >= gameGrid.getCols()) {
-                    return new Cell[0];
-                }
-                convertable = true;
-            }
-        }
-        // 需要转换
-        if (convertable) {
-            List<Cell> list = new LinkedList<>();
-            for (Cell cell : cells) {
-                if (cell.getRow() >= 0) {
-                    list.add(cell);
-                }
-            }
-            return list.toArray(new Cell[0]);
-        }
-        // 返回原始数组
-        return cells;
-    }
-
-    /**
-     * 规则检测并设置数据
-     *
-     * @param cells 单元格列表
-     * @return 是否保存数据成功
-     */
-    private boolean saveCellsData(Cell[] cells) {
-        if (cells.length == 0) {
-            return false;
-        }
-        final Cell[][] data = gameGrid.getData();
-
-        for (Cell cell : cells) {
-            final int row = cell.getRow();
-            final int col = cell.getCol();
-            // 是否超出范围或被占用
-            if (row >= gameGrid.getRows() || col < 0 || col >= gameGrid.getCols() || data[row][col] != null) {
-                return false;
-            }
-        }
-
-        // 保存数据
-        for (Cell cell : cells) {
-            final int row = cell.getRow();
-            final int col = cell.getCol();
-            data[row][col] = cell;
-        }
-        return true;
-    }
-
 
     /**
      * 启动或暂停游戏
@@ -1025,17 +931,17 @@ public final class GameWorld {
         final Tetris tetris = currentTetris.get();
         if (tetris != null) {
             final Cell[] copyCells = tetris.copy();
-            final Cell[] cells = checkCellsRowConvert(function.apply(tetris));
+            final Cell[] cells = gameGrid.checkCells(function.apply(tetris));
             // 不相同时执行
             if (!Arrays.equals(copyCells, cells)) {
                 // 清除上次保存的数据
-                clearLastCells(currentCells.get());
-                if (saveCellsData(cells)) {
+                gameGrid.clearCells(currentCells.get());
+                if (gameGrid.saveCellsData(cells)) {
                     switch (action) {
                         case DOWN_MOVE, LEIF_MOVE, RIGHT_MOVE -> AudioManager.getMoveAudioClip().play();
                         case ROTATE_CLOCKWISE, ROTATE_COUNTER_CLOCKWISE -> AudioManager.getRotateAudioClip().play();
                     }
-                    currentCells.set(checkCellsRowConvert(tetris.copy()));
+                    currentCells.set(gameGrid.checkCells(tetris.copy()));
                 }
                 else {
                     tetris.setCells(copyCells);

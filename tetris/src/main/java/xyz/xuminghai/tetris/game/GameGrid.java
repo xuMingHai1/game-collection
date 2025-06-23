@@ -628,8 +628,8 @@ package xyz.xuminghai.tetris.game;
 
 import xyz.xuminghai.tetris.core.Cell;
 
-import java.util.Arrays;
-import java.util.StringJoiner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 2025/6/22 14:58 星期日<br/>
@@ -655,6 +655,9 @@ class GameGrid {
     private final Cell[][] data;
 
     public GameGrid(int rows, int cols) {
+        if (rows <= 0 || cols <= 0) {
+            throw new IllegalArgumentException("rows and cols must be greater than 0");
+        }
         this.rows = rows;
         this.cols = cols;
         this.data = new Cell[rows][cols];
@@ -680,4 +683,110 @@ class GameGrid {
                 .add("data=" + Arrays.toString(data))
                 .toString();
     }
+
+    /**
+     * 清除单元格数据
+     *
+     * @param cells 需要清除的单元格
+     */
+    public void clearCells(Cell[] cells) {
+        for (Cell cell : cells) {
+            Objects.requireNonNull(cell);
+            data[cell.getRow()][cell.getCol()] = null;
+        }
+    }
+
+
+    /**
+     * 根据单元格数据，获取可消除行的数据
+     *
+     * @param cells 单元格数据
+     * @return 可消除行数据，不为null
+     */
+    public List<Cell[]> getEliminatableRows(Cell[] cells) {
+        // 获取可消除的行
+        final Set<Integer> rowIndexCollect = Arrays.stream(cells).map(Cell::getRow).collect(Collectors.toSet());
+        final List<Cell[]> list = new LinkedList<>();
+
+        for (Integer index : rowIndexCollect) {
+            final Cell[] dataRow = data[index];
+            // 判断是否是可消除的行
+            boolean eliminatable = true;
+            for (Cell c : dataRow) {
+                if (c == null) {
+                    eliminatable = false;
+                    break;
+                }
+            }
+            if (eliminatable) {
+                list.add(dataRow);
+            }
+        }
+
+        return list;
+    }
+
+
+    /**
+     * 检查单元格是否超出索引
+     *
+     * @param cells 单元格
+     * @return 通过检查的单元格，不为null
+     */
+    public Cell[] checkCells(Cell[] cells) {
+        // 是否需要转换
+        boolean convertable = false;
+        for (Cell cell : cells) {
+            if (cell.getRow() < 0) {
+                // 未显示的方块，如果列不符合
+                if (cell.getCol() < 0 || cell.getCol() >= cols) {
+                    return new Cell[0];
+                }
+                convertable = true;
+            }
+        }
+        // 需要转换
+        if (convertable) {
+            final List<Cell> list = new LinkedList<>();
+            for (Cell cell : cells) {
+                if (cell.getRow() >= 0) {
+                    list.add(cell);
+                }
+            }
+            return list.toArray(new Cell[0]);
+        }
+        // 返回原始数组
+        return cells;
+    }
+
+
+    /**
+     * 规则检测并设置数据
+     *
+     * @param cells 单元格列表
+     * @return 是否保存数据成功
+     */
+    public boolean saveCellsData(Cell[] cells) {
+        if (cells.length == 0) {
+            return false;
+        }
+
+        for (Cell cell : cells) {
+            final int row = cell.getRow();
+            final int col = cell.getCol();
+            // 是否超出范围或被占用
+            if (row >= rows || col < 0 || col >= cols || data[row][col] != null) {
+                return false;
+            }
+        }
+
+        // 保存数据
+        for (Cell cell : cells) {
+            final int row = cell.getRow();
+            final int col = cell.getCol();
+            data[row][col] = cell;
+        }
+        return true;
+    }
+
 }
