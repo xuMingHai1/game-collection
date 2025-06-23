@@ -665,7 +665,7 @@ public class TetrisApplication extends Application {
     private final GameView gameView = new GameView(gameWorld);
 
     public static void main(String[] args) {
-        Thread.startVirtualThread(() -> {
+        Thread.ofPlatform().start(() -> {
             try {
                 Class.forName(AudioManager.class.getName());
             }
