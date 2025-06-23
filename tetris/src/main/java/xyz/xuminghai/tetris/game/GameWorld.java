@@ -827,17 +827,9 @@ public final class GameWorld {
      * 游戏运行状态
      */
     private boolean gameActive;
-    private Robot robot;
 
     public boolean getGameActive() {
         return gameActive;
-    }
-
-    private Robot getRobot() {
-        if (robot == null) {
-            robot = new Robot();
-        }
-        return robot;
     }
 
     public int getRows() {
@@ -884,7 +876,7 @@ public final class GameWorld {
         return renderCell;
     }
 
-
+    private final Robot robot = new Robot();
     /**
      * 启动或暂停游戏
      */
@@ -893,7 +885,7 @@ public final class GameWorld {
         if (gameActive) {
             keyLocked.ifPresent(b -> {
                 if (b) {
-                    getRobot().keyType(KeyCode.CAPS);
+                    robot.keyType(KeyCode.CAPS);
                 }
             });
             AudioManager.getBgmMediaPlayer().pause();
@@ -903,7 +895,7 @@ public final class GameWorld {
             // 大写锁定处理
             keyLocked.ifPresent(b -> {
                 if (!b) {
-                    getRobot().keyType(KeyCode.CAPS);
+                    robot.keyType(KeyCode.CAPS);
                 }
             });
             AudioManager.getBgmMediaPlayer().play();
@@ -919,7 +911,6 @@ public final class GameWorld {
         ROTATE_CLOCKWISE,
         ROTATE_COUNTER_CLOCKWISE
     }
-
 
     /**
      * 方块行为
@@ -984,10 +975,6 @@ public final class GameWorld {
     public void rotateCounterClockwise() {
         tetrisAction(ActionEnum.ROTATE_COUNTER_CLOCKWISE, Tetris::rotateCounterClockwise);
     }
-
-    /*
-     **********************游戏行为和规则************************
-     */
 
     /**
      * 等级加1
