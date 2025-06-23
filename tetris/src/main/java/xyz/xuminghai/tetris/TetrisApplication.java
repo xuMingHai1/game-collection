@@ -639,8 +639,10 @@ import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
 import xyz.xuminghai.tetris.game.GameKeyCodeAction;
 import xyz.xuminghai.tetris.game.GameWorld;
+import xyz.xuminghai.tetris.util.AudioManager;
 import xyz.xuminghai.tetris.util.Version;
 import xyz.xuminghai.tetris.view.GameView;
+
 
 /**
  * 2024/1/15 20:30 星期一<br/>
@@ -663,6 +665,14 @@ public class TetrisApplication extends Application {
     private final GameView gameView = new GameView(gameWorld);
 
     public static void main(String[] args) {
+        Thread.startVirtualThread(() -> {
+            try {
+                Class.forName(AudioManager.class.getName());
+            }
+            catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        });
         launch(args);
     }
 

@@ -640,12 +640,10 @@ import java.util.Objects;
  */
 public final class AudioManager {
 
-    private static final class BgmMediaPlayerHolder {
-        private static final MediaPlayer BGM_MEDIA_PLAYER = new MediaPlayer(new Media(Objects.requireNonNull(AudioManager.class.getResource("/audio/bgm.wav")).toExternalForm()));
+    private static final MediaPlayer BGM_MEDIA_PLAYER = new MediaPlayer(new Media(Objects.requireNonNull(AudioManager.class.getResource("/audio/bgm.wav")).toExternalForm()));
 
-        static {
-            BGM_MEDIA_PLAYER.setCycleCount(MediaPlayer.INDEFINITE);
-        }
+    static {
+        BGM_MEDIA_PLAYER.setCycleCount(MediaPlayer.INDEFINITE);
     }
 
     /**
@@ -654,91 +652,79 @@ public final class AudioManager {
      * @return BgmMediaPlayer
      */
     public static MediaPlayer getBgmMediaPlayer() {
-        return BgmMediaPlayerHolder.BGM_MEDIA_PLAYER;
+        return BGM_MEDIA_PLAYER;
     }
 
 
-    private static final class ClearRowAudioClipHolder {
-        private static final AudioClip CLEAR_ROW_AUDIO_CLIP = new AudioClip(Objects.requireNonNull(AudioManager.class.getResource("/audio/clear_rows.wav")).toExternalForm());
-    }
+    private static final AudioClip CLEAR_ROW_AUDIO_CLIP = new AudioClip(Objects.requireNonNull(AudioManager.class.getResource("/audio/clear_rows.wav")).toExternalForm());
 
     /**
-     * 懒加载的消除行音效
+     * 消除行音效
      *
      * @return ClearRowAudioClip
      */
     public static AudioClip getClearRowAudioClip() {
-        return ClearRowAudioClipHolder.CLEAR_ROW_AUDIO_CLIP;
+        return CLEAR_ROW_AUDIO_CLIP;
     }
 
 
-    private static final class MoveAudioClipHolder {
-        private static final AudioClip MOVE_AUDIO_CLIP = new AudioClip(Objects.requireNonNull(AudioManager.class.getResource("/audio/move.wav")).toExternalForm());
-    }
+    private static final AudioClip MOVE_AUDIO_CLIP = new AudioClip(Objects.requireNonNull(AudioManager.class.getResource("/audio/move.wav")).toExternalForm());
 
     /**
-     * 懒加载的方块移动音效
+     * 方块移动音效
      *
      * @return MoveAudioClip
      */
     public static AudioClip getMoveAudioClip() {
-        return MoveAudioClipHolder.MOVE_AUDIO_CLIP;
+        return MOVE_AUDIO_CLIP;
     }
 
 
-    private static final class RotateAudioClipHolder {
-        private static final AudioClip ROTATE_AUDIO_CLIP = new AudioClip(Objects.requireNonNull(AudioManager.class.getResource("/audio/rotate.wav")).toExternalForm());
-    }
+    private static final AudioClip ROTATE_AUDIO_CLIP = new AudioClip(Objects.requireNonNull(AudioManager.class.getResource("/audio/rotate.wav")).toExternalForm());
 
     /**
-     * 懒加载的方块旋转音效
+     * 方块旋转音效
      *
      * @return RotateAudioClip
      */
     public static AudioClip getRotateAudioClip() {
-        return RotateAudioClipHolder.ROTATE_AUDIO_CLIP;
+        return ROTATE_AUDIO_CLIP;
     }
 
 
-    private static final class LevelUpAudioClipHolder {
-        private static final AudioClip LEVEL_UP_AUDIO_CLIP = new AudioClip(Objects.requireNonNull(AudioManager.class.getResource("/audio/level_up.wav")).toExternalForm());
-    }
+    private static final AudioClip LEVEL_UP_AUDIO_CLIP = new AudioClip(Objects.requireNonNull(AudioManager.class.getResource("/audio/level_up.wav")).toExternalForm());
 
     /**
-     * 懒加载的升级音效
+     * 升级音效
      *
      * @return LevelUpAudioClip
      */
     public static AudioClip getLevelUpAudioClip() {
-        return LevelUpAudioClipHolder.LEVEL_UP_AUDIO_CLIP;
+        return LEVEL_UP_AUDIO_CLIP;
     }
 
 
-    private static final class LevelDownAudioClipHolder {
-        private static final AudioClip LEVEL_DOWN_AUDIO_CLIP = new AudioClip(Objects.requireNonNull(AudioManager.class.getResource("/audio/level_down.wav")).toExternalForm());
-    }
+    private static final AudioClip LEVEL_DOWN_AUDIO_CLIP = new AudioClip(Objects.requireNonNull(AudioManager.class.getResource("/audio/level_down.wav")).toExternalForm());
 
     /**
-     * 懒加载的降级音效
+     * 降级音效
      *
      * @return LevelDownAudioClip
      */
     public static AudioClip getLevelDownAudioClip() {
-        return LevelDownAudioClipHolder.LEVEL_DOWN_AUDIO_CLIP;
+        return LEVEL_DOWN_AUDIO_CLIP;
     }
 
 
-    private static final class GameOverAudioClipHolder {
-        private static final AudioClip GAME_OVER_AUDIO_CLIP = new AudioClip(Objects.requireNonNull(AudioManager.class.getResource("/audio/game_over.wav")).toExternalForm());
-    }
+    private static final AudioClip GAME_OVER_AUDIO_CLIP = new AudioClip(Objects.requireNonNull(AudioManager.class.getResource("/audio/game_over.wav")).toExternalForm());
 
     /**
-     * 懒加载的游戏结束音效
+     * 游戏结束音效
      *
      * @return GameOverAudioClip
      */
     public static AudioClip getGameOverAudioClip() {
-        return GameOverAudioClipHolder.GAME_OVER_AUDIO_CLIP;
+        return GAME_OVER_AUDIO_CLIP;
     }
 
 }

@@ -687,45 +687,38 @@ public final class Version {
 
     public static void checkUpdate(Consumer<String> consumer) {
         // 只运行一次
-        final Thread checkUpdateThread = new Thread(
-                null,
-                new Task<String>() {
-                    @Override
-                    protected String call() throws Exception {
-                        // 从服务器获取版本号
-                        final URLConnection urlConnection = URI.create(VERSION_URL).toURL().openConnection();
-                        urlConnection.setConnectTimeout((int) Duration.ofSeconds(3L).toMillis());
-                        urlConnection.setReadTimeout((int) Duration.ofSeconds(5L).toMillis());
-                        urlConnection.connect();
-                        final String version = new String(urlConnection.getInputStream().readAllBytes());
-                        urlConnection.getInputStream().close();
+        Thread.startVirtualThread(new Task<String>() {
+            @Override
+            protected String call() throws Exception {
+                // 从服务器获取版本号
+                final URLConnection urlConnection = URI.create(VERSION_URL).toURL().openConnection();
+                urlConnection.setConnectTimeout((int) Duration.ofSeconds(3L).toMillis());
+                urlConnection.setReadTimeout((int) Duration.ofSeconds(5L).toMillis());
+                urlConnection.connect();
+                final String version = new String(urlConnection.getInputStream().readAllBytes());
+                urlConnection.getInputStream().close();
 
-                        // 匹配版本号
-                        final Matcher matcher = VERSION_PATTERN.matcher(VERSION);
-                        final Matcher bodyMatcher = VERSION_PATTERN.matcher(version);
-                        if (matcher.matches() && bodyMatcher.matches()) {
-                            final int remoteVersion = Integer.parseInt(bodyMatcher.group(1) + bodyMatcher.group(2) + bodyMatcher.group(3));
-                            final int localVersion = Integer.parseInt(matcher.group(1) + matcher.group(2) + matcher.group(3));
-                            if (remoteVersion > localVersion) {
-                                return version;
-                            }
-                        }
-                        return null;
+                // 匹配版本号
+                final Matcher matcher = VERSION_PATTERN.matcher(VERSION);
+                final Matcher bodyMatcher = VERSION_PATTERN.matcher(version);
+                if (matcher.matches() && bodyMatcher.matches()) {
+                    final int remoteVersion = Integer.parseInt(bodyMatcher.group(1) + bodyMatcher.group(2) + bodyMatcher.group(3));
+                    final int localVersion = Integer.parseInt(matcher.group(1) + matcher.group(2) + matcher.group(3));
+                    if (remoteVersion > localVersion) {
+                        return version;
                     }
+                }
+                return null;
+            }
 
-                    @Override
-                    protected void succeeded() {
-                        final String value = super.getValue();
-                        if (value != null) {
-                            consumer.accept(value);
-                        }
-                    }
-                },
-                "checkUpdateThread",
-                0L,
-                false);
-        checkUpdateThread.setDaemon(true);
-        checkUpdateThread.start();
+            @Override
+            protected void succeeded() {
+                final String value = super.getValue();
+                if (value != null) {
+                    consumer.accept(value);
+                }
+            }
+        });
     }
 
 
