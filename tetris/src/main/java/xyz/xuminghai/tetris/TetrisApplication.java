@@ -738,4 +738,10 @@ public class TetrisApplication extends Application {
             alert.showAndWait().ifPresent(_ -> super.getHostServices().showDocument(Version.RELEASE_URL));
         });
     }
+
+
+    @Override
+    public void stop() {
+        Thread.startVirtualThread(() -> SoundManager.getBgmSequencer().close());
+    }
 }

@@ -195,6 +195,10 @@
   "type":"java.util.Date"
 },
 {
+  "type":"java.util.concurrent.ForkJoinTask",
+  "fields":[{"name":"aux"},{"name":"status"}]
+},
+{
   "type":"java.util.concurrent.atomic.AtomicBoolean",
   "fields":[{"name":"value"}]
 },
@@ -276,6 +280,9 @@
   "type":"javax.security.auth.x500.X500Principal",
   "fields":[{"name":"thisX500Name"}],
   "methods":[{"name":"<init>","parameterTypes":["sun.security.x509.X500Name"] }]
+},
+{
+  "type":"jdk.internal.misc.Unsafe"
 },
 {
   "type":"sun.misc.Unsafe",
@@ -438,5 +445,11 @@
 {
   "type":"xyz.xuminghai.tetris.TetrisApplication",
   "methods":[{"name":"<init>","parameterTypes":[] },{"name":"main","parameterTypes":["java.lang.String[]"] }]
+},
+{
+  "type":"xyz.xuminghai.tetris.util.AudioManager"
+},
+{
+  "type":"xyz.xuminghai.tetris.util.SoundManager"
 }
 ]
