@@ -634,6 +634,7 @@ import xyz.xuminghai.tetris.core.Cell;
 import xyz.xuminghai.tetris.core.Tetris;
 import xyz.xuminghai.tetris.core.TetrisFactory;
 import xyz.xuminghai.tetris.util.AudioManager;
+import xyz.xuminghai.tetris.util.SoundManager;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -697,7 +698,11 @@ public final class GameWorld {
 
         @Override
         protected void invalidated() {
-            gameTimeLine.setPulse(GameTimeLine.DEFAULT_PULSE - super.get() * 16.67);
+            final int levelValue = super.get();
+            // 方块下落速度
+            gameTimeLine.setPulse(GameTimeLine.DEFAULT_PULSE - levelValue * 16.67);
+            // 背景音乐播放速度
+            SoundManager.getBgmSequencer().setTempoFactor(1F + levelValue / 10F);
         }
 
         {
@@ -757,7 +762,7 @@ public final class GameWorld {
                     currentCells.set(null);
                     // 游戏结束动画
                     gameTimeLine.setGameAnimation(new GameOverAnimation(GameWorld.this));
-                    AudioManager.getBgmMediaPlayer().stop();
+                    SoundManager.getBgmSequencer().stop();
                     AudioManager.getGameOverAudioClip().play();
                 }
                 else {
@@ -888,7 +893,7 @@ public final class GameWorld {
                     robot.keyType(KeyCode.CAPS);
                 }
             });
-            AudioManager.getBgmMediaPlayer().pause();
+            SoundManager.getBgmSequencer().stop();
             gameTimeLine.stop();
         }
         else {
@@ -898,7 +903,7 @@ public final class GameWorld {
                     robot.keyType(KeyCode.CAPS);
                 }
             });
-            AudioManager.getBgmMediaPlayer().play();
+            SoundManager.getBgmSequencer().start();
             gameTimeLine.start();
         }
         gameActive = !gameActive;

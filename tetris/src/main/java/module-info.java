@@ -7,6 +7,7 @@
 module xyz.xuminghai.tetris {
     requires javafx.controls;
     requires javafx.media;
+    requires java.desktop;
 
     exports xyz.xuminghai.tetris to javafx.graphics;
     // 模块资源访问
