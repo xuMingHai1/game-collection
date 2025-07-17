@@ -80,23 +80,8 @@
   "type":"com.sun.media.jfxmediaimpl.platform.gstreamer.GSTMediaPlayer"
 },
 {
-  "type":"com.sun.media.jfxmediaimpl.platform.gstreamer.GSTMediaPlayer"
-},
-{
-  "type":"com.sun.media.sound.DirectAudioDevice",
-  "methods":[{"name":"addFormat","parameterTypes":["java.util.Vector","int","int","int","float","int","boolean","boolean"] }]
-},
-{
-  "type":"com.sun.media.sound.DirectAudioDeviceProvider$DirectAudioDeviceInfo",
-  "methods":[{"name":"<init>","parameterTypes":["int","int","int","java.lang.String","java.lang.String","java.lang.String","java.lang.String"] }]
-},
-{
-  "type":"com.sun.media.sound.PortMixerProvider$PortMixerInfo",
-  "methods":[{"name":"<init>","parameterTypes":["int","java.lang.String","java.lang.String","java.lang.String","java.lang.String"] }]
-},
-{
   "type":"com.sun.prism.impl.PrismSettings",
-  "fields":[{"name":"disableD3D9Ex"},{"name":"forceGPU"},{"name":"isVsyncEnabled"},{"name":"verbose"}]
+  "fields":[{"name":"forceGPU"},{"name":"isVsyncEnabled"},{"name":"verbose"}]
 },
 {
   "type":"java.lang.Boolean",
@@ -105,10 +90,6 @@
 {
   "type":"java.lang.Class",
   "methods":[{"name":"forName","parameterTypes":["java.lang.String","boolean","java.lang.ClassLoader"] }]
-},
-{
-  "type":"java.lang.ClassLoader",
-  "methods":[{"name":"getPlatformClassLoader","parameterTypes":[] },{"name":"loadClass","parameterTypes":["java.lang.String"] }]
 },
 {
   "type":"java.lang.Object",
@@ -141,12 +122,5 @@
 {
   "type":"javafx.scene.paint.Color",
   "methods":[{"name":"rgb","parameterTypes":["int","int","int","double"] }]
-},
-{
-  "type":"jdk.internal.loader.ClassLoaders$PlatformClassLoader"
-},
-{
-  "type":"org.graalvm.jniutils.JNIExceptionWrapperEntryPoints",
-  "methods":[{"name":"getClassName","parameterTypes":["java.lang.Class"] }]
 }
 ]

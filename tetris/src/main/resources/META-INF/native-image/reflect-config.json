@@ -1,14 +1,5 @@
 [
 {
-  "type":"[B"
-},
-{
-  "type":"[Ljava.lang.String;"
-},
-{
-  "type":"[Lsun.security.pkcs.SignerInfo;"
-},
-{
   "type":"com.sun.crypto.provider.AESCipher$General",
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
@@ -41,15 +32,7 @@
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "type":"com.sun.crypto.provider.TlsKeyMaterialGenerator",
-  "methods":[{"name":"<init>","parameterTypes":[] }]
-},
-{
   "type":"com.sun.crypto.provider.TlsMasterSecretGenerator",
-  "methods":[{"name":"<init>","parameterTypes":[] }]
-},
-{
-  "type":"com.sun.crypto.provider.TlsPrfGenerator$V12",
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
@@ -92,10 +75,6 @@
   "methods":[{"name":"loadShader","parameterTypes":["com.sun.prism.ps.ShaderFactory","java.io.InputStream"] }]
 },
 {
-  "type":"com.sun.prism.shader.FillPgram_LinearGradient_PAD_Loader",
-  "methods":[{"name":"loadShader","parameterTypes":["com.sun.prism.ps.ShaderFactory","java.io.InputStream"] }]
-},
-{
   "type":"com.sun.prism.shader.FillRoundRect_Color_Loader",
   "methods":[{"name":"loadShader","parameterTypes":["com.sun.prism.ps.ShaderFactory","java.io.InputStream"] }]
 },
@@ -120,22 +99,6 @@
   "methods":[{"name":"loadShader","parameterTypes":["com.sun.prism.ps.ShaderFactory","java.io.InputStream"] }]
 },
 {
-  "type":"com.sun.prism.shader.Texture_LinearGradient_PAD_Loader",
-  "methods":[{"name":"loadShader","parameterTypes":["com.sun.prism.ps.ShaderFactory","java.io.InputStream"] }]
-},
-{
-  "type":"com.sun.scenario.effect.impl.prism.PrRenderer",
-  "methods":[{"name":"createRenderer","parameterTypes":["com.sun.scenario.effect.FilterContext"] }]
-},
-{
-  "type":"com.sun.scenario.effect.impl.prism.ps.PPSLinearConvolveShadowPeer",
-  "methods":[{"name":"<init>","parameterTypes":["com.sun.scenario.effect.FilterContext","com.sun.scenario.effect.impl.Renderer","java.lang.String"] }]
-},
-{
-  "type":"com.sun.scenario.effect.impl.prism.ps.PPSRenderer",
-  "methods":[{"name":"createRenderer","parameterTypes":["com.sun.scenario.effect.FilterContext"] }]
-},
-{
   "type":"java.lang.Character",
   "methods":[{"name":"isIdeographic","parameterTypes":["int"] }]
 },
@@ -150,9 +113,6 @@
 {
   "type":"java.lang.ModuleLayer",
   "methods":[{"name":"boot","parameterTypes":[] },{"name":"findModule","parameterTypes":["java.lang.String"] }]
-},
-{
-  "type":"java.lang.String"
 },
 {
   "type":"java.lang.Thread",
@@ -177,30 +137,14 @@
   "type":"java.security.KeyStoreSpi"
 },
 {
-  "type":"java.security.SecureRandomParameters"
-},
-{
-  "type":"java.security.interfaces.ECPrivateKey"
-},
-{
-  "type":"java.security.interfaces.ECPublicKey"
-},
-{
   "type":"java.security.interfaces.RSAPrivateKey"
 },
 {
   "type":"java.security.interfaces.RSAPublicKey"
 },
 {
-  "type":"java.util.Date"
-},
-{
   "type":"java.util.concurrent.ForkJoinTask",
   "fields":[{"name":"aux"},{"name":"status"}]
-},
-{
-  "type":"java.util.concurrent.atomic.AtomicBoolean",
-  "fields":[{"name":"value"}]
 },
 {
   "type":"java.util.concurrent.atomic.AtomicReference",
@@ -241,13 +185,7 @@
   "type":"javafx.scene.control.Labeled"
 },
 {
-  "type":"javafx.scene.effect.Effect"
-},
-{
   "type":"javafx.scene.image.Image"
-},
-{
-  "type":"javafx.scene.image.ImageView"
 },
 {
   "type":"javafx.scene.layout.Pane"
@@ -277,16 +215,7 @@
   "type":"javafx.stage.Window"
 },
 {
-  "type":"javax.security.auth.x500.X500Principal",
-  "fields":[{"name":"thisX500Name"}],
-  "methods":[{"name":"<init>","parameterTypes":["sun.security.x509.X500Name"] }]
-},
-{
   "type":"jdk.internal.misc.Unsafe"
-},
-{
-  "type":"sun.misc.Unsafe",
-  "fields":[{"name":"theUnsafe"}]
 },
 {
   "type":"sun.security.pkcs12.PKCS12KeyStore",
@@ -373,10 +302,6 @@
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "type":"sun.security.rsa.RSASignature$SHA512withRSA",
-  "methods":[{"name":"<init>","parameterTypes":[] }]
-},
-{
   "type":"sun.security.ssl.KeyManagerFactoryImpl$SunX509",
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
@@ -387,9 +312,6 @@
 {
   "type":"sun.security.ssl.TrustManagerFactoryImpl$PKIXFactory",
   "methods":[{"name":"<init>","parameterTypes":[] }]
-},
-{
-  "type":"sun.security.util.ObjectIdentifier"
 },
 {
   "type":"sun.security.x509.AuthorityInfoAccessExtension",
@@ -406,9 +328,6 @@
 {
   "type":"sun.security.x509.CRLDistributionPointsExtension",
   "methods":[{"name":"<init>","parameterTypes":["java.lang.Boolean","java.lang.Object"] }]
-},
-{
-  "type":"sun.security.x509.CertificateExtensions"
 },
 {
   "type":"sun.security.x509.CertificatePoliciesExtension",
@@ -448,8 +367,5 @@
 },
 {
   "type":"xyz.xuminghai.tetris.util.AudioManager"
-},
-{
-  "type":"xyz.xuminghai.tetris.util.SoundManager"
 }
 ]

@@ -640,7 +640,6 @@ import javafx.stage.Stage;
 import xyz.xuminghai.tetris.game.GameKeyCodeAction;
 import xyz.xuminghai.tetris.game.GameWorld;
 import xyz.xuminghai.tetris.util.AudioManager;
-import xyz.xuminghai.tetris.util.SoundManager;
 import xyz.xuminghai.tetris.util.Version;
 import xyz.xuminghai.tetris.view.GameView;
 
@@ -669,7 +668,6 @@ public class TetrisApplication extends Application {
         Thread.startVirtualThread(() -> {
             try {
                 Class.forName(AudioManager.class.getName());
-                Class.forName(SoundManager.class.getName());
             }
             catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
@@ -739,9 +737,4 @@ public class TetrisApplication extends Application {
         });
     }
 
-
-    @Override
-    public void stop() {
-        Thread.startVirtualThread(() -> SoundManager.getBgmSequencer().close());
-    }
 }

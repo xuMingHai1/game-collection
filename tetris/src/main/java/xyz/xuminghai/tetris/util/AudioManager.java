@@ -627,6 +627,8 @@
 package xyz.xuminghai.tetris.util;
 
 import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 import java.util.Objects;
 
@@ -637,6 +639,21 @@ import java.util.Objects;
  * @author xuMingHai
  */
 public final class AudioManager {
+
+
+    private static final MediaPlayer BGM_MEDIA_PLAYER = new MediaPlayer(new Media(Objects.requireNonNull(AudioManager.class.getResource("/audio/bgm.wav")).toExternalForm()));
+
+    static {
+        BGM_MEDIA_PLAYER.setCycleCount(MediaPlayer.INDEFINITE);
+    }
+    /**
+     * 背景音乐播放器
+     *
+     * @return BgmMediaPlayer
+     */
+    public static MediaPlayer getBgmMediaPlayer() {
+        return BGM_MEDIA_PLAYER;
+    }
 
 
     private static final AudioClip CLEAR_ROW_AUDIO_CLIP = new AudioClip(Objects.requireNonNull(AudioManager.class.getResource("/audio/clear_rows.wav")).toExternalForm());

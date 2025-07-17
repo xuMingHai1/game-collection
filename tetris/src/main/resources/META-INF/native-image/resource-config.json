@@ -5703,6 +5703,8 @@
   },{
     "pattern":"xyz.xuminghai.tetris:VERSION"
   },{
+    "pattern":"xyz.xuminghai.tetris:\\Qaudio\/bgm.wav\\E"
+  },{
     "pattern":"xyz.xuminghai.tetris:\\Qaudio\/clear_rows.wav\\E"
   },{
     "pattern":"xyz.xuminghai.tetris:\\Qaudio\/game_over.wav\\E"
@@ -5731,9 +5733,7 @@
   },{
     "pattern":"xyz.xuminghai.tetris:\\Qimg\/icon.png\\E"
   },{
-    "pattern":"xyz.xuminghai.tetris:\\Qsound\/music-a.mid\\E"
-  },{
-    "pattern":"xyz.xuminghai.tetris:audio\/.*\\.(mp3|wav)"
+    "pattern":"xyz.xuminghai.tetris:audio\/.*\\.wav"
   }]},
   "bundles":[{
     "name":"MediaErrors",
