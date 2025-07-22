@@ -686,10 +686,15 @@ public final class GameWorld {
      */
     final IntegerProperty level = new SimpleIntegerProperty(this, "level") {
 
+        /**
+         * 最大等级
+         */
+        private final int maxLevel = 30;
+
         @Override
         public void set(int newValue) {
             // 等级限制
-            if (newValue < 0 || newValue > 30) {
+            if (newValue < 0 || newValue > maxLevel) {
                 return;
             }
             super.set(newValue);
@@ -701,7 +706,7 @@ public final class GameWorld {
             // 方块下落速度
             gameTimeLine.setPulse(GameTimeLine.DEFAULT_PULSE - levelValue * 16.67);
             // 背景音乐播放速度
-            AudioManager.getBgmMediaPlayer().setRate(1F + levelValue / 10F);
+            AudioManager.getBgmMediaPlayer().setRate(1 + (double) levelValue / maxLevel);
         }
 
         {
@@ -881,6 +886,7 @@ public final class GameWorld {
     }
 
     private final Robot robot = new Robot();
+
     /**
      * 启动或暂停游戏
      */
